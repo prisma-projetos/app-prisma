@@ -10,7 +10,7 @@ const partidos: Partido[] = [
     slug: "frente-popular-unida",
     nome: "Frente Popular Unida",
     sigla: "FPU",
-    logoUrl: logoPlaceholder("FPU", "#b91c1c"),
+    logoUrl: "/images/nova_logo_PDT.png",
     sintese: {
       sobre: [
         {
@@ -147,7 +147,7 @@ const partidos: Partido[] = [
     slug: "partido-alianca-nacional",
     nome: "Partido Aliança Nacional",
     sigla: "PAN",
-    logoUrl: logoPlaceholder("PAN", "#1d4ed8"),
+    logoUrl: "/images/MISSÃO_logo.png",
     sintese: {
       sobre: [
         {
@@ -237,7 +237,7 @@ const partidos: Partido[] = [
     slug: "partido-novo-horizonte",
     nome: "Partido Novo Horizonte",
     sigla: "PNH",
-    logoUrl: logoPlaceholder("PNH", "#15803d"),
+    logoUrl: "/images/PT_logo.svg",
     sintese: {
       sobre: [
         {
