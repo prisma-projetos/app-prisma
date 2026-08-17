@@ -4,6 +4,7 @@ import { Disclaimer } from "@/app/components/disclaimer";
 import { EntidadeAvatar } from "@/app/components/entidade-avatar";
 import { SinteseTabs } from "@/app/components/sintese-tabs";
 import { getPoliticoBySlug } from "@/app/lib/mock-data";
+import { CARGO_LABELS } from "@/app/lib/types";
 
 export default async function PoliticoPage({
   params,
@@ -41,7 +42,8 @@ export default async function PoliticoPage({
               {politico.nome}
             </h1>
             <p className="text-sm text-zinc-500">
-              {politico.cargo} · {partido.sigla}
+              {CARGO_LABELS[politico.cargo]} · {partido.sigla}
+              {politico.viceNome ? ` · vice: ${politico.viceNome}` : ""}
             </p>
           </div>
         </div>
