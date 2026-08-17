@@ -19,6 +19,9 @@ export default async function PoliticoPage({
   }
 
   const { partido, politico } = resultado;
+  const vice = politico.viceRef
+    ? getPoliticoBySlug(politico.viceRef.partidoSlug, politico.viceRef.politicoSlug)?.politico
+    : undefined;
 
   return (
     <div className="flex flex-1 flex-col items-center bg-zinc-50 px-6 py-16 dark:bg-black">
@@ -44,6 +47,18 @@ export default async function PoliticoPage({
             <p className="text-sm text-zinc-500">
               {CARGO_LABELS[politico.cargo]} · {partido.sigla}
               {politico.viceNome ? ` · vice: ${politico.viceNome}` : ""}
+              {politico.viceRef ? (
+                <>
+                  {" "}
+                  · vice:{" "}
+                  <Link
+                    href={`/partidos/${politico.viceRef.partidoSlug}/politicos/${politico.viceRef.politicoSlug}`}
+                    className="underline hover:text-zinc-800 dark:hover:text-zinc-300"
+                  >
+                    {vice?.nome ?? politico.viceRef.politicoSlug}
+                  </Link>
+                </>
+              ) : null}
             </p>
           </div>
         </div>

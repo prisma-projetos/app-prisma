@@ -4,6 +4,7 @@ import { Disclaimer } from "@/app/components/disclaimer";
 import { EntidadeAvatar } from "@/app/components/entidade-avatar";
 import { SinteseTabs } from "@/app/components/sintese-tabs";
 import { getPartidoBySlug } from "@/app/lib/mock-data";
+import { CARGO_GRUPOS } from "@/app/lib/types";
 
 export default async function PartidoPage({
   params,
@@ -55,20 +56,35 @@ export default async function PartidoPage({
               Nenhum político cadastrado para este partido.
             </p>
           ) : (
-            <div className="flex flex-wrap gap-8">
-              {partido.politicos.map((politico) => (
-                <Link
-                  key={politico.slug}
-                  href={`/partidos/${partido.slug}/politicos/${politico.slug}`}
-                >
-                  <EntidadeAvatar
-                    nome={politico.nome}
-                    imagemUrl={politico.imagemUrl}
-                    variante="politico"
-                  />
-                </Link>
-              ))}
-            </div>
+            CARGO_GRUPOS.map((grupo) => {
+              const politicosDoGrupo = partido.politicos.filter((politico) =>
+                grupo.cargos.includes(politico.cargo)
+              );
+
+              if (politicosDoGrupo.length === 0) return null;
+
+              return (
+                <div key={grupo.chave} className="flex flex-col gap-3">
+                  <h3 className="text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                    {grupo.titulo}
+                  </h3>
+                  <div className="flex flex-wrap gap-8">
+                    {politicosDoGrupo.map((politico) => (
+                      <Link
+                        key={politico.slug}
+                        href={`/partidos/${partido.slug}/politicos/${politico.slug}`}
+                      >
+                        <EntidadeAvatar
+                          nome={politico.nome}
+                          imagemUrl={politico.imagemUrl}
+                          variante="politico"
+                        />
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              );
+            })
           )}
         </section>
       </div>

@@ -454,22 +454,51 @@ function candidatoPresidente(input: {
   partidoSlug: string;
   slug: string;
   nome: string;
-  viceNome?: string;
+  vice?: {
+    partidoSlug: string;
+    slug: string;
+    nome: string;
+    sobre: string;
+  };
   sobre: string;
   fonteUrl?: string;
   fonteTitulo?: string;
 }): void {
+  const fonteUrl = input.fonteUrl ?? CANDIDATOS_13_FONTE_URL;
+  const fonteTitulo = input.fonteTitulo ?? CANDIDATOS_13_FONTE_TITULO;
+
+  if (input.vice) {
+    adicionarPolitico(input.vice.partidoSlug, {
+      slug: input.vice.slug,
+      nome: input.vice.nome,
+      cargo: "vice_presidente",
+      sintese: {
+        sobre: [
+          {
+            texto: input.vice.sobre,
+            fonteUrl,
+            fonteTitulo,
+          },
+        ],
+        elogios: [],
+        criticas: [],
+      },
+    });
+  }
+
   adicionarPolitico(input.partidoSlug, {
     slug: input.slug,
     nome: input.nome,
-    cargo: "presidente_vice_presidente",
-    viceNome: input.viceNome,
+    cargo: "presidente",
+    viceRef: input.vice
+      ? { partidoSlug: input.vice.partidoSlug, politicoSlug: input.vice.slug }
+      : undefined,
     sintese: {
       sobre: [
         {
           texto: input.sobre,
-          fonteUrl: input.fonteUrl ?? CANDIDATOS_13_FONTE_URL,
-          fonteTitulo: input.fonteTitulo ?? CANDIDATOS_13_FONTE_TITULO,
+          fonteUrl,
+          fonteTitulo,
         },
       ],
       elogios: [],
@@ -482,7 +511,13 @@ candidatoPresidente({
   partidoSlug: "pt",
   slug: "luiz-inacio-lula-da-silva",
   nome: "Luiz Inácio Lula da Silva",
-  viceNome: "Geraldo Alckmin (PSB)",
+  vice: {
+    partidoSlug: "psb",
+    slug: "geraldo-alckmin",
+    nome: "Geraldo Alckmin",
+    sobre:
+      "Candidato a vice-presidente na chapa de reeleição de Luiz Inácio Lula da Silva (PT), oficializada em 2 de agosto de 2026, durante convenção nacional do PT em São Paulo.",
+  },
   sobre:
     "Candidatura à reeleição oficializada em 2 de agosto de 2026, durante convenção nacional do PT em São Paulo, com Geraldo Alckmin novamente como candidato a vice-presidente.",
 });
@@ -491,7 +526,13 @@ candidatoPresidente({
   partidoSlug: "pl",
   slug: "flavio-bolsonaro",
   nome: "Flávio Bolsonaro",
-  viceNome: "Alfredo Gaspar (PL-AL)",
+  vice: {
+    partidoSlug: "pl",
+    slug: "alfredo-gaspar",
+    nome: "Alfredo Gaspar",
+    sobre:
+      "Deputado federal por Alagoas, escolhido pelo PL como candidato a vice-presidente na chapa de Flávio Bolsonaro.",
+  },
   sobre:
     "Senador pelo Rio de Janeiro, teve a candidatura à Presidência oficializada pelo PL, escolhendo o deputado Alfredo Gaspar (PL-AL) como candidato a vice-presidente.",
 });
@@ -500,7 +541,13 @@ candidatoPresidente({
   partidoSlug: "psd",
   slug: "ronaldo-caiado",
   nome: "Ronaldo Caiado",
-  viceNome: "Gilberto Kassab (PSD)",
+  vice: {
+    partidoSlug: "psd",
+    slug: "gilberto-kassab",
+    nome: "Gilberto Kassab",
+    sobre:
+      "Presidente nacional do PSD, escolhido como candidato a vice-presidente na chapa de Ronaldo Caiado.",
+  },
   sobre:
     "Candidatura à Presidência oficializada pelo PSD, tendo o presidente do partido, Gilberto Kassab, como candidato a vice-presidente.",
 });
@@ -509,7 +556,13 @@ candidatoPresidente({
   partidoSlug: "novo",
   slug: "romeu-zema",
   nome: "Romeu Zema",
-  viceNome: "Eduardo Girão (Novo-CE)",
+  vice: {
+    partidoSlug: "novo",
+    slug: "eduardo-girao",
+    nome: "Eduardo Girão",
+    sobre:
+      "Senador pelo Ceará, escolhido pelo Novo como candidato a vice-presidente na chapa de Romeu Zema.",
+  },
   sobre:
     "Ex-governador de Minas Gerais, teve a candidatura oficializada pelo Novo no fim de julho de 2026, com o senador Eduardo Girão (Novo-CE) como candidato a vice-presidente.",
 });
@@ -532,7 +585,13 @@ candidatoPresidente({
   partidoSlug: "pcb",
   slug: "edmilson-costa",
   nome: "Edmilson Costa",
-  viceNome: "Cleusa Santos",
+  vice: {
+    partidoSlug: "pcb",
+    slug: "cleusa-santos",
+    nome: "Cleusa Santos",
+    sobre:
+      "Candidata a vice-presidente na chapa de Edmilson Costa, oficializada pelo PCB em evento realizado em São Paulo em 1º de agosto de 2026.",
+  },
   sobre:
     "Candidatura à Presidência oficializada pelo PCB em evento realizado em São Paulo em 1º de agosto de 2026, com Cleusa Santos como candidata a vice-presidente.",
 });
@@ -541,7 +600,13 @@ candidatoPresidente({
   partidoSlug: "pstu",
   slug: "hertz-dias",
   nome: "Hertz Dias",
-  viceNome: "Vanessa Portugal",
+  vice: {
+    partidoSlug: "pstu",
+    slug: "vanessa-portugal",
+    nome: "Vanessa Portugal",
+    sobre:
+      "Candidata a vice-presidente na chapa de Hertz Dias, oficializada pela convenção nacional do PSTU.",
+  },
   sobre:
     "Candidatura à Presidência oficializada pela convenção nacional do PSTU, com Vanessa Portugal como candidata a vice-presidente.",
 });
@@ -564,7 +629,13 @@ candidatoPresidente({
   partidoSlug: "unidade-popular",
   slug: "samara-martins",
   nome: "Samara Martins",
-  viceNome: "Raquel Brício",
+  vice: {
+    partidoSlug: "unidade-popular",
+    slug: "raquel-bricio",
+    nome: "Raquel Brício",
+    sobre:
+      "Candidata a vice-presidente na chapa de Samara Martins, oficializada pela Unidade Popular.",
+  },
   sobre:
     "Candidatura à Presidência oficializada pela Unidade Popular, com Raquel Brício como candidata a vice-presidente.",
 });

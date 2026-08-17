@@ -80,17 +80,17 @@ export const CARGO_GRUPOS: { chave: string; titulo: string; cargos: CargoCategor
 `Partido` e `Sintese` permanecem sem alteração estrutural.
 
 ## Critérios de aceite
-- [ ] `CargoCategoria` não contém mais `presidente_vice_presidente`; contém `presidente` e `vice_presidente` como valores distintos.
-- [ ] `CARGO_LABELS["presidente"]` é exatamente "Presidente da República" e `CARGO_LABELS["vice_presidente"]` é exatamente "Vice-presidente da República".
-- [ ] Cada candidato a presidente com vice já identificado na fonte (spec 003) tem `viceRef` apontando para um `Politico` real com `cargo: "vice_presidente"`, cadastrado no partido correto (o do vice, não necessariamente o do titular).
-- [ ] O `Politico` do vice tem `sintese.sobre` com pelo menos um trecho com `fonteUrl` rastreável (reaproveitando a fonte já usada para o candidato a presidente correspondente, quando não houver fonte específica melhor).
-- [ ] Na página do político (`/partidos/:slug/politicos/:politicoSlug`), quando `cargo === "presidente"` e `viceRef` existe, o nome do vice aparece como link (`<Link href="/partidos/{viceRef.partidoSlug}/politicos/{viceRef.politicoSlug}">`) e a navegação leva à página do vice, exibindo `CARGO_LABELS["vice_presidente"]` e a sigla do partido do vice.
-- [ ] Candidatos a presidente sem vice anunciado não exibem nenhum texto/link de vice (sem quebra de layout).
-- [ ] Na página do partido, os políticos aparecem divididos em seções por categoria de cargo, na ordem fixa definida em `CARGO_GRUPOS`, cada seção com o título correspondente.
-- [ ] `presidente` e `vice_presidente` aparecem juntos, na mesma seção "Presidente e vice-presidente da República", quando o partido tiver político(s) em qualquer um desses dois cargos.
-- [ ] Uma categoria/grupo sem nenhum político cadastrado no partido não gera seção (nenhum título vazio ou grade vazia).
-- [ ] Dentro de cada seção, os políticos continuam ordenados alfabeticamente por nome.
-- [ ] `pnpm run build`/`pnpm run lint` passam sem erro de tipo após a mudança do enum e da interface `Politico`.
+- [x] `CargoCategoria` não contém mais `presidente_vice_presidente`; contém `presidente` e `vice_presidente` como valores distintos.
+- [x] `CARGO_LABELS["presidente"]` é exatamente "Presidente da República" e `CARGO_LABELS["vice_presidente"]` é exatamente "Vice-presidente da República".
+- [x] Cada candidato a presidente com vice já identificado na fonte (spec 003) tem `viceRef` apontando para um `Politico` real com `cargo: "vice_presidente"`, cadastrado no partido correto (o do vice, não necessariamente o do titular).
+- [x] O `Politico` do vice tem `sintese.sobre` com pelo menos um trecho com `fonteUrl` rastreável (reaproveitando a fonte já usada para o candidato a presidente correspondente, quando não houver fonte específica melhor).
+- [x] Na página do político (`/partidos/:slug/politicos/:politicoSlug`), quando `cargo === "presidente"` e `viceRef` existe, o nome do vice aparece como link (`<Link href="/partidos/{viceRef.partidoSlug}/politicos/{viceRef.politicoSlug}">`) e a navegação leva à página do vice, exibindo `CARGO_LABELS["vice_presidente"]` e a sigla do partido do vice.
+- [x] Candidatos a presidente sem vice anunciado não exibem nenhum texto/link de vice (sem quebra de layout).
+- [x] Na página do partido, os políticos aparecem divididos em seções por categoria de cargo, na ordem fixa definida em `CARGO_GRUPOS`, cada seção com o título correspondente.
+- [x] `presidente` e `vice_presidente` aparecem juntos, na mesma seção "Presidente e vice-presidente da República", quando o partido tiver político(s) em qualquer um desses dois cargos.
+- [x] Uma categoria/grupo sem nenhum político cadastrado no partido não gera seção (nenhum título vazio ou grade vazia).
+- [x] Dentro de cada seção, os políticos continuam ordenados alfabeticamente por nome.
+- [x] `pnpm run build`/`pnpm run lint` passam sem erro de tipo após a mudança do enum e da interface `Politico`.
 
 ## Casos de borda
 - Vice cujo partido não é identificável com confiança na fonte disponível → não criar `Politico` nem `viceRef` para ele nesta rodada; não inventar partido (mesma regra já aplicada na spec 003 para candidatos a presidente).
