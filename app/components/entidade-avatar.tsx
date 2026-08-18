@@ -33,17 +33,25 @@ export function EntidadeAvatar({
               circular ? "h-full w-full object-cover" : "h-3/4 w-3/4 object-contain"
             }
           />
-        ) : circular ? (
-          <PersonIcon />
         ) : (
-          <span className="text-lg font-semibold text-zinc-500">
-            {nome.slice(0, 3).toUpperCase()}
-          </span>
+          <AvatarFallback circular={circular} nome={nome} />
         )}
       </span>
       <span className="pointer-events-none absolute -bottom-6 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-black/85 px-2 py-1 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100">
         {nome}
       </span>
+    </span>
+  );
+}
+
+function AvatarFallback({ circular, nome }: { circular: boolean; nome: string }) {
+  if (circular) {
+    return <PersonIcon />;
+  }
+
+  return (
+    <span className="text-lg font-semibold text-zinc-500">
+      {nome.slice(0, 3).toUpperCase()}
     </span>
   );
 }
