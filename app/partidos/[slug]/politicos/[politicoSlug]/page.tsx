@@ -46,8 +46,8 @@ export default async function PoliticoPage({
             </h1>
             <p className="text-sm text-zinc-500">
               {CARGO_LABELS[politico.cargo]} · {partido.sigla}
-              {politico.viceNome ? ` · vice: ${politico.viceNome}` : ""}
-              {politico.viceRef ? (
+              {politico.viceNome && ` · vice: ${politico.viceNome}`}
+              {politico.viceRef && (
                 <>
                   {" "}
                   · vice:{" "}
@@ -58,7 +58,7 @@ export default async function PoliticoPage({
                     {vice?.nome ?? politico.viceRef.politicoSlug}
                   </Link>
                 </>
-              ) : null}
+              )}
             </p>
           </div>
         </div>
