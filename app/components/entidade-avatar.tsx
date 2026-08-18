@@ -19,7 +19,7 @@ export function EntidadeAvatar({
       className="group relative inline-flex flex-col items-center gap-2"
     >
       <span
-        className={`flex items-center justify-center overflow-hidden border border-zinc-200 bg-zinc-100 transition-transform group-hover:scale-105 dark:border-zinc-800 dark:bg-zinc-900 ${
+        className={`flex items-center justify-center overflow-hidden border border-zinc-100 bg-zinc-200 transition-transform group-hover:scale-105 dark:border-zinc-800 dark:bg-zinc-900 ${
           circular ? "rounded-full" : "rounded-2xl"
         }`}
         style={{ width: tamanho, height: tamanho }}
