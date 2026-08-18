@@ -44,6 +44,7 @@ const partidos: Partido[] = [
     nome: "Agir",
     sigla: "AGIR",
     cor: "#0f766e",
+    logoUrl: "/images/AGIR.svg",
     sobre:
       "Agir é a nova denominação do antigo PTC (Partido Trabalhista Cristão), com registro definitivo no TSE.",
   }),
@@ -52,6 +53,7 @@ const partidos: Partido[] = [
     nome: "Avante",
     sigla: "AVANTE",
     cor: "#f97316",
+    logoUrl: "/images/AVANTE_70.png",
     sobre:
       "Avante é a nova denominação do antigo PTdoB (Partido Trabalhista do Brasil), de orientação de centro.",
   }),
@@ -60,6 +62,7 @@ const partidos: Partido[] = [
     nome: "Cidadania",
     sigla: "CIDADANIA",
     cor: "#0891b2",
+    logoUrl: "/images/CIDADANIA_23.png",
     sobre:
       "Cidadania é a nova denominação do antigo PPS (Partido Popular Socialista), de orientação de centro.",
   }),
@@ -68,6 +71,7 @@ const partidos: Partido[] = [
     nome: "Democracia Cristã",
     sigla: "DC",
     cor: "#1d4ed8",
+    logoUrl: "/images/DC.png",
     sobre:
       "Fundada em 1995 como PSDC (Partido Social Democrata Cristão), a legenda foi definitivamente registrada em 1997 e passou a se chamar Democracia Cristã em 2018, com reconhecimento do TSE. Tem orientação democrata-cristã.",
   }),
@@ -76,6 +80,7 @@ const partidos: Partido[] = [
     nome: "Democrata",
     sigla: "DEMOCRATA",
     cor: "#334155",
+    logoUrl: "/images/DEMOCRATA_35.png",
     sobre: "Partido com registro definitivo no TSE, habilitado a lançar candidaturas nas eleições de 2026.",
   }),
   partidoSemPoliticos({
@@ -83,6 +88,7 @@ const partidos: Partido[] = [
     nome: "Movimento Democrático Brasileiro",
     sigla: "MDB",
     cor: "#166534",
+    logoUrl: "/images/MDB.png",
     sobre:
       "O MDB tem origem no antigo MDB da ditadura militar (fundado em 1966 como oposição consentida) e é uma das legendas mais antigas em atividade no país, historicamente associada ao centro político.",
   }),
@@ -91,6 +97,7 @@ const partidos: Partido[] = [
     nome: "Mobilização Nacional",
     sigla: "MOBILIZA",
     cor: "#7c2d12",
+    logoUrl: "/images/MOBILIZA_33.png",
     sobre: "Partido com registro definitivo no TSE, habilitado a lançar candidaturas nas eleições de 2026.",
   }),
   partidoSemPoliticos({
@@ -98,6 +105,7 @@ const partidos: Partido[] = [
     nome: "Partido Novo",
     sigla: "NOVO",
     cor: "#f97316",
+    logoUrl: "/images/NOVO.svg",
     sobre:
       "Fundado em 2011 e com registro definitivo obtido em 2015, o Novo se define como um partido liberal, defensor da redução do tamanho do Estado e da livre iniciativa, e não recebe fundo partidário nem tempo de propaganda partidária gratuita por opção estatutária.",
   }),
@@ -106,6 +114,7 @@ const partidos: Partido[] = [
     nome: "Partido Comunista Brasileiro",
     sigla: "PCB",
     cor: "#b91c1c",
+    logoUrl: "/images/PCB_21.svg",
     sobre:
       "O PCB reivindica a tradição do Partido Comunista Brasileiro fundado em 1922, refundado sob o registro atual em 1988, de orientação marxista-leninista.",
   }),
@@ -114,6 +123,7 @@ const partidos: Partido[] = [
     nome: "Partido Comunista do Brasil",
     sigla: "PCdoB",
     cor: "#b91c1c",
+    logoUrl: "/images/PCdoB.svg",
     sobre:
       "Fundado em 1962 a partir de uma dissidência do PCB, o PCdoB é um partido de esquerda com histórico de atuação na resistência à ditadura militar.",
   }),
@@ -122,6 +132,7 @@ const partidos: Partido[] = [
     nome: "Partido da Causa Operária",
     sigla: "PCO",
     cor: "#991b1b",
+    logoUrl: "/images/PCO.svg",
     sobre:
       "O PCO é um partido de esquerda, de orientação trotskista, com registro no TSE desde a década de 1990.",
   }),
@@ -139,6 +150,7 @@ const partidos: Partido[] = [
     nome: "Partido Liberal",
     sigla: "PL",
     cor: "#1e3a8a",
+    logoUrl: "/images/PL.svg",
     sobre:
       "O PL atual resulta da fusão do antigo Partido Liberal com o PR (Partido da República) em 2006, mantendo a sigla histórica PL. É um partido de direita.",
   }),
@@ -147,6 +159,7 @@ const partidos: Partido[] = [
     nome: "Podemos",
     sigla: "PODE",
     cor: "#0369a1",
+    logoUrl: "/images/PODEMOS.svg",
     sobre:
       "Podemos é a nova denominação do antigo PTN (Partido Trabalhista Nacional), com orientação liberal.",
   }),
@@ -155,6 +168,7 @@ const partidos: Partido[] = [
     nome: "Progressistas",
     sigla: "PP",
     cor: "#1e40af",
+    logoUrl: "/images/PROGRESSISTAS.svg",
     sobre:
       "Os Progressistas descendem de uma linhagem partidária que remonta à ARENA e ao PDS, tendo passado por PPB e PPR antes de adotar a denominação atual. É um partido de centro-direita.",
   }),
@@ -163,6 +177,7 @@ const partidos: Partido[] = [
     nome: "Partido Renovação Democrática",
     sigla: "PRD",
     cor: "#78350f",
+    logoUrl: "/images/PRD.svg",
     sobre:
       "PRD é a nova denominação adotada pelo antigo PTB (Partido Trabalhista Brasileiro) a partir de 2024.",
   }),
@@ -171,6 +186,7 @@ const partidos: Partido[] = [
     nome: "Partido Renovador Trabalhista Brasileiro",
     sigla: "PRTB",
     cor: "#57534e",
+    logoUrl: "/images/PRTB.png",
     sobre: "O PRTB é um partido de direita com registro definitivo no TSE.",
   }),
   partidoSemPoliticos({
@@ -178,6 +194,7 @@ const partidos: Partido[] = [
     nome: "Partido Socialista Brasileiro",
     sigla: "PSB",
     cor: "#facc15",
+    logoUrl: "/images/PSB.png",
     sobre:
       "Com origem histórica em 1947, o PSB foi refundado em 1985 após a redemocratização e tem orientação de centro-esquerda.",
   }),
@@ -186,6 +203,7 @@ const partidos: Partido[] = [
     nome: "Partido Social Democrático",
     sigla: "PSD",
     cor: "#f59e0b",
+    logoUrl: "/images/PSD.svg",
     sobre:
       "Fundado em 2011 por Gilberto Kassab, o PSD (não confundir com a antiga sigla homônima pré-1965) é um partido de centro, com forte presença em prefeituras e governos estaduais.",
   }),
@@ -194,6 +212,7 @@ const partidos: Partido[] = [
     nome: "Partido da Social Democracia Brasileira",
     sigla: "PSDB",
     cor: "#0284c7",
+    logoUrl: "/images/PSDB.png",
     sobre:
       "Fundado em 1988 por dissidentes do MDB, o PSDB tem orientação social-democrata e centrista.",
   }),
@@ -202,6 +221,7 @@ const partidos: Partido[] = [
     nome: "Partido Socialismo e Liberdade",
     sigla: "PSOL",
     cor: "#dc2626",
+    logoUrl: "/images/PSOL.jpg",
     sobre: "Fundado em 2004 por dissidentes do PT, o PSOL é um partido de esquerda.",
   }),
   partidoSemPoliticos({
@@ -209,6 +229,7 @@ const partidos: Partido[] = [
     nome: "Partido Socialista dos Trabalhadores Unificado",
     sigla: "PSTU",
     cor: "#dc2626",
+    logoUrl: "/images/PSTU.png",
     sobre:
       "Fundado em 1994 a partir de uma dissidência do PT, o PSTU é um partido de esquerda, de orientação trotskista.",
   }),
@@ -217,6 +238,7 @@ const partidos: Partido[] = [
     nome: "Partido Verde",
     sigla: "PV",
     cor: "#16a34a",
+    logoUrl: "/images/VERDE.svg",
     sobre: "Fundado em 1986, o PV é o principal partido de orientação ambientalista do país.",
   }),
   partidoSemPoliticos({
@@ -224,6 +246,7 @@ const partidos: Partido[] = [
     nome: "Rede Sustentabilidade",
     sigla: "REDE",
     cor: "#15803d",
+    logoUrl: "/images/REDE.png",
     sobre:
       "Fundada em 2015 por Marina Silva, a Rede Sustentabilidade tem foco em pautas ambientais e de sustentabilidade.",
   }),
@@ -232,6 +255,7 @@ const partidos: Partido[] = [
     nome: "Republicanos",
     sigla: "REPUBLICANOS",
     cor: "#1e3a8a",
+    logoUrl: "/images/REPUBLICANOS.svg",
     sobre:
       "Republicanos é a nova denominação do antigo PRB (Partido Republicano Brasileiro), com forte vínculo histórico a lideranças evangélicas. É um partido de direita.",
   }),
@@ -240,6 +264,7 @@ const partidos: Partido[] = [
     nome: "Solidariedade",
     sigla: "SOLIDARIEDADE",
     cor: "#ea580c",
+    logoUrl: "/images/SOLIDARIEDADE.svg",
     sobre: "Fundado em 2013, o Solidariedade é um partido de centro.",
   }),
   partidoSemPoliticos({
@@ -267,6 +292,7 @@ const partidos: Partido[] = [
     nome: "Unidade Popular",
     sigla: "UP",
     cor: "#b91c1c",
+    logoUrl: "/images/UP.jpeg",
     sobre: "Fundada em 2018 e com registro definitivo obtido em 2019, a UP é um partido de esquerda.",
   }),
   partidoSemPoliticos({
@@ -274,6 +300,7 @@ const partidos: Partido[] = [
     nome: "União Brasil",
     sigla: "UNIÃO",
     cor: "#facc15",
+    logoUrl: "/images/UNIAO_BRASIL.svg",
     sobre:
       "Resultado da fusão entre o DEM e o PSL, homologada em 2021/2022, o União Brasil é um partido de centro-direita e uma das maiores bancadas do Congresso.",
   }),
