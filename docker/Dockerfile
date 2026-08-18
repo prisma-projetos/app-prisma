@@ -11,9 +11,7 @@ RUN corepack enable
 # Instala todas as dependências (incluindo dev) usando o lockfile do pnpm
 FROM base AS deps
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm config set store-dir /pnpm/store && \
-    pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 # ---------- builder ----------
 # Builda a aplicação Next.js (output: "standalone")
