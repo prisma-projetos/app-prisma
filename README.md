@@ -4,6 +4,7 @@
 
 Frontend do PRISMA, uma plataforma que classifica o viés político de notícias com base no conteúdo do texto — não na reputação da fonte — e apresenta, lado a lado, como diferentes perspectivas do espectro político descrevem, elogiam ou criticam um mesmo político ou partido, sempre com rastreabilidade até os artigos de origem.
 
+
 Este repositório contém apenas a camada de apresentação (Next.js). A classificação de viés, agregação e síntese acontecem em um pipeline separado, exposto via API.
 
 ## Stack
