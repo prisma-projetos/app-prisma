@@ -14,9 +14,9 @@ Este arquivo orienta o Claude Code ao trabalhar neste repositório. Leia antes d
 
 ## O projeto
 
-Frontend Next.js do **PRISMA** (nome de trabalho) — uma plataforma que classifica o viés político de notícias com base no conteúdo do texto (nunca na reputação da fonte) e apresenta, lado a lado, como diferentes perspectivas do espectro político descrevem, elogiam ou criticam um mesmo político ou partido, com rastreabilidade completa até os artigos de origem.
+Frontend Next.js do **PRISMA** (nome de trabalho) — uma plataforma que classifica o sentimento da cobertura jornalística sobre políticos e partidos com base no conteúdo do texto (nunca na reputação da fonte) e apresenta o panorama do que as fontes publicaram em cada sentimento, com rastreabilidade completa até as matérias de origem.
 
-Este repositório é **apenas a camada de apresentação**. Classificação de viés, agregação e síntese acontecem em um pipeline separado, consumido via API REST (`NEXT_PUBLIC_API_BASE_URL`).
+Este repositório é **apenas a camada de apresentação**. Classificação de sentimento, agregação e consolidação do panorama acontecem em um pipeline separado, consumido via API REST. O navegador nunca chama a API direto: as chamadas passam pelo proxy server-side `app/api/prisma/[...path]/route.ts`, que usa as variáveis de ambiente `API_PRISMA` (URL base) e `API_PRISMA_KEY` (enviada no header `X-API-KEY`) — ambas só no servidor, nunca com prefixo `NEXT_PUBLIC_`. No cliente, use os hooks de `app/lib/api/hooks.ts` (TanStack Query).
 
 - **Stack**: Next.js, TypeScript
 - **Estilos**: _Tailwind CSS_
@@ -60,7 +60,7 @@ O que está incluído nesta spec.
 ## Fora de escopo
 O que explicitamente NÃO está incluído (evita scope creep e leituras erradas depois).
 
-## Contrato de dados
+## Contrato de dados"
 Quais endpoints da API são consumidos, formato de request/response esperado.
 Se o endpoint ainda não existe, marcar como "a confirmar com o backend".
 
@@ -78,10 +78,11 @@ Ideias relacionadas que ficam para depois, para não se perderem mas também nã
 
 ## Conceitos de domínio (usar exatamente estes termos)
 
-- **Entidade** — um político ou partido político sendo analisado.
-- **Categoria de viés** — uma posição dentro da taxonomia de espectro político (versionada — ver `taxonomy_versions` na API).
-- **Síntese** — o resumo gerado para uma entidade dentro de uma categoria de viés e um período específico. Sempre exibida com link para os artigos de origem.
-- **Fato / opinião do autor / inferência do modelo** — os três tipos de trecho que compõem uma síntese. A UI deve deixar essa distinção visível.
+- **Entidade** — um político (identificado por `tituloEleitoral`) ou partido (identificado por `nrPartido`) sendo analisado.
+- **Sentimento** — `positivo`, `neutro` ou `negativo`: a classificação que o pipeline atribui a parágrafos e matérias.
+- **Panorama** — o texto consolidado pelo modelo para uma entidade, um sentimento (o "eixo" na API) e uma janela mensal. Sempre exibido com as fontes que o sustentam.
+- **Fonte** — a matéria jornalística (veículo + link) que sustenta um panorama.
+- **Janela** — o mês (`YYYY-MM`) a que um panorama se refere.
 
 Não introduza sinônimos ou traduções alternativas desses termos em specs, código ou copy — a consistência entre API, frontend e documentação é um requisito do produto, não só estilo.
 
@@ -89,11 +90,11 @@ Não introduza sinônimos ou traduções alternativas desses termos em specs, c�
 
 Estas regras são requisitos de produto, não sugestões — qualquer spec que as viole deve ser corrigida antes da implementação:
 
-1. **Nunca ranquear categorias de viés como certas ou erradas.** Ordem de exibição sempre neutra (alfabética ou pela ordem definida na taxonomia).
-2. **Toda síntese exibida precisa linkar para os artigos de origem.** Nenhum resumo deve ser mostrado sem rastreabilidade até a fonte.
-3. **Disclaimer obrigatório** em qualquer tela que mostre classificações de viés ou sínteses:
-   > "As classificações de viés são geradas por modelos de IA e podem conter erros. Os resumos representam o que diferentes fontes argumentam, não fatos verificados por esta plataforma."
-4. **Fato/opinião/inferência sempre visualmente diferenciados** — nunca com o mesmo peso visual.
+1. **Nunca ranquear sentimentos nem apresentá-los como certos ou errados.** Ordem de exibição sempre fixa: Negativo, Neutro, Positivo (alfabética). Sem cores que carreguem juízo (ex.: verde = bom, vermelho = ruim).
+2. **Todo panorama exibido precisa linkar para as suas fontes.** Um panorama sem fonte não é exibido.
+3. **Disclaimer obrigatório** em qualquer tela que mostre sentimento ou panorama:
+   > "As classificações de sentimento e os panoramas são gerados por modelos de IA e podem conter erros. Os panoramas resumem o que as fontes publicaram, não fatos verificados por esta plataforma."
+4. **Texto gerado por modelo sempre identificado como tal** (rótulo "Gerado por IA" + nome do modelo) e visualmente separado da lista de fontes.
 
 ## Convenção de commits
 
