@@ -1,0 +1,537 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-25T00:00:00Z",
+  "title": "Design System: PRISMA",
+  "extensions": {
+    "colorMeta": {
+      "papel": {
+        "role": "neutral",
+        "displayName": "Papel (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "papel-escuro": {
+        "role": "neutral",
+        "displayName": "Papel (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "papel-2": {
+        "role": "neutral",
+        "displayName": "Papel 2 (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "papel-2-escuro": {
+        "role": "neutral",
+        "displayName": "Papel 2 (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "tinta": {
+        "role": "neutral",
+        "displayName": "Tinta (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ],
+        "contrastVsPapel": "18,9:1 / 17,7:1"
+      },
+      "tinta-escuro": {
+        "role": "neutral",
+        "displayName": "Tinta (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "tinta-2": {
+        "role": "neutral",
+        "displayName": "Tinta 2 (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ],
+        "contrastVsPapel": "9,3:1 / 9,1:1"
+      },
+      "tinta-2-escuro": {
+        "role": "neutral",
+        "displayName": "Tinta 2 (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "tinta-3": {
+        "role": "neutral",
+        "displayName": "Tinta 3 (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ],
+        "contrastVsPapel": "5,3:1 / 6,1:1"
+      },
+      "tinta-3-escuro": {
+        "role": "neutral",
+        "displayName": "Tinta 3 (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "fio": {
+        "role": "neutral",
+        "displayName": "Fio (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ],
+        "contrastVsPapel": "1,45:1 / 1,46:1 (decorativo)"
+      },
+      "fio-escuro": {
+        "role": "neutral",
+        "displayName": "Fio (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "sent-negativo": {
+        "role": "data",
+        "displayName": "Sentimento negativo (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ],
+        "contrastVsPapel": "18,9:1 / 17,7:1"
+      },
+      "sent-negativo-escuro": {
+        "role": "data",
+        "displayName": "Sentimento negativo (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "sent-neutro": {
+        "role": "data",
+        "displayName": "Sentimento neutro (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ],
+        "contrastVsPapel": "1,61:1 / 1,91:1 (exige contorno de 1px em tinta)"
+      },
+      "sent-neutro-escuro": {
+        "role": "data",
+        "displayName": "Sentimento neutro (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "sent-positivo": {
+        "role": "data",
+        "displayName": "Sentimento positivo (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ],
+        "contrastVsPapel": "5,7:1 / 5,7:1"
+      },
+      "sent-positivo-escuro": {
+        "role": "data",
+        "displayName": "Sentimento positivo (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "grafico": {
+        "role": "data",
+        "displayName": "Gráfico (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ],
+        "contrastVsPapel": "18,9:1 / 17,7:1"
+      },
+      "grafico-escuro": {
+        "role": "data",
+        "displayName": "Gráfico (escuro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      },
+      "placa-logo": {
+        "role": "neutral",
+        "displayName": "Placa de logo (claro)",
+        "tonalRamp": [
+          "#1A1A1A",
+          "#333333",
+          "#4D4D4D",
+          "#666666",
+          "#808080",
+          "#A6A6A6",
+          "#CCCCCC",
+          "#F2F2F2"
+        ]
+      }
+    },
+    "gradients": [
+      {
+        "name": "espectro",
+        "value": "linear-gradient(to right,#FF3B30 0%,#FF9F0A 17%,#FFD60A 33%,#30D158 50%,#64D2FF 66%,#0A84FF 80%,#BF5AF2 100%)",
+        "purpose": "Única cor do sistema: marca, feixe da abertura, contorno de foco (3px) e indicador ativo (4px). Sempre contínuo; nunca em dado, fundo, texto ou faixas separadas.",
+        "contrastVsPapelClaro": "1,41:1 a 3,65:1",
+        "contrastVsPapelEscuro": "5,43:1 a 14,02:1"
+      }
+    ],
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Abertura da home e nome da entidade."
+      },
+      "titulo-1": {
+        "displayName": "Título 1",
+        "purpose": "Título de página."
+      },
+      "titulo-2": {
+        "displayName": "Título 2",
+        "purpose": "Título de seção, abaixo do fio de 3px."
+      },
+      "titulo-3": {
+        "displayName": "Título 3",
+        "purpose": "Título de box, grupo e item."
+      },
+      "corpo-grande": {
+        "displayName": "Corpo grande",
+        "purpose": "Frase-resumo da figura e abertura."
+      },
+      "corpo": {
+        "displayName": "Corpo",
+        "purpose": "Texto corrido e controles."
+      },
+      "corpo-forte": {
+        "displayName": "Corpo forte",
+        "purpose": "Termo do glossário, veículo, rótulo de botão."
+      },
+      "apoio": {
+        "displayName": "Apoio",
+        "purpose": "Metadados e explicação simples ao lado do termo."
+      },
+      "legenda": {
+        "displayName": "Legenda de figura",
+        "purpose": "\"Fig. n\" em versalete + texto em caixa de frase."
+      }
+    },
+    "shadows": [],
+    "focus": [
+      {
+        "name": "foco-espectral",
+        "value": "anel interno 2px tinta + contorno externo 3px espectro, offset 2px",
+        "purpose": "Foco único em todos os controles, nos dois modos."
+      }
+    ],
+    "rules": [
+      {
+        "name": "fio-secao",
+        "value": "3px solid tinta"
+      },
+      {
+        "name": "fio-item",
+        "value": "1px solid fio"
+      },
+      {
+        "name": "fio-saiba-mais",
+        "value": "1px solid tinta (lateral esquerda)"
+      },
+      {
+        "name": "vazio",
+        "value": "1px dashed tinta-3"
+      }
+    ],
+    "motion": [
+      {
+        "name": "feixe-abertura",
+        "value": "uma vez no carregamento",
+        "purpose": "Único momento autoral; com prefers-reduced-motion, o feixe aparece já aberto."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "celular",
+        "value": "390px",
+        "note": "margens 20px"
+      },
+      {
+        "name": "desktop",
+        "value": "1440px",
+        "note": "margens 96px (home 64px); colunas 792 + 96 + 360"
+      }
+    ],
+    "openDecisions": [
+      "Retícula (pontos ou hachura) para os sentimentos.",
+      "Posição do feixe: topo junto ao wordmark (contrato) ou abaixo da busca como Fig. 1 (protótipo).",
+      "Aviso de IA diante do classificador baseline v1 (lista de palavras).",
+      "Confirmar versalete real (smcp) na Atkinson Hyperlegible Next."
+    ]
+  },
+  "components": [
+    {
+      "name": "Botão primário",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Ação principal, como Buscar.",
+      "html": "<button class=\"ds-btn\">Buscar</button>",
+      "css": ".ds-btn{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';background:#1A1A1A;color:#F7F7F7;border:2px solid #1A1A1A;border-radius:0;height:48px;padding:0 32px;font-size:18px;line-height:28px;font-weight:600;cursor:pointer;} .ds-btn{position:relative} .ds-btn:focus-visible{outline:none;box-shadow:0 0 0 2px #F7F7F7,0 0 0 4px #1A1A1A;} .ds-btn:focus-visible::after{content:'';position:absolute;inset:-7px;padding:3px;background:linear-gradient(90deg,#FF3B30 0%,#FF9F0A 17%,#FFD60A 33%,#30D158 50%,#64D2FF 66%,#0A84FF 80%,#BF5AF2 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}"
+    },
+    {
+      "name": "Botão secundário",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Ações secundárias e paginação.",
+      "html": "<button class=\"ds-btn2\">Ver todos os candidatos</button> <button class=\"ds-btn2\" disabled>Anterior</button>",
+      "css": ".ds-btn2{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';background:#F7F7F7;color:#1A1A1A;border:2px solid #1A1A1A;border-radius:0;height:48px;padding:0 24px;font-size:18px;font-weight:600;cursor:pointer;} .ds-btn2:hover{background:#EDEDED;} .ds-btn2:disabled{border-color:#D4D4D4;color:#666666;cursor:default;background:#F7F7F7;} .ds-btn2{position:relative} .ds-btn2:focus-visible{outline:none;box-shadow:0 0 0 2px #F7F7F7,0 0 0 4px #1A1A1A;} .ds-btn2:focus-visible::after{content:'';position:absolute;inset:-7px;padding:3px;background:linear-gradient(90deg,#FF3B30 0%,#FF9F0A 17%,#FFD60A 33%,#30D158 50%,#64D2FF 66%,#0A84FF 80%,#BF5AF2 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}"
+    },
+    {
+      "name": "Busca",
+      "kind": "input",
+      "refersTo": "input-busca",
+      "description": "Campo de busca de 64px com botão colado.",
+      "html": "<form class=\"ds-busca\"><label for=\"ds-q\" class=\"ds-sr\">Buscar partido ou candidato</label><span class=\"ds-campo\"><input id=\"ds-q\" class=\"ds-busca-campo\" placeholder=\"Digite o nome de um partido ou candidato\"></span><button class=\"ds-busca-btn\">Buscar</button></form>",
+      "css": ".ds-busca{display:flex;max-width:720px;} .ds-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);} .ds-busca-campo{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';flex:1;height:64px;padding:0 20px;border:2px solid #1A1A1A;border-right:0;border-radius:0;font-size:18px;color:#1A1A1A;background:#F7F7F7;} .ds-busca-campo::placeholder{color:#666666;} .ds-campo{position:relative;flex:1;display:flex;} .ds-busca-campo:focus{outline:none;} .ds-campo:focus-within{outline:none;box-shadow:0 0 0 2px #F7F7F7,0 0 0 4px #1A1A1A;} .ds-campo:focus-within::after{content:'';position:absolute;inset:-7px;padding:3px;background:linear-gradient(to right,#FF3B30 0%,#FF9F0A 17%,#FFD60A 33%,#30D158 50%,#64D2FF 66%,#0A84FF 80%,#BF5AF2 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;} .ds-busca-btn{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';height:64px;padding:0 32px;background:#1A1A1A;color:#F7F7F7;border:0;border-radius:0;font-size:18px;font-weight:600;}"
+    },
+    {
+      "name": "Navegação do cabeçalho",
+      "kind": "nav",
+      "refersTo": "button-header",
+      "description": "Itens com indicador espectral de 4px e peso no ativo; pílula Modo escuro.",
+      "html": "<nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">Partidos</a><a href=\"#\">Candidatos</a><a href=\"#\">Como funciona</a><button class=\"ds-pill\">Modo escuro</button></nav>",
+      "css": ".ds-nav{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';display:flex;gap:32px;align-items:center;font-size:16px;} .ds-nav a{color:#1A1A1A;text-decoration:none;min-height:48px;display:inline-flex;align-items:center;position:relative;font-weight:400;} .ds-nav a:hover{text-decoration:underline;} .ds-nav a[aria-current]{font-weight:700;} .ds-nav a[aria-current]::after{content:'';position:absolute;left:0;right:0;bottom:4px;height:4px;background:linear-gradient(90deg,#FF3B30 0%,#FF9F0A 17%,#FFD60A 33%,#30D158 50%,#64D2FF 66%,#0A84FF 80%,#BF5AF2 100%);} .ds-pill{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';height:48px;padding:0 20px;border:2px solid #1A1A1A;border-radius:9999px;background:#F7F7F7;color:#1A1A1A;font-size:16px;font-weight:600;}"
+    },
+    {
+      "name": "Barra de sentimento com legenda-tabela",
+      "kind": "custom",
+      "refersTo": "legenda-figura",
+      "description": "Composição Negativo, Neutro, Positivo em cinza com contorno em tinta, termo e explicação ao lado e Fig. n.",
+      "html": "<figure class=\"ds-sent\"><div class=\"ds-sent-barra\" role=\"img\" aria-label=\"Negativo 2,4%, Neutro 89,6%, Positivo 8,0%\"><span style=\"width:2.4%;background:#1A1A1A\"></span><span style=\"width:89.6%;background:#C4C4C4\"></span><span style=\"width:8%;background:#6B6B6B\"></span></div><table class=\"ds-sent-tab\"><tr><td><i style=\"background:#1A1A1A\"></i><b>Negativo</b> <small>critica</small></td><td>278</td><td>2,4%</td></tr><tr><td><i style=\"background:#C4C4C4\"></i><b>Neutro</b> <small>só informa</small></td><td>10.429</td><td>89,6%</td></tr><tr><td><i style=\"background:#6B6B6B\"></i><b>Positivo</b> <small>elogia</small></td><td>930</td><td>8,0%</td></tr></table><figcaption><span class=\"ds-fig\">Fig. 2</span> Parágrafos sobre o PSD por sentimento, em todo o período. Base: 11.637 parágrafos.</figcaption></figure>",
+      "css": ".ds-sent{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';margin:0;color:#1A1A1A;max-width:792px;} .ds-sent-barra{display:flex;height:40px;border:1px solid #1A1A1A;} .ds-sent-tab{width:100%;border-collapse:collapse;margin-top:16px;font-size:18px;} .ds-sent-tab td{padding:12px 0;border-bottom:1px solid #D4D4D4;} .ds-sent-tab td+td{text-align:right;} .ds-sent-tab i{display:inline-block;width:16px;height:16px;border:1px solid #1A1A1A;margin-right:12px;vertical-align:-2px;} .ds-sent-tab small{font-size:16px;color:#474747;} .ds-sent figcaption{font-size:15px;line-height:22px;letter-spacing:.2px;font-weight:600;color:#474747;margin-top:12px;} .ds-fig{font-variant-caps:all-small-caps;letter-spacing:.06em;color:#1A1A1A;}"
+    },
+    {
+      "name": "Saiba mais",
+      "kind": "card",
+      "refersTo": "saiba-mais",
+      "description": "Box recolhível em papel-2 com fio lateral de 1px em tinta.",
+      "html": "<details class=\"ds-saiba\" open><summary>Saiba mais: como esta análise funciona</summary><p>Um programa lê cada parágrafo que cita o partido e decide se ele critica, só informa ou elogia. Ele pode errar.</p></details>",
+      "css": ".ds-saiba{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';background:#EDEDED;border-left:1px solid #1A1A1A;padding:24px 32px;color:#1A1A1A;font-size:18px;line-height:28px;max-width:792px;} .ds-saiba summary{font-size:21px;line-height:28px;font-weight:700;cursor:pointer;min-height:48px;} .ds-saiba summary{position:relative;} .ds-saiba summary:focus-visible{outline:none;box-shadow:0 0 0 2px #F7F7F7,0 0 0 4px #1A1A1A;} .ds-saiba summary:focus-visible::after{content:'';position:absolute;inset:-7px;padding:3px;background:linear-gradient(to right,#FF3B30 0%,#FF9F0A 17%,#FFD60A 33%,#30D158 50%,#64D2FF 66%,#0A84FF 80%,#BF5AF2 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}"
+    },
+    {
+      "name": "Ficha de partido",
+      "kind": "card",
+      "refersTo": "placa-logo",
+      "description": "Célula do índice A–Z: logo contida na placa, sigla, nome, número.",
+      "html": "<a class=\"ds-ficha\" href=\"#\"><span class=\"ds-placa\"></span><b>PSD</b><span>Partido Social Democrático</span><small>nº 55</small></a>",
+      "css": ".ds-ficha{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';display:flex;flex-direction:column;gap:4px;padding:24px 20px;width:200px;border-right:1px solid #D4D4D4;border-bottom:1px solid #D4D4D4;color:#1A1A1A;text-decoration:none;font-size:16px;line-height:24px;} .ds-ficha:hover{background:#EDEDED;} .ds-ficha b{font-size:21px;line-height:28px;margin-top:16px;} .ds-ficha small{color:#474747;font-size:16px;} .ds-placa{width:64px;height:64px;background:#EFEFEF;display:block;} .ds-ficha{position:relative} .ds-ficha:focus-visible{outline:none;box-shadow:0 0 0 2px #F7F7F7,0 0 0 4px #1A1A1A;} .ds-ficha:focus-visible::after{content:'';position:absolute;inset:-7px;padding:3px;background:linear-gradient(90deg,#FF3B30 0%,#FF9F0A 17%,#FFD60A 33%,#30D158 50%,#64D2FF 66%,#0A84FF 80%,#BF5AF2 100%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;pointer-events:none;}"
+    },
+    {
+      "name": "Abas do panorama",
+      "kind": "nav",
+      "refersTo": null,
+      "description": "Negativo, Neutro, Positivo; ativa com espectro de 4px e Bold; rótulo Gerado por IA.",
+      "html": "<div class=\"ds-abas\" role=\"tablist\"><button role=\"tab\">Negativo<small>10 matérias</small></button><button role=\"tab\" aria-selected=\"true\">Neutro<small>175 matérias</small></button><button role=\"tab\">Positivo<small>46 matérias</small></button></div><p class=\"ds-ia\">Gerado por IA · {modelo} · 2026-08</p>",
+      "css": ".ds-abas{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';display:flex;border-bottom:1px solid #D4D4D4;} .ds-abas button{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';background:none;border:0;padding:12px 20px;min-height:48px;font-size:18px;color:#1A1A1A;position:relative;display:flex;flex-direction:column;cursor:pointer;} .ds-abas small{font-size:16px;color:#474747;} .ds-abas [aria-selected=true]{font-weight:700;} .ds-abas [aria-selected=true]::after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:4px;background:linear-gradient(90deg,#FF3B30 0%,#FF9F0A 17%,#FFD60A 33%,#30D158 50%,#64D2FF 66%,#0A84FF 80%,#BF5AF2 100%);} .ds-ia{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-feature-settings:'tnum';font-size:15px;font-weight:600;color:#474747;}"
+    }
+  ],
+  "narrative": {
+    "northStar": "O Livro de Ciências",
+    "overview": "O PRISMA explica a cobertura da imprensa como um bom livro didático explica um fenômeno: figura numerada, legenda que diz o que foi contado, e a fonte. Papel branco e tinta preta; no escuro, o inverso. A estrutura da página vem de fios, não de caixas: um fio grosso abre cada seção, um fio fino separa itens. Os dados ficam em cinzas neutros. A única cor é a luz decomposta pelo prisma.\n\nA leitura é para quem tem pouco letramento digital: tipo grande, alvos de toque grandes, uma coisa por vez e o termo técnico sempre acompanhado de uma explicação simples. O sistema recusa o painel de dados: sem cards com sombra, sem gráficos coloridos e sem cantos arredondados decorativos.",
+    "keyCharacteristics": [
+      "Papel e tinta, planos, sem sombras; profundidade só por fio e por papel-2.",
+      "Toda figura tem legenda \"Fig. n\" que diz o que conta, o período e a base.",
+      "Sentimento em cinza, sempre com o nome do termo e a explicação ao lado.",
+      "O espectro é luz, não dado: gradiente contínuo, só em lugares contados.",
+      "Atkinson Hyperlegible Next em tudo, com algarismos tabulares."
+    ],
+    "rules": [
+      {
+        "name": "A Regra da Luz",
+        "body": "O espectro entra em quatro lugares: marca PRISMA, feixe da abertura, contorno de foco e indicador de item ativo (navegação e aba). Não entra em barra, gráfico, sentimento, fundo de seção, card nem texto.",
+        "section": "colors"
+      },
+      {
+        "name": "A Regra do Gradiente Contínuo",
+        "body": "O espectro é sempre um gradiente contínuo. Faixas separadas de cor são proibidas: leem como bandeira.",
+        "section": "colors"
+      },
+      {
+        "name": "A Regra do Cinza Sem Juízo",
+        "body": "Sentimento usa só os três cinzas, sempre na ordem Negativo, Neutro, Positivo. O tom de cinza nunca é a única pista: o nome do termo e a explicação simples ficam sempre ao lado.",
+        "section": "colors"
+      },
+      {
+        "name": "A Regra da Neutralidade",
+        "body": "Nenhuma cor de partido na interface. A logo é a única cor partidária e fica sobre a placa-logo.",
+        "section": "colors"
+      },
+      {
+        "name": "A Regra do Algarismo Tabular",
+        "body": "Números usam os algarismos tabulares da própria fonte (\"tnum\"). Atkinson Hyperlegible Mono não entra em legenda, lista nem resumo; no máximo, dentro da visão Tabela.",
+        "section": "typography"
+      },
+      {
+        "name": "A Regra do Termo Primeiro",
+        "body": "O termo do glossário (entidade, sentimento negativo/neutro/positivo, panorama, fonte, janela) é o rótulo principal. A explicação simples (\"critica\", \"só informa\", \"elogia\") vem ao lado em Apoio, nunca no lugar dele.",
+        "section": "typography"
+      },
+      {
+        "name": "A Regra do Papel Plano",
+        "body": "Nenhuma sombra, em nenhum estado. Se algo precisa se destacar, usa fio ou papel-2.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** abrir cada seção com fio de 3px em tinta e separar itens com fio de 1px.",
+      "**Do** numerar toda figura com \"Fig. n\" em versalete e dizer o que conta, a janela e a base.",
+      "**Do** manter o termo do glossário como rótulo e a explicação simples ao lado.",
+      "**Do** usar alvo de toque de 48px no mínimo.",
+      "**Do** pôr o aviso de IA com o texto exato no rodapé de toda página."
+    ],
+    "donts": [
+      "**Don't** usar o espectro em dado, fundo, texto ou em faixas separadas de cor.",
+      "**Don't** marcar item ativo, sentimento ou estado só com cor.",
+      "**Don't** usar sombra, card elevado ou canto arredondado fora de fotos e das pílulas do cabeçalho.",
+      "**Don't** pôr Atkinson Hyperlegible Mono em legenda, lista ou resumo.",
+      "**Don't** fixar a altura das células da grade de partidos."
+    ]
+  }
+}
