@@ -30,10 +30,29 @@ describe("PanoramaAbas", () => {
     expect(p.getByText(/declarou 12 ocorrências/)).toBeTruthy();
   });
 
+  it("deixa as fontes recolhidas por padrão e abre ao clicar no título", () => {
+    render(<PanoramaAbas panorama={panoramaPT} />);
+    const titulo = within(painel()).getByText("Fontes (2)");
+    const bloco = titulo.closest("details")!;
+    expect(titulo.tagName).toBe("SUMMARY");
+    expect(bloco.open).toBe(false);
+
+    fireEvent.click(titulo);
+    expect(bloco.open).toBe(true);
+    expect(within(bloco).getAllByRole("link")).toHaveLength(2);
+  });
+
+  it("recolhe as fontes de novo ao trocar de aba", () => {
+    render(<PanoramaAbas panorama={panoramaPT} />);
+    fireEvent.click(within(painel()).getByText("Fontes (2)"));
+    fireEvent.click(screen.getByRole("tab", { name: "Positivo" }));
+    expect(within(painel()).getByText("Fontes (1)").closest("details")!.open).toBe(false);
+  });
+
   it("lista as fontes com link seguro, veículo ou domínio e data", () => {
     render(<PanoramaAbas panorama={panoramaPT} />);
-    const fontes = within(painel()).getByText("Fontes (2)").closest("section")!;
-    const links = within(fontes as HTMLElement).getAllByRole("link");
+    const fontes = within(painel()).getByText("Fontes (2)").closest("details")!;
+    const links = within(fontes as HTMLElement).getAllByRole("link", { hidden: true });
     expect(links.map((l) => l.textContent)).toEqual(["G1", "cartacapital.com.br"]);
     for (const link of links) {
       expect(link.getAttribute("target")).toBe("_blank");

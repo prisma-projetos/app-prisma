@@ -17,6 +17,7 @@ const VALIDADORES: Record<string, Validador> = {
   sentimento: (v) => v === "positivo" || v === "neutro" || v === "negativo",
   tema: texto,
   anoEleicao: (v) => /^\d{4}$/.test(v),
+  cargo: texto,
   janela: (v) => /^\d{4}-(0[1-9]|1[0-2])$/.test(v),
   de: dataIso,
   ate: dataIso,
@@ -38,7 +39,7 @@ const CONSULTA = [
 
 // Caminho (relativo a /api no backend) → parâmetros aceitos.
 export const CAMINHOS_PERMITIDOS: Record<string, readonly string[]> = {
-  politicos: ["q", "nrPartido", "anoEleicao", "pagina", "tamanho"],
+  politicos: ["q", "nrPartido", "anoEleicao", "cargo", "pagina", "tamanho"],
   "politicos/detalhe": ["tituloEleitoral"],
   partidos: ["q"],
   "partidos/detalhe": ["nrPartido"],

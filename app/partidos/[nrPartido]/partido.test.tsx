@@ -201,4 +201,132 @@ describe("Página de partido: políticos", () => {
       expect(within(secao).getByText("Nenhum político encontrado.")).toBeTruthy()
     );
   });
+
+  it("exibe o nome de cada político sem depender de hover", async () => {
+    rotasPT();
+    renderComQuery(<PartidoView nrPartido={13} />);
+    const link = await screen.findByRole("link", { name: "CANDIDATO 0-0" });
+    const nome = within(link).getByText("CANDIDATO 0-0");
+    expect(nome.className).not.toMatch(/opacity-0/);
+    expect(nome.className).not.toMatch(/absolute/);
+  });
+});
+
+describe("Página de partido: filtro por cargo", () => {
+  function selectCargo() {
+    return screen.getByRole<HTMLSelectElement>("combobox", { name: "Cargo" });
+  }
+
+  it("lista 'Todos os cargos' e os 10 cargos na ordem definida", async () => {
+    rotasPT();
+    renderComQuery(<PartidoView nrPartido={13} />);
+    const opcoes = within(selectCargo()).getAllByRole("option");
+    expect(opcoes.map((o) => o.textContent)).toEqual([
+      "Todos os cargos",
+      "Presidente",
+      "Vice-presidente",
+      "Governador",
+      "Vice-governador",
+      "Senador",
+      "1º suplente",
+      "2º suplente",
+      "Deputado federal",
+      "Deputado estadual",
+      "Deputado distrital",
+    ]);
+    expect(opcoes.map((o) => o.getAttribute("value"))).toContain("DEPUTADO FEDERAL");
+    expect(selectCargo().value).toBe("");
+  });
+
+  it("escolher um cargo grava ?cargo=, volta à página 0 e mantém q", async () => {
+    navegacao.reset("/partidos/13", "q=maria&pagina=2");
+    rotasPT();
+    renderComQuery(<PartidoView nrPartido={13} />);
+    fireEvent.change(selectCargo(), { target: { value: "DEPUTADO FEDERAL" } });
+    expect(navegacao.replace).toHaveBeenLastCalledWith(
+      "/partidos/13?q=maria&cargo=DEPUTADO+FEDERAL",
+      { scroll: false }
+    );
+  });
+
+  it("envia cargo e q juntos na requisição", async () => {
+    navegacao.reset("/partidos/13", "cargo=SENADOR&q=joao");
+    const fetchMock = rotasPT();
+    renderComQuery(<PartidoView nrPartido={13} />);
+    await screen.findByText("CANDIDATO 0-0");
+    const params = chamadasPara(fetchMock, "politicos")[0];
+    expect(params.get("cargo")).toBe("SENADOR");
+    expect(params.get("q")).toBe("joao");
+    expect(params.get("nrPartido")).toBe("13");
+    expect(params.get("anoEleicao")).toBe("2026");
+    expect(selectCargo().value).toBe("SENADOR");
+    expect(screen.getByRole<HTMLInputElement>("searchbox").value).toBe("joao");
+  });
+
+  it("buscar por nome com cargo selecionado mantém ?cargo=", async () => {
+    navegacao.reset("/partidos/13", "cargo=SENADOR");
+    rotasPT();
+    renderComQuery(<PartidoView nrPartido={13} />);
+    await screen.findByText("CANDIDATO 0-0");
+
+    vi.useFakeTimers();
+    try {
+      fireEvent.change(screen.getByRole("searchbox"), { target: { value: "joao" } });
+      act(() => vi.advanceTimersByTime(300));
+      expect(navegacao.replace).toHaveBeenLastCalledWith(
+        "/partidos/13?cargo=SENADOR&q=joao",
+        { scroll: false }
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("mudar o cargo durante o debounce não é desfeito pela busca", async () => {
+    rotasPT();
+    const { rerender } = renderComQuery(<PartidoView nrPartido={13} />);
+    await screen.findByText("CANDIDATO 0-0");
+
+    vi.useFakeTimers();
+    try {
+      fireEvent.change(screen.getByRole("searchbox"), { target: { value: "joao" } });
+      act(() => vi.advanceTimersByTime(100));
+      fireEvent.change(selectCargo(), { target: { value: "SENADOR" } });
+      rerender(<PartidoView nrPartido={13} />);
+      act(() => vi.advanceTimersByTime(300));
+      expect(navegacao.replace).toHaveBeenLastCalledWith(
+        "/partidos/13?cargo=SENADOR&q=joao",
+        { scroll: false }
+      );
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("'Todos os cargos' remove cargo da URL e da requisição", async () => {
+    navegacao.reset("/partidos/13", "cargo=SENADOR&q=joao");
+    const fetchMock = rotasPT();
+    const { rerender } = renderComQuery(<PartidoView nrPartido={13} />);
+    await screen.findByText("CANDIDATO 0-0");
+
+    fireEvent.change(selectCargo(), { target: { value: "" } });
+    expect(navegacao.replace).toHaveBeenLastCalledWith("/partidos/13?q=joao", { scroll: false });
+
+    rerender(<PartidoView nrPartido={13} />);
+    await waitFor(() =>
+      expect(chamadasPara(fetchMock, "politicos").at(-1)?.has("cargo")).toBe(false)
+    );
+  });
+
+  it.each([
+    ["INVALIDO", "", null],
+    ["senador", "SENADOR", "SENADOR"],
+  ])("?cargo=%s → select %j, requisição com cargo %j", async (naUrl, noSelect, enviado) => {
+    navegacao.reset("/partidos/13", `cargo=${naUrl}`);
+    const fetchMock = rotasPT();
+    renderComQuery(<PartidoView nrPartido={13} />);
+    await screen.findByText("CANDIDATO 0-0");
+    expect(selectCargo().value).toBe(noSelect);
+    expect(chamadasPara(fetchMock, "politicos")[0].get("cargo")).toBe(enviado);
+  });
 });

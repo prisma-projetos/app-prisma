@@ -45,6 +45,7 @@ describe("hooks da API Prisma", () => {
   const casos: CasoHook[] = [
     ["usePoliticos", () => usePoliticos({ q: "silva", pagina: 1, tamanho: 10 }), "/api/prisma/politicos?q=silva&pagina=1&tamanho=10"],
     ["usePoliticos (por partido e ano)", () => usePoliticos({ nrPartido: 13, anoEleicao: 2026 }), "/api/prisma/politicos?nrPartido=13&anoEleicao=2026"],
+    ["usePoliticos (por cargo e nome)", () => usePoliticos({ nrPartido: 13, cargo: "SENADOR", q: "joao" }), "/api/prisma/politicos?nrPartido=13&cargo=SENADOR&q=joao"],
     ["usePolitico", () => usePolitico("001234567890"), "/api/prisma/politicos/detalhe?tituloEleitoral=001234567890"],
     ["usePartidos", () => usePartidos({ q: "PT" }), "/api/prisma/partidos?q=PT"],
     ["usePartido", () => usePartido(13), "/api/prisma/partidos/detalhe?nrPartido=13"],
@@ -119,6 +120,9 @@ describe("hooks da API Prisma", () => {
     );
     expect(prismaKeys.politicos.lista({ nrPartido: 13 })).not.toEqual(
       prismaKeys.politicos.lista({ nrPartido: 13, anoEleicao: 2026 })
+    );
+    expect(prismaKeys.politicos.lista({ nrPartido: 13, cargo: "SENADOR" })).not.toEqual(
+      prismaKeys.politicos.lista({ nrPartido: 13, cargo: "GOVERNADOR" })
     );
     expect(prismaKeys.partidos.detalhe(13)).not.toEqual(
       prismaKeys.partidos.detalhe(45)

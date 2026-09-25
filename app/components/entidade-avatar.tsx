@@ -8,6 +8,8 @@ interface EntidadeAvatarProps {
   imagemUrl?: string | null;
   variante: "partido" | "politico";
   tamanho?: number;
+  /** Exibe o rótulo sempre abaixo da imagem, em vez de só no hover. */
+  mostrarNome?: boolean;
 }
 
 export function EntidadeAvatar({
@@ -16,6 +18,7 @@ export function EntidadeAvatar({
   imagemUrl,
   variante,
   tamanho = 96,
+  mostrarNome = false,
 }: EntidadeAvatarProps) {
   const circular = variante === "politico";
   // Guarda a URL que falhou: se a imagem mudar, uma nova tentativa é feita.
@@ -47,9 +50,18 @@ export function EntidadeAvatar({
           <AvatarFallback circular={circular} nome={nome} />
         )}
       </span>
-      <span className="pointer-events-none absolute -bottom-6 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-black/85 px-2 py-1 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100">
-        {rotulo}
-      </span>
+      {mostrarNome ? (
+        <span
+          className="break-words text-center text-xs font-medium leading-snug text-zinc-700 dark:text-zinc-300"
+          style={{ width: tamanho + 24 }}
+        >
+          {rotulo}
+        </span>
+      ) : (
+        <span className="pointer-events-none absolute -bottom-6 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-black/85 px-2 py-1 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100">
+          {rotulo}
+        </span>
+      )}
     </span>
   );
 }

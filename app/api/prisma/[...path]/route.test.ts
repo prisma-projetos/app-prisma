@@ -56,12 +56,16 @@ describe("proxy /api/prisma", () => {
     );
   });
 
-  it("repassa os filtros nrPartido e anoEleicao da listagem de políticos", async () => {
-    const resposta = await chamar(["politicos"], "?nrPartido=13&anoEleicao=2026");
+  it("repassa os filtros nrPartido, anoEleicao e cargo da listagem de políticos", async () => {
+    const resposta = await chamar(
+      ["politicos"],
+      "?nrPartido=13&anoEleicao=2026&cargo=DEPUTADO%20FEDERAL"
+    );
     expect(resposta.status).toBe(200);
     const { url } = chamadaAoBackend();
     expect(url.searchParams.get("nrPartido")).toBe("13");
     expect(url.searchParams.get("anoEleicao")).toBe("2026");
+    expect(url.searchParams.get("cargo")).toBe("DEPUTADO FEDERAL");
   });
 
   it("aceita URL base com barra no final", async () => {
@@ -111,6 +115,8 @@ describe("proxy /api/prisma", () => {
     ["politicos", "?anoEleicao=26"],
     ["politicos", "?anoEleicao=2026.0"],
     ["analise/sentimento", "?nrPartido=13&anoEleicao=2026"],
+    ["analise/sentimento", "?nrPartido=13&cargo=SENADOR"],
+    ["partidos", "?cargo=SENADOR"],
     ["politicos/detalhe", "?q=lula"],
     ["analise/sentimento", "?nrPartido=13&nrPartido=45"],
   ])("responde 400 para parâmetros inválidos: %s%s", async (caminho, query) => {

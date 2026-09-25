@@ -28,4 +28,16 @@ describe("EntidadeAvatar", () => {
     rerender(<EntidadeAvatar nome="PT" imagemUrl="https://x.test/b.svg" variante="partido" />);
     expect(container.querySelector("img")?.getAttribute("src")).toBe("https://x.test/b.svg");
   });
+
+  it("com mostrarNome, exibe o rótulo sempre visível", () => {
+    const { getByText } = render(
+      <EntidadeAvatar nome="FULANO DE TAL" imagemUrl="x.jpg" variante="politico" mostrarNome />
+    );
+    expect(getByText("FULANO DE TAL").className).not.toMatch(/opacity-0/);
+  });
+
+  it("sem mostrarNome, o rótulo só aparece no hover (tooltip)", () => {
+    const { getByText } = render(<EntidadeAvatar nome="PT" imagemUrl="x.svg" variante="partido" />);
+    expect(getByText("PT").className).toMatch(/opacity-0 .*group-hover:opacity-100/);
+  });
 });

@@ -60,6 +60,7 @@ export interface PoliticoResponse {
 export interface CandidatoResumoResponse {
   tituloEleitoral?: string;
   nome?: string;
+  cargo?: string;
   urlFoto?: string;
 }
 

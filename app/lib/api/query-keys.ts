@@ -4,6 +4,7 @@ export interface FiltroPoliticos {
   q?: string;
   nrPartido?: number;
   anoEleicao?: number;
+  cargo?: string;
   pagina?: number;
   tamanho?: number;
 }
