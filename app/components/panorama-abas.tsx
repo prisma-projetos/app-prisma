@@ -49,7 +49,8 @@ export function PanoramaAbas({ panorama }: { panorama: PanoramaResponse }) {
         className="py-6"
       >
         {eixo && (eixo.fontes ?? []).length > 0 ? (
-          <EixoPanorama eixo={eixo} janela={panorama.janela} />
+          // key por aba: cada aba abre com fontes e temas recolhidos
+          <EixoPanorama key={aba} eixo={eixo} janela={panorama.janela} />
         ) : (
           <MensagemVazia>
             Não há panorama {SENTIMENTO_LABEL[aba].toLowerCase()} para este período.
@@ -112,12 +113,12 @@ function EixoPanorama({ eixo, janela }: { eixo: PanoramaEixo; janela?: string })
         </section>
       )}
 
-      <section className="flex flex-col gap-2">
-        <h3 className="text-sm font-semibold text-black dark:text-white">
+      <details className="rounded-md border border-zinc-200 px-3 py-2 dark:border-zinc-800">
+        <summary className="cursor-pointer text-sm font-semibold text-black dark:text-white">
           Fontes ({formatarNumero(fontes.length)})
-        </h3>
+        </summary>
         <ListaFontes fontes={fontes} />
-      </section>
+      </details>
     </div>
   );
 }
