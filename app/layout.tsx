@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeToggle } from "@/app/components/theme-toggle";
+import { Providers } from "@/app/providers";
 import "./globals.css";
 
 const THEME_INIT_SCRIPT = `(function(){try{var k="prisma-theme";var s=localStorage.getItem(k);var t=s==="dark"||s==="light"?s:(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
@@ -38,7 +39,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <div className="fixed right-4 top-4 z-50">
           <ThemeToggle />
         </div>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

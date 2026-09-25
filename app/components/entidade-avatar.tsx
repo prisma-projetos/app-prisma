@@ -1,21 +1,30 @@
+"use client";
+
+import { useState } from "react";
+
 interface EntidadeAvatarProps {
   nome: string;
-  imagemUrl?: string;
+  rotulo?: string;
+  imagemUrl?: string | null;
   variante: "partido" | "politico";
   tamanho?: number;
 }
 
 export function EntidadeAvatar({
   nome,
+  rotulo = nome,
   imagemUrl,
   variante,
   tamanho = 96,
 }: EntidadeAvatarProps) {
   const circular = variante === "politico";
+  // Guarda a URL que falhou: se a imagem mudar, uma nova tentativa é feita.
+  const [urlComFalha, setUrlComFalha] = useState<string | null>(null);
+  const exibirImagem = Boolean(imagemUrl) && imagemUrl !== urlComFalha;
 
   return (
     <span
-      title={nome}
+      title={rotulo}
       className="group relative inline-flex flex-col items-center gap-2"
     >
       <span
@@ -24,11 +33,12 @@ export function EntidadeAvatar({
         }`}
         style={{ width: tamanho, height: tamanho }}
       >
-        {imagemUrl ? (
+        {exibirImagem ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img
-            src={imagemUrl}
+            src={imagemUrl ?? undefined}
             alt=""
+            onError={() => setUrlComFalha(imagemUrl ?? null)}
             className={
               circular ? "h-full w-full object-cover" : "h-3/4 w-3/4 object-contain"
             }
@@ -38,7 +48,7 @@ export function EntidadeAvatar({
         )}
       </span>
       <span className="pointer-events-none absolute -bottom-6 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-black/85 px-2 py-1 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100">
-        {nome}
+        {rotulo}
       </span>
     </span>
   );
