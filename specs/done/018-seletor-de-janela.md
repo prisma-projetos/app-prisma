@@ -7,7 +7,8 @@ Hoje as análises mostram sempre todo o período, e o panorama mostra o mês mai
 1. **Seletor** logo abaixo do cabeçalho da entidade:
    - `<select>` com rótulo visível "Janela (mês das matérias)", 56px de altura, borda de 2px em tinta;
    - opções: "Todo o período" (padrão) e os 12 últimos meses de calendário até o mês atual (fuso de Brasília), do mais recente para o mais antigo, por extenso ("setembro de 2026");
-   - a escolha fica na URL como `?janela=AAAA-MM`, preservando os outros parâmetros da página (`q`, `cargo`, `pagina` da lista de candidatos do partido); valor inválido ou fora da lista é ignorado.
+   - a escolha fica na URL como `?janela=AAAA-MM`, preservando os outros parâmetros da página (`q`, `cargo`, `pagina` da lista de candidatos do partido); valor inválido ou de mês futuro é ignorado;
+   - **emenda de 26/09/2026 (code-review):** um mês válido que já saiu da lista dos 12 (ex.: link compartilhado com `?janela=2025-09`) continua valendo e aparece como opção extra no fim do seletor, para o link não mudar de período sem aviso.
 2. **O que a janela filtra:**
    - sentimento (spec 011), temas (spec 017) e fontes/veículos recebem `de` = primeiro dia e `ate` = último dia do mês;
    - o panorama recebe `janela=AAAA-MM`;
@@ -35,7 +36,8 @@ Hoje as análises mostram sempre todo o período, e o panorama mostra o mês mai
 - [x] Com `?janela=2026-08`, sentimento e temas são pedidos com `de=2026-08-01&ate=2026-08-31`, e o panorama com `janela=2026-08`.
 - [x] Fevereiro usa o último dia correto (`2026-02-28`); meses de 30 e 31 dias também.
 - [x] Sem `janela`, nenhuma análise recebe `de`, `ate` ou `janela`.
-- [x] `?janela=2026-13` e `?janela=abc` são ignorados (tratados como "Todo o período").
+- [x] `?janela=2026-13`, `?janela=abc` e um mês futuro são ignorados (tratados como "Todo o período").
+- [x] `?janela=2025-09`, fora dos 12 últimos meses, é aplicado e aparece como opção "setembro de 2025" no seletor.
 - [x] As legendas das figuras e a linha de contexto dizem o mês escolhido ou "em todo o período".
 - [x] O panorama mostra "Janela: {mês}" e, sem mês escolhido, "(a mais recente)".
 - [x] Os estados vazios citam o mês quando há um escolhido.
