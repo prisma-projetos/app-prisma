@@ -26,7 +26,7 @@ Hoje as análises mostram sempre todo o período, e o panorama mostra o mês mai
 - A lista de candidatos do partido não é filtrada pela janela.
 
 ## Contrato de dados
-- `de` e `ate` (`AAAA-MM-DD`) filtram `/analise/sentimento`, `/analise/por-tema`, `/analise/por-midia` e `/analise/materias` (validado com o PSD: julho → 25 matérias e 271 parágrafos; agosto → 105 e 2.491; setembro → 59 e 7.079).
+- `de` e `ate` (`AAAA-MM-DD`) filtram `/analise/sentimento`, `/analise/por-tema`, `/analise/por-midia` e `/analise/materias` (validado com o PSD usando o mês inteiro: julho → 32 matérias e 380 parágrafos; agosto → 250 e 3.110; setembro → 59 e 7.079. A primeira sondagem usou "até o dia 28" por engano e registrou números menores; corrigido em 26/09/2026).
 - `janela` (`AAAA-MM`) filtra só `/analise/panorama`. Nas outras análises ela é ignorada pela API (validado: o total do sentimento não muda com `janela`). Sem `janela`, o panorama vem do mês mais recente (hoje, agosto de 2026).
 - O proxy já aceita `de`, `ate` e `janela` nesses caminhos.
 

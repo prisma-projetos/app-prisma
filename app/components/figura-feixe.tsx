@@ -20,9 +20,11 @@ export function FiguraFeixe() {
       <Desenho id="feixe-espectro-celular" viewBox="600 0 520 160" alinhamento="xMinYMid slice" className="block h-[120px] w-full sm:hidden" />
       <Desenho id="feixe-espectro" viewBox="0 0 1440 160" alinhamento="xMidYMid slice" className="hidden h-[160px] w-full sm:block" />
       <figcaption className="mx-auto w-full max-w-[1440px] px-5 text-legenda text-tinta-2 sm:px-8 lg:px-16">
-        <span className="mr-1 text-tinta [font-variant-caps:all-small-caps] tracking-[0.06em]">Fig. 1</span>{" "}
-        A luz branca atravessa o prisma e se separa em cores. O PRISMA faz o mesmo com a cobertura da imprensa: separa o
-        que foi publicado pelo sentimento de cada parágrafo.
+        <span className="block max-w-[760px]">
+          <span className="mr-1 text-tinta [font-variant-caps:all-small-caps] tracking-[0.06em]">Fig. 1</span>{" "}
+          A luz branca atravessa o prisma e se separa em cores. O PRISMA faz o mesmo com a cobertura da imprensa: separa o
+          que foi publicado pelo sentimento de cada parágrafo.
+        </span>
       </figcaption>
     </figure>
   );

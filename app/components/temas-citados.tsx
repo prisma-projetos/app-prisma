@@ -50,16 +50,15 @@ export function TemasCitados({ resposta, janela = "" }: { resposta: AnalisePorTe
               <span data-tema className="text-corpo text-tinta [overflow-wrap:anywhere]">
                 {t.tema}
               </span>
-              <span className="grid grid-cols-[1fr_3.5rem] items-center gap-3">
-                {/* Trilha própria: a barra é proporcional à largura dela, sem disputar espaço com o número. */}
-                <span className="block">
-                  <span
-                    data-barra
-                    aria-hidden="true"
-                    className="block h-6 min-w-1 bg-grafico"
-                    style={{ width: `${((t.total ?? 0) / maior) * 100}%` }}
-                  />
-                </span>
+              <span className="flex items-center gap-3">
+                {/* A barra ocupa a proporção da trilha menos o espaço do número, que vem logo depois dela. */}
+                <span
+                  data-barra
+                  data-proporcao={(t.total ?? 0) / maior}
+                  aria-hidden="true"
+                  className="block h-6 min-w-1 shrink-0 bg-grafico"
+                  style={{ width: `calc((100% - 4rem) * ${(t.total ?? 0) / maior})` }}
+                />
                 <span className="text-corpo tabular-nums text-tinta">{formatarNumero(t.total)}</span>
               </span>
             </li>

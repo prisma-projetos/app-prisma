@@ -76,19 +76,20 @@ describe("BuscaHome (spec 015)", () => {
     const partidos = within(lista).getByRole("group", { name: "Partidos" });
     const candidatos = within(lista).getByRole("group", { name: "Candidatos" });
     expect(within(partidos).getAllByRole("option")).toHaveLength(2);
+    expect(within(partidos).queryAllByRole("option", { name: /Nenhum/ })).toHaveLength(0);
     expect(within(partidos).getByText("Partido Social Democrático · nº 55")).toBeTruthy();
     expect(within(candidatos).getAllByRole("option")).toHaveLength(6);
     expect(within(candidatos).getByText("Maria da Silva")).toBeTruthy();
     expect(within(candidatos).getAllByText("Deputado federal")).toHaveLength(5);
-    expect(within(candidatos).getByRole("option", { name: 'Ver os 977 candidatos com "maria"' })).toBeTruthy();
+    expect(within(candidatos).getByRole("option", { name: "Ver os 977 candidatos com “maria”" })).toBeTruthy();
   });
 
   it("orienta quando um grupo não tem resultado", async () => {
     rotas({ partidos: [], candidatos: paginaCandidatos([]) });
     renderComQuery(<BuscaHome />);
     await digitar("furia");
-    expect(await screen.findByText('Nenhum partido com "furia".')).toBeTruthy();
-    expect(screen.getByText('Nenhum candidato com "furia" no nome. Tente o nome completo da pessoa.')).toBeTruthy();
+    expect(await screen.findByText('Nenhum partido com “furia”.')).toBeTruthy();
+    expect(screen.getByText('Nenhum candidato com “furia” no nome. Tente o nome completo da pessoa.')).toBeTruthy();
   });
 
   it("anuncia as quantidades encontradas", async () => {
@@ -164,5 +165,27 @@ describe("BuscaHome: opção ativa visível", () => {
     fireEvent.keyDown(campo(), { key: "ArrowDown" });
     fireEvent.keyDown(campo(), { key: "ArrowDown" });
     await waitFor(() => expect(rolar).toHaveBeenLastCalledWith({ block: "nearest" }));
+  });
+});
+
+describe("BuscaHome: seta para cima sem item ativo", () => {
+  it("vai para o último item, inclusive o link de ver todos", async () => {
+    navegacao.reset("/");
+    Element.prototype.scrollIntoView = vi.fn();
+    rotas({ partidos: [PSD], candidatos: paginaCandidatos(["A", "B", "C", "D", "E"], 977) });
+    renderComQuery(<BuscaHome />);
+    fireEvent.change(campo(), { target: { value: "maria" } });
+    const ultimo = await screen.findByRole("option", { name: "Ver os 977 candidatos com “maria”" });
+    fireEvent.keyDown(campo(), { key: "ArrowUp" });
+    expect(campo().getAttribute("aria-activedescendant")).toBe(ultimo.id);
+  });
+
+  it("mensagem de grupo vazio fica no listbox como opção desabilitada", async () => {
+    navegacao.reset("/");
+    rotas({ partidos: [], candidatos: paginaCandidatos([]) });
+    renderComQuery(<BuscaHome />);
+    fireEvent.change(campo(), { target: { value: "furia" } });
+    const mensagem = await screen.findByRole("option", { name: "Nenhum partido com “furia”." });
+    expect(mensagem.getAttribute("aria-disabled")).toBe("true");
   });
 });

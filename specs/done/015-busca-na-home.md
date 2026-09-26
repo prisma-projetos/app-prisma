@@ -12,8 +12,8 @@ Hoje a home só lista partidos, e quem procura um candidato não tem por onde co
 2. **Sugestões enquanto digita** (a partir de 2 caracteres, com espera de 300ms após a última tecla):
    - padrão combobox acessível: campo com `role="combobox"`, painel com `role="listbox"`, `aria-expanded`, `aria-activedescendant` e grupos com rótulo;
    - grupo **Partidos**: até 5 resultados de `GET /partidos?q=`, cada um com a sigla (Corpo forte) e "{nome por extenso} · nº {numero}" (Apoio). Ordem da API;
-   - grupo **Candidatos**: até 5 resultados de `GET /politicos?q=&anoEleicao={ANO_ELEICAO}&tamanho=5`, cada um com o nome (`nomeProprio`) e o cargo (rótulo de `app/lib/cargos.ts`). Com mais de 5 resultados, o último item do grupo é o link "Ver os {total} candidatos com "{termo}"", que leva a `/candidatos?q={termo}` (spec 016);
-   - grupo sem resultado mostra uma frase de orientação: "Nenhum partido com "{termo}"." ou "Nenhum candidato com "{termo}" no nome. Tente o nome completo da pessoa.";
+   - grupo **Candidatos**: até 5 resultados de `GET /politicos?q=&anoEleicao={ANO_ELEICAO}&tamanho=5`, cada um com o nome (`nomeProprio`) e o cargo (rótulo de `app/lib/cargos.ts`). Com mais de 5 resultados, o último item do grupo é o link "Ver os {total} candidatos com “{termo}”", que leva a `/candidatos?q={termo}` (spec 016);
+   - grupo sem resultado mostra uma frase de orientação: "Nenhum partido com “{termo}”." ou "Nenhum candidato com “{termo}” no nome. Tente o nome completo da pessoa.";
    - itens com 48px de altura mínima; o item ativo fica com fundo `papel-2`;
    - teclado: seta para baixo/cima percorre os itens dos dois grupos; Enter abre o item ativo; Esc fecha o painel e mantém o texto; Tab sai do campo e fecha o painel;
    - região `aria-live="polite"` anuncia "{p} partidos e {c} candidatos encontrados" quando a busca termina.
@@ -39,7 +39,7 @@ Hoje a home só lista partidos, e quem procura um candidato não tem por onde co
 - [x] A home mostra o `h1` "Sobre quem você quer saber?", a linha de apoio, o campo com rótulo visível e o botão "Buscar"; "Partidos, de A a Z" passa a ser `h2`.
 - [x] Com 1 caractere, nenhuma requisição de busca é feita; com 2 ou mais, uma requisição para `partidos` e uma para `politicos` com `q`, `anoEleicao=2026` e `tamanho=5`, depois de 300ms sem digitar.
 - [x] O painel mostra os grupos "Partidos" e "Candidatos", com no máximo 5 itens cada, nos formatos do escopo.
-- [x] Com `totalElements` maior que 5, aparece o link "Ver os {total} candidatos com "{termo}"" para `/candidatos?q={termo}`.
+- [x] Com `totalElements` maior que 5, aparece o link "Ver os {total} candidatos com “{termo}”" para `/candidatos?q={termo}`.
 - [x] Grupo vazio mostra a frase de orientação correspondente.
 - [x] Setas percorrem os itens (atualizando `aria-activedescendant`), Enter abre o item ativo e Esc fecha o painel sem apagar o texto.
 - [x] Enviar "psd" abre `/partidos/55`; enviar "maria" abre `/candidatos?q=maria`; enviar "a" mostra "Digite pelo menos 2 letras." e não navega.

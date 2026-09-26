@@ -68,7 +68,7 @@ export function BuscaHome() {
     itensCandidatos.push({
       id: `${id}-todos`,
       href: `/candidatos?q=${encodeURIComponent(consulta)}`,
-      titulo: `Ver os ${formatarNumero(totalCandidatos)} candidatos com "${consulta}"`,
+      titulo: `Ver os ${formatarNumero(totalCandidatos)} candidatos com “${consulta}”`,
     });
   }
   const itens = [...itensPartidos, ...itensCandidatos];
@@ -110,7 +110,8 @@ export function BuscaHome() {
       evento.preventDefault();
       setAberto(true);
       const passo = evento.key === "ArrowDown" ? 1 : -1;
-      setAtivo((atual) => (atual + passo + itens.length) % itens.length);
+      // Sem item ativo, a seta para cima vai direto ao último.
+      setAtivo((atual) => (atual < 0 && passo < 0 ? itens.length - 1 : (atual + passo + itens.length) % itens.length));
     } else if (evento.key === "Enter" && itemAtivo) {
       evento.preventDefault();
       abrir(itemAtivo.href);
@@ -174,7 +175,7 @@ export function BuscaHome() {
                 ativo={itemAtivo?.id}
                 carregando={partidos.isPending}
                 erro={partidos.isError}
-                vazio={`Nenhum partido com "${consulta}".`}
+                vazio={`Nenhum partido com “${consulta}”.`}
                 aoEscolher={abrir}
               />
               <Grupo
@@ -184,7 +185,7 @@ export function BuscaHome() {
                 ativo={itemAtivo?.id}
                 carregando={candidatos.isPending}
                 erro={candidatos.isError}
-                vazio={`Nenhum candidato com "${consulta}" no nome. Tente o nome completo da pessoa.`}
+                vazio={`Nenhum candidato com “${consulta}” no nome. Tente o nome completo da pessoa.`}
                 aoEscolher={abrir}
               />
             </div>
@@ -239,7 +240,8 @@ function Grupo({
         {titulo}
       </div>
       {mensagem ? (
-        <div role="presentation" className="px-4 pt-1 pb-3 text-apoio text-tinta-2">
+        // Dentro de um listbox só cabem opções: a mensagem é uma opção desabilitada.
+        <div role="option" aria-disabled="true" aria-selected="false" className="px-4 pt-1 pb-3 text-apoio text-tinta-2">
           {mensagem}
         </div>
       ) : (

@@ -195,3 +195,17 @@ details[open] > summary::before {
     animation: none;
   }
 }
+
+/* Campo de busca: sem o botão nativo de limpar do navegador (spec 019, revisão). */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Busca da home com o painel aberto: o contorno de foco fica rente ao campo,
+   para o painel continuar a borda em vez de cortar o contorno. */
+input[aria-expanded="true"]:focus-visible {
+  outline-offset: -5px;
+  border-image-outset: 0;
+}

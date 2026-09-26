@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Secao } from "@/app/components/secao";
+import { CampoSelect } from "@/app/components/campo-select";
 import { EntidadeAvatar } from "@/app/components/entidade-avatar";
 import { ErroCarregamento, GradeSkeleton, MensagemVazia } from "@/app/components/estados";
 import { usePoliticos } from "@/app/lib/api/hooks";
@@ -103,7 +104,7 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
         />
         <label className="flex min-w-0 flex-col gap-2 text-apoio text-tinta-2">
           Cargo
-          <select
+          <CampoSelect
             value={cargo}
             onChange={(e) => navegar({ cargo: e.target.value })}
             className="min-h-14 min-w-0 border-2 border-tinta bg-papel px-4 py-3 text-corpo text-tinta"
@@ -114,7 +115,7 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
                 {c.rotulo}
               </option>
             ))}
-          </select>
+          </CampoSelect>
         </label>
       </div>
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { EntidadeAvatar } from "@/app/components/entidade-avatar";
+import { CampoSelect } from "@/app/components/campo-select";
 import { ErroCarregamento, Skeleton } from "@/app/components/estados";
 import { usePartidos, usePoliticos } from "@/app/lib/api/hooks";
 import { CARGOS, lerCargo } from "@/app/lib/cargos";
@@ -147,18 +148,18 @@ export function CandidatosView() {
         </label>
         <label className="flex flex-col gap-2 text-corpo font-semibold">
           Cargo
-          <select value={cargo} onChange={(evento) => navegar({ cargo: evento.target.value })} className={`${CAMPO} font-normal`}>
+          <CampoSelect value={cargo} onChange={(evento) => navegar({ cargo: evento.target.value })} className={`${CAMPO} font-normal`}>
             <option value="">Todos os cargos</option>
             {CARGOS.map((c) => (
               <option key={c.valor} value={c.valor}>
                 {c.rotulo}
               </option>
             ))}
-          </select>
+          </CampoSelect>
         </label>
         <label className="flex flex-col gap-2 text-corpo font-semibold">
           Partido
-          <select
+          <CampoSelect
             value={partidoSelecionado ? partido : ""}
             onChange={(evento) => navegar({ partido: evento.target.value })}
             disabled={!partidosQuery.data}
@@ -170,7 +171,7 @@ export function CandidatosView() {
                 {[p.sigla, nomeProprio(p.nome)].filter(Boolean).join(" · ")}
               </option>
             ))}
-          </select>
+          </CampoSelect>
         </label>
         {temFiltro && (
           <button type="button" onClick={limpar} className="min-h-14 text-left text-corpo font-semibold text-tinta underline underline-offset-4">
@@ -226,14 +227,15 @@ export function CandidatosView() {
               {candidatos.map((c) => (
                 <li
                   key={c.tituloEleitoral}
-                  className="grid grid-cols-[64px_1fr] items-center gap-x-4 border-b border-fio py-3 hover:bg-papel-2 sm:grid-cols-[88px_1fr_minmax(0,320px)] sm:gap-x-6"
+                  className="relative grid min-h-[88px] grid-cols-[64px_1fr] items-center gap-x-4 border-b border-fio py-3 hover:bg-papel-2 sm:grid-cols-[88px_1fr_minmax(0,320px)] sm:gap-x-6"
                 >
                   <span className="row-span-2 sm:row-span-1">
                     <EntidadeAvatar nome={nomeProprio(c.nome)} imagemUrl={c.urlFoto} variante="politico" tamanho={64} />
                   </span>
                   <Link
                     href={`/politicos/${c.tituloEleitoral}`}
-                    className="text-corpo font-semibold text-tinta underline underline-offset-4 hover:decoration-2"
+                    // O link cobre a linha inteira (foto, nome e cargo): alvo de toque grande.
+                    className="text-corpo font-semibold text-tinta underline underline-offset-4 after:absolute after:inset-0 after:content-[''] hover:decoration-2"
                   >
                     {nomeProprio(c.nome)}
                   </Link>

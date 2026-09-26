@@ -148,18 +148,18 @@ Plano. Não há sombras. A hierarquia vem de fios (3px em tinta abre cada seçã
 
 ## Shapes
 
-Cantos retos em tudo. Duas exceções: fotos de candidato em círculo e botões pílula do cabeçalho (menu, modo escuro). Bordas de controle em tinta: 2px no campo de busca e nos filtros, 2px nos botões secundários. Estado vazio usa contorno tracejado de 1px.
+Cantos retos em tudo. Duas exceções: fotos de candidato em círculo e a pílula "Modo escuro"/"Modo claro" do cabeçalho. Bordas de controle em tinta: 2px no campo de busca e nos filtros, 2px nos botões secundários. Estado vazio usa contorno tracejado de 1px.
 
 ## Components
 
 ### Cabeçalho
-- Wordmark PRISMA com o prisma e o leque espectral à esquerda; à direita, Partidos, Candidatos, Como funciona e a pílula "Modo escuro". No celular, pílula "Menu".
+- Wordmark PRISMA com o prisma e o leque espectral à esquerda; à direita, "Partidos", "Candidatos" e a pílula "Modo escuro"/"Modo claro". No celular, os mesmos três itens quebram para a linha de baixo (não há menu recolhível). Item ativo em bold com o fio espectral de 4px.
 - Item ativo: indicador espectral de 4px sob o item, sempre junto de peso SemiBold/Bold ou sublinhado. Nunca só cor.
 - Fio de 1px separa o cabeçalho do conteúdo.
 
 ### Busca com sugestões
 - Campo de 64px de altura, borda 2px em tinta, ícone de lupa em SVG, placeholder em tinta-3; botão "Buscar" primário colado à direita. Exemplos em Apoio abaixo.
-- Sugestões (desenhadas no celular, em `.impeccable/review/mobile.png`): painel colado ao campo, com borda de 2px em tinta. Os resultados ficam agrupados por tipo, "Partidos" e depois "Candidatos", com o título do grupo em Apoio SemiBold tinta-2. Cada item mostra a sigla ou o nome em Corpo forte e a descrição em Apoio tinta-2, com 48px no mínimo e destaque em papel-2. Grupo vazio mostra uma frase de orientação, por exemplo: "Nenhum candidato com \"psd\" no nome. Tente o nome de uma pessoa." O estado aberto no desktop ainda não foi desenhado.
+- Sugestões (desenhadas no celular, em `.impeccable/review/mobile.png`): painel colado ao campo, com borda de 2px em tinta. Os resultados ficam agrupados por tipo, "Partidos" e depois "Candidatos", com o título do grupo em Apoio SemiBold tinta-2. Cada item mostra a sigla ou o nome em Corpo forte e a descrição em Apoio tinta-2, com 48px no mínimo e destaque em papel-2. Grupo vazio mostra uma frase de orientação, como opção desabilitada, por exemplo: "Nenhum candidato com “psd” no nome. Tente o nome completo da pessoa." Desktop e celular usam o mesmo painel, colado ao campo; com o painel aberto, o contorno de foco fica rente ao campo (sem outset) para o painel continuar a borda. A opção ativa pelas setas rola para ficar visível.
 
 ### Ficha de partido
 - Célula da grade: placa-logo de 64px com a logo em object-fit contain; sigla em Título 3, nome por extenso em Apoio, "nº" em tinta-2. Fios de 1px entre células; a célula inteira é o alvo.
@@ -184,10 +184,10 @@ Cantos retos em tudo. Duas exceções: fotos de candidato em círculo e botões 
 - Veículo em Corpo forte, data em Apoio, sentimento como etiqueta de texto com o termo, contorno de 1px e canto reto (a pílula das capturas contraria a regra de formas). Parágrafo em Corpo. Link "Ler matéria no {veículo}" sublinhado em repouso, com seta SVG. Fio de 1px entre itens.
 
 ### Lista paginada
-- Tabela de candidatos: foto circular de 64px, nome como link sublinhado em repouso, cargo, estado. Linha de 1px entre itens, hover em papel-2. Rodapé com "Anterior", "Página n de N" e "Próxima" em botões secundários de 48px.
+- Lista de candidatos (/candidatos): foto circular de 64px, nome como link sublinhado em repouso que cobre a linha inteira (alvo grande), e cargo. Sem estado nem partido: a listagem da API não traz esses campos. Linha de 1px entre itens, hover em papel-2. Rodapé com "Anterior", "Página n de N" e "Próxima" em botões secundários de 48px.
 
 ### Seletor de janela
-- Rótulo "Janela" + select de 56px com borda 2px em tinta e chevron SVG; texto de ajuda em Apoio com os meses disponíveis.
+- Rótulo "Janela (mês das matérias)" + select de 56px com borda 2px em tinta e chevron SVG (`CampoSelect`, sem a seta nativa). Opções: "Todo o período" e os 12 últimos meses; um mês mais antigo vindo de link entra como opção extra. Sem texto de ajuda: a API não informa quais meses têm dados.
 
 ### Rodapé com aviso
 - Em toda página, o aviso com o texto exato do CLAUDE.md em Apoio, tinta-2, e o wordmark à direita. Fio de 1px acima.
@@ -219,6 +219,6 @@ Cantos retos em tudo. Duas exceções: fotos de candidato em círculo e botões 
 ## Decisões em aberto
 
 - **Retícula para sentimentos**: padrões de pontos ou hachura além do cinza. Não decidido.
-- **Posição do feixe**: no topo, junto ao wordmark (contrato de direção), ou abaixo da busca como Fig. 1 (protótipo). Não decidido.
+- **Posição do feixe**: decidida na spec 015. Fica abaixo da busca, como Fig. 1 com legenda na medida de leitura (760px), e não como fio de abertura junto ao wordmark.
 - **Texto do aviso**: se continua dizendo "gerados por modelos de IA", já que o classificador atual é uma lista de palavras (baseline v1). O texto só muda no CLAUDE.md.
 - **Versalete**: confirmar que a Atkinson Hyperlegible Next tem versalete de verdade (smcp); versalete sintetizado pelo navegador não serve.

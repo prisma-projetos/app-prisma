@@ -6,6 +6,7 @@ import type { ConsultaRequest } from "@/app/lib/api/types";
 import { janelaPorExtenso } from "@/app/lib/formatacao";
 import { intervaloDaJanela, lerJanela, mesesDisponiveis } from "@/app/lib/janela";
 import { Disclaimer } from "./disclaimer";
+import { CampoSelect } from "./campo-select";
 import { ErroCarregamento, Skeleton } from "./estados";
 import { PanoramaAbas } from "./panorama-abas";
 import { Secao } from "./secao";
@@ -40,7 +41,7 @@ export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
     <>
       <label className="flex max-w-[420px] flex-col gap-2 text-corpo font-semibold">
         Janela (mês das matérias)
-        <select
+        <CampoSelect
           value={janela}
           onChange={(evento) => escolher(evento.target.value)}
           className="min-h-14 border-2 border-tinta bg-papel px-4 py-3 text-corpo font-normal text-tinta"
@@ -51,7 +52,7 @@ export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
               {janelaPorExtenso(mes)}
             </option>
           ))}
-        </select>
+        </CampoSelect>
       </label>
 
       <Disclaimer />

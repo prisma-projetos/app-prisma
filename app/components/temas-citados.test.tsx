@@ -33,8 +33,8 @@ describe("TemasCitados (spec 017)", () => {
   it("barras proporcionais ao maior total exibido, só com o token grafico", () => {
     const { container } = render(<TemasCitados resposta={RESPOSTA} janela="" />);
     const barras = [...container.querySelectorAll<HTMLElement>("[data-barra]")];
-    expect(barras[0].style.width).toBe("100%");
-    expect(parseFloat(barras[1].style.width)).toBeCloseTo((37 / 40) * 100, 5);
+    expect(Number(barras[0].dataset.proporcao)).toBe(1);
+    expect(Number(barras[1].dataset.proporcao)).toBeCloseTo(37 / 40, 5);
     for (const barra of barras) {
       expect(barra.className).toContain("bg-grafico");
       expect(barra.getAttribute("aria-hidden")).toBe("true");
