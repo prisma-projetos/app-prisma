@@ -68,7 +68,7 @@ function AvatarFallback({ circular, nome }: { circular: boolean; nome: string })
 
   return (
     <span className={`max-w-full px-1 text-center font-semibold text-[#474747] ${nome.length > 5 ? "break-all text-[12px] leading-4" : "text-lg"}`}>
-      {nome.toUpperCase()}
+      {nome}
     </span>
   );
 }

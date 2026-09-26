@@ -92,7 +92,8 @@ describe("PanoramaAbas", () => {
 
   it("mostra mensagem quando não há eixos", () => {
     render(<PanoramaAbas panorama={panoramaVazio} />);
-    expect(screen.getByText("Ainda não há panorama para esta entidade.")).toBeTruthy();
+    expect(screen.getByText("Ainda não há panorama sobre AGIR.")).toBeTruthy();
+    expect(screen.getByText("Quando houver matérias analisadas sobre AGIR, o resumo de cada sentimento aparece aqui.")).toBeTruthy();
     expect(screen.queryAllByRole("tab")).toHaveLength(0);
   });
 });

@@ -1,7 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { TEXTO_DISCLAIMER } from "@/app/components/disclaimer";
-import { panoramaPT, politicoDetalhe, sentimentoPT } from "@/test/fixtures/dados";
+import { panoramaPT, panoramaVazio, politicoDetalhe, sentimentoPT, sentimentoVazio } from "@/test/fixtures/dados";
 import { NotFoundError } from "@/test/navegacao";
 import { chamadasPara, erroApi, mockApi, renderComQuery } from "@/test/utils";
 import PoliticoPage from "./page";
@@ -73,7 +73,7 @@ describe("Página de político: conteúdo", () => {
     rotas();
     const { unmount } = renderComQuery(<PoliticoView tituloEleitoral={TITULO} />);
     expect(
-      await screen.findByRole("heading", { level: 1, name: "AARON SALLES FERNANDES SILVA TORRES" })
+      await screen.findByRole("heading", { level: 1, name: "Aaron Salles Fernandes Silva Torres" })
     ).toBeTruthy();
     unmount();
 
@@ -84,7 +84,7 @@ describe("Página de político: conteúdo", () => {
       },
     });
     renderComQuery(<PoliticoView tituloEleitoral={TITULO} />);
-    expect(await screen.findByRole("heading", { level: 1, name: "AARON TORRES" })).toBeTruthy();
+    expect(await screen.findByRole("heading", { level: 1, name: "Aaron Torres" })).toBeTruthy();
   });
 
   it("cabeçalho usa a candidatura mais recente (maior ano, depois maior turno)", async () => {
@@ -135,5 +135,15 @@ describe("Página de político: conteúdo", () => {
     expect(await screen.findByRole("button", { name: "Tentar de novo" })).toBeTruthy();
     expect(await screen.findByText(/Análise automática de 15\.887 parágrafos/)).toBeTruthy();
     expect(await screen.findByRole("heading", { level: 1 })).toBeTruthy();
+  });
+});
+
+describe("Candidaturas no celular (spec 014)", () => {
+  it("cada célula traz o rótulo da coluna para a lista empilhada", async () => {
+    mockApi({ "politicos/detalhe": politicoDetalhe, "analise/sentimento": sentimentoVazio, "analise/panorama": panoramaVazio });
+    renderComQuery(<PoliticoView tituloEleitoral="016828001937" />);
+    const regiao = await screen.findByRole("region", { name: "Tabela de candidaturas" });
+    const celulas = within(regiao).getAllByRole("row")[1].querySelectorAll("td");
+    expect([...celulas].map((c) => c.getAttribute("data-rotulo"))).toEqual(["Ano", "Cargo", "Estado", "Partido", "Nº de urna", "Resultado"]);
   });
 });

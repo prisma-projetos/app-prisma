@@ -7,6 +7,9 @@ describe("nomeProprio", () => {
     ["REDE SUSTENTABILIDADE", "Rede Sustentabilidade"],
     ["DEMOCRACIA CRISTÃ", "Democracia Cristã"],
     [" A À E O DA DAS DE DO DOS ", "A à e o da das de do dos"],
+    ["MARIA DA SILVA", "Maria da Silva"],
+    ["ALESSANDRO DE SANT'ANNA CARDOSO", "Alessandro de Sant'Anna Cardoso"],
+    ["ANA-LUÍSA DOS SANTOS", "Ana-Luísa dos Santos"],
     [null, ""],
     [undefined, ""],
   ])("formata %s", (entrada, esperado) => expect(nomeProprio(entrada)).toBe(esperado));

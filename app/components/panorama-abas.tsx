@@ -2,7 +2,7 @@
 
 import { useId, useState } from "react";
 import type { Fonte, PanoramaEixo, PanoramaResponse, Sentimento } from "@/app/lib/api/types";
-import { dataCurta, dominio, formatarNumero, janelaPorExtenso } from "@/app/lib/formatacao";
+import { dataCurta, dominio, formatarNumero, janelaPorExtenso, nomeProprio } from "@/app/lib/formatacao";
 import { SENTIMENTO_LABEL, SENTIMENTOS } from "@/app/lib/sentimento";
 import { MensagemVazia } from "./estados";
 
@@ -12,7 +12,17 @@ export function PanoramaAbas({ panorama }: { panorama: PanoramaResponse }) {
   const eixos = panorama.eixos ?? [];
 
   if (eixos.length === 0) {
-    return <MensagemVazia>Ainda não há panorama para esta entidade.</MensagemVazia>;
+    // Para partido, a API manda a sigla como nome: só nomes de pessoas são reformatados.
+    const nome =
+      (panorama.tipo === "politico" ? nomeProprio(panorama.nome) : panorama.nome?.trim()) || "esta entidade";
+    return (
+      <div className="border border-dashed border-tinta p-6">
+        <p className="font-semibold">Ainda não há panorama sobre {nome}.</p>
+        <p className="mt-2 text-tinta-2">
+          Quando houver matérias analisadas sobre {nome}, o resumo de cada sentimento aparece aqui.
+        </p>
+      </div>
+    );
   }
 
   const eixo = eixos.find((e) => e.eixo === aba);
@@ -84,7 +94,7 @@ function EixoPanorama({ eixo, janela }: { eixo: PanoramaEixo; janela?: string })
         {formatarNumero(eixo.totalItens)} matérias
       </p>
 
-      <figure className="border-l border-tinta bg-papel-2 p-6">
+      <figure className="max-w-[760px] border-l border-tinta bg-papel-2 p-6">
         <figcaption className="mb-4 text-[15px] font-semibold text-tinta-2">
           Gerado por IA · {eixo.modelo ?? "modelo não informado"}
         </figcaption>

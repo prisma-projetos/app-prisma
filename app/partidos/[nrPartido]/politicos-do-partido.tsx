@@ -9,7 +9,7 @@ import { ErroCarregamento, GradeSkeleton, MensagemVazia } from "@/app/components
 import { usePoliticos } from "@/app/lib/api/hooks";
 import { CARGOS, lerCargo } from "@/app/lib/cargos";
 import { ANO_ELEICAO, POLITICOS_POR_PAGINA } from "@/app/lib/config";
-import { formatarNumero } from "@/app/lib/formatacao";
+import { formatarNumero, nomeProprio } from "@/app/lib/formatacao";
 import { lerPagina } from "@/app/lib/identificadores";
 
 const DEBOUNCE_BUSCA_MS = 300;
@@ -122,9 +122,9 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
         >
           {candidatos.map((candidato) => (
             <li key={candidato.tituloEleitoral}>
-              <Link href={`/politicos/${candidato.tituloEleitoral}`} aria-label={candidato.nome} className="flex min-h-12 justify-center py-4 text-tinta underline hover:bg-papel-2 hover:decoration-2">
+              <Link href={`/politicos/${candidato.tituloEleitoral}`} aria-label={nomeProprio(candidato.nome)} className="flex min-h-12 justify-center py-4 text-tinta underline hover:bg-papel-2 hover:decoration-2">
                 <EntidadeAvatar
-                  nome={candidato.nome ?? ""}
+                  nome={nomeProprio(candidato.nome)}
                   imagemUrl={candidato.urlFoto}
                   variante="politico"
                   mostrarNome

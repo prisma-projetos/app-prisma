@@ -50,7 +50,9 @@ describe("Página de partido: conteúdo", () => {
     rotasPT();
     const { container } = renderComQuery(<PartidoView nrPartido={13} />);
     expect(await screen.findByRole("heading", { level: 1, name: "PT" })).toBeTruthy();
-    expect(screen.getByText("PARTIDO DOS TRABALHADORES · nº 13")).toBeTruthy();
+    const numero = screen.getByText("· nº 13");
+    expect(numero.className).toContain("whitespace-nowrap");
+    expect(numero.parentElement?.textContent).toBe("Partido dos Trabalhadores · nº 13");
     expect(container.querySelector('img[src="https://minio.test/PT.svg"]')).not.toBeNull();
   });
 
@@ -80,7 +82,7 @@ describe("Página de partido: conteúdo", () => {
     expect(await screen.findByRole("button", { name: "Tentar de novo" })).toBeTruthy();
     expect(await screen.findByText("Texto do panorama neutro.")).toBeTruthy();
     expect(await screen.findByRole("heading", { level: 1, name: "PT" })).toBeTruthy();
-    expect(await screen.findByText("CANDIDATO 0-0")).toBeTruthy();
+    expect(await screen.findByText("Candidato 0-0")).toBeTruthy();
   });
 });
 
@@ -89,7 +91,7 @@ describe("Página de partido: políticos", () => {
     const fetchMock = rotasPT();
     const { container } = renderComQuery(<PartidoView nrPartido={13} />);
 
-    const link = await screen.findByRole("link", { name: "CANDIDATO 0-0" });
+    const link = await screen.findByRole("link", { name: "Candidato 0-0" });
     expect(link.getAttribute("href")).toBe("/politicos/0000");
     expect(container.querySelector('img[src="https://minio.test/0-0.jpg"]')).not.toBeNull();
 
@@ -109,7 +111,7 @@ describe("Página de partido: políticos", () => {
       },
     });
     const { rerender } = renderComQuery(<PartidoView nrPartido={13} />);
-    await screen.findByText("CANDIDATO 0-0");
+    await screen.findByText("Candidato 0-0");
 
     navegacao.reset("/partidos/13", "pagina=1");
     rerender(<PartidoView nrPartido={13} />);
@@ -117,7 +119,7 @@ describe("Página de partido: políticos", () => {
     expect(screen.getByRole<HTMLButtonElement>("button", { name: "Anterior" }).disabled).toBe(true);
 
     await act(async () => liberar());
-    await screen.findByText("CANDIDATO 1-0");
+    await screen.findByText("Candidato 1-0");
     expect(screen.getByRole<HTMLButtonElement>("button", { name: "Próxima" }).disabled).toBe(false);
   });
 
@@ -133,7 +135,7 @@ describe("Página de partido: políticos", () => {
 
     navegacao.reset("/partidos/13", "pagina=2");
     rerender(<PartidoView nrPartido={13} />);
-    await screen.findByText("CANDIDATO 2-0");
+    await screen.findByText("Candidato 2-0");
     expect(screen.getByText("Página 3 de 3")).toBeTruthy();
     expect(screen.getByRole<HTMLButtonElement>("button", { name: "Próxima" }).disabled).toBe(true);
     expect(screen.getByRole<HTMLButtonElement>("button", { name: "Anterior" }).disabled).toBe(false);
@@ -208,8 +210,8 @@ describe("Página de partido: políticos", () => {
   it("exibe o nome de cada político sem depender de hover", async () => {
     rotasPT();
     renderComQuery(<PartidoView nrPartido={13} />);
-    const link = await screen.findByRole("link", { name: "CANDIDATO 0-0" });
-    const nome = within(link).getByText("CANDIDATO 0-0");
+    const link = await screen.findByRole("link", { name: "Candidato 0-0" });
+    const nome = within(link).getByText("Candidato 0-0");
     expect(nome.className).not.toMatch(/opacity-0/);
     expect(nome.className).not.toMatch(/absolute/);
   });
@@ -256,7 +258,7 @@ describe("Página de partido: filtro por cargo", () => {
     navegacao.reset("/partidos/13", "cargo=SENADOR&q=joao");
     const fetchMock = rotasPT();
     renderComQuery(<PartidoView nrPartido={13} />);
-    await screen.findByText("CANDIDATO 0-0");
+    await screen.findByText("Candidato 0-0");
     const params = chamadasPara(fetchMock, "politicos")[0];
     expect(params.get("cargo")).toBe("SENADOR");
     expect(params.get("q")).toBe("joao");
@@ -270,7 +272,7 @@ describe("Página de partido: filtro por cargo", () => {
     navegacao.reset("/partidos/13", "cargo=SENADOR");
     rotasPT();
     renderComQuery(<PartidoView nrPartido={13} />);
-    await screen.findByText("CANDIDATO 0-0");
+    await screen.findByText("Candidato 0-0");
 
     vi.useFakeTimers();
     try {
@@ -288,7 +290,7 @@ describe("Página de partido: filtro por cargo", () => {
   it("mudar o cargo durante o debounce não é desfeito pela busca", async () => {
     rotasPT();
     const { rerender } = renderComQuery(<PartidoView nrPartido={13} />);
-    await screen.findByText("CANDIDATO 0-0");
+    await screen.findByText("Candidato 0-0");
 
     vi.useFakeTimers();
     try {
@@ -310,7 +312,7 @@ describe("Página de partido: filtro por cargo", () => {
     navegacao.reset("/partidos/13", "cargo=SENADOR&q=joao");
     const fetchMock = rotasPT();
     const { rerender } = renderComQuery(<PartidoView nrPartido={13} />);
-    await screen.findByText("CANDIDATO 0-0");
+    await screen.findByText("Candidato 0-0");
 
     fireEvent.change(selectCargo(), { target: { value: "" } });
     expect(navegacao.replace).toHaveBeenLastCalledWith("/partidos/13?q=joao", { scroll: false });
@@ -328,7 +330,7 @@ describe("Página de partido: filtro por cargo", () => {
     navegacao.reset("/partidos/13", `cargo=${naUrl}`);
     const fetchMock = rotasPT();
     renderComQuery(<PartidoView nrPartido={13} />);
-    await screen.findByText("CANDIDATO 0-0");
+    await screen.findByText("Candidato 0-0");
     expect(selectCargo().value).toBe(noSelect);
     expect(chamadasPara(fetchMock, "politicos")[0].get("cargo")).toBe(enviado);
   });

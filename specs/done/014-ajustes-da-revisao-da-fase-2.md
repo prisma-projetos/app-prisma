@@ -24,13 +24,13 @@ A revisão independente do build das specs 009 a 013 encontrou problemas que fic
 Nenhum endpoint novo. `nomeProprio()` só formata o que chega de `/politicos/detalhe`, `/politicos`, `/partidos/detalhe` e `/analise/*`.
 
 ## Critérios de aceite
-- [ ] O h1 do político mostra "Adailton Antunes Ferreira" para `nome: "ADAILTON ANTUNES FERREIRA"`; o nome de urna aparece como veio.
-- [ ] A grade de candidatos do partido mostra os nomes com `nomeProprio()` e sem `toUpperCase()`.
-- [ ] O topo do partido mostra "Partido Social Democrático · nº 55", e "nº 55" fica numa unidade que não quebra.
-- [ ] Em 390px, cada candidatura aparece como lista com os seis rótulos e o resultado "Não informado¹" visível, sem rolagem horizontal; em 1440px, a tabela continua.
-- [ ] A caixa "Gerado por IA" tem largura máxima de leitura.
-- [ ] Sem panorama, aparece o estado vazio tracejado com o nome da entidade.
-- [ ] Testes, lint e build passam; verificação visual em 390px e 1440px, claro e escuro.
+- [x] O h1 do político mostra "Adailton Antunes Ferreira" para `nome: "ADAILTON ANTUNES FERREIRA"`; o nome de urna aparece como veio.
+- [x] A grade de candidatos do partido mostra os nomes com `nomeProprio()` e sem `toUpperCase()`.
+- [x] O topo do partido mostra "Partido Social Democrático · nº 55", e "nº 55" fica numa unidade que não quebra.
+- [x] Em 390px, cada candidatura aparece como lista com os seis rótulos e o resultado "Não informado¹" visível, sem rolagem horizontal; em 1440px, a tabela continua.
+- [x] A caixa "Gerado por IA" tem largura máxima de leitura.
+- [x] Sem panorama, aparece o estado vazio tracejado com o nome da entidade.
+- [x] Testes, lint e build passam; verificação visual em 390px e 1440px, claro e escuro.
 
 ## Casos de borda
 - Nome com partícula ("MARIA DA SILVA", "JOÃO DOS SANTOS"): a partícula fica em minúscula.

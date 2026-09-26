@@ -7,6 +7,7 @@ import { EntidadeAvatar } from "@/app/components/entidade-avatar";
 import { ErroCarregamento, GradeSkeleton, Skeleton } from "@/app/components/estados";
 import { Pagina } from "@/app/components/pagina";
 import { usePartido } from "@/app/lib/api/hooks";
+import { nomeProprio } from "@/app/lib/formatacao";
 import { naoEncontrado } from "@/app/lib/identificadores";
 import { PoliticosDoPartido } from "./politicos-do-partido";
 
@@ -53,7 +54,7 @@ export function PartidoView({ nrPartido }: { nrPartido: number }) {
               {partido.data.sigla}
             </h1>
             <p className="text-corpo text-tinta-2">
-              {partido.data.nome} · nº {partido.data.numero}
+              {nomeProprio(partido.data.nome)} <span className="whitespace-nowrap">· nº {partido.data.numero}</span>
             </p>
           </div>
         </div>

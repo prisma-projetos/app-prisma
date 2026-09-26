@@ -1,11 +1,13 @@
 import type { ContagemSentimento, SentimentoResumoResponse } from "@/app/lib/api/types";
-import { formatarNumero, formatarPercentual } from "@/app/lib/formatacao";
+import { formatarNumero, formatarPercentual, nomeProprio } from "@/app/lib/formatacao";
 import { SENTIMENTO_COR, SENTIMENTO_LABEL, SENTIMENTOS } from "@/app/lib/sentimento";
 
 const EXPLICACAO = { negativo: "critica", neutro: "só informa", positivo: "elogia" };
 
 export function SentimentoResumo({ resumo }: { resumo: SentimentoResumoResponse }) {
-  const nome = resumo.nome?.trim() || "esta entidade";
+  // Para partido, a API manda a sigla como nome: só nomes de pessoas são reformatados.
+  const nome =
+    (resumo.tipoEntidade === "politico" ? nomeProprio(resumo.nome) : resumo.nome?.trim()) || "esta entidade";
   const total = formatarNumero(resumo.totalParagrafos);
   const contagens = new Map<string, ContagemSentimento>(
     (resumo.porSentimento ?? []).map((c) => [c.sentimento ?? "", c])

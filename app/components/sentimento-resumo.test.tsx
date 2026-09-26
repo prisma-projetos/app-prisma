@@ -98,3 +98,15 @@ describe("SentimentoResumo", () => {
     }
   });
 });
+
+describe("SentimentoResumo: nome da entidade (spec 014)", () => {
+  it("formata o nome de pessoa e preserva a sigla de partido", () => {
+    const { unmount } = render(
+      <SentimentoResumo resumo={{ ...sentimentoVazio, tipoEntidade: "politico", nome: "MARIA DA SILVA" }} />
+    );
+    expect(screen.getByText("Ainda não há parágrafos analisados sobre Maria da Silva.")).toBeTruthy();
+    unmount();
+    render(<SentimentoResumo resumo={{ ...sentimentoVazio, tipoEntidade: "partido", nome: "AGIR" }} />);
+    expect(screen.getByText("Ainda não há parágrafos analisados sobre AGIR.")).toBeTruthy();
+  });
+});

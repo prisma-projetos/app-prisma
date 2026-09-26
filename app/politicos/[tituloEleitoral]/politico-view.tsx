@@ -8,7 +8,7 @@ import { Secao } from "@/app/components/secao";
 import { Pagina } from "@/app/components/pagina";
 import { usePolitico } from "@/app/lib/api/hooks";
 import type { CandidaturaResponse } from "@/app/lib/api/types";
-import { candidaturaMaisRecente, ordenarCandidaturas } from "@/app/lib/formatacao";
+import { candidaturaMaisRecente, nomeProprio, ordenarCandidaturas } from "@/app/lib/formatacao";
 import { naoEncontrado } from "@/app/lib/identificadores";
 
 const VAZIO = "—";
@@ -51,15 +51,15 @@ export function PoliticoView({ tituloEleitoral }: { tituloEleitoral: string }) {
         <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
           <span className="shrink-0">
             <EntidadeAvatar
-              nome={politico?.nomeSocial || politico?.nome || ""}
+              nome={nomeProprio(politico?.nomeSocial || politico?.nome)}
               imagemUrl={recente?.urlFoto}
               variante="politico"
               tamanho={96}
             />
           </span>
           <div className="min-w-0">
-            <h1 className="break-words text-[32px] leading-[38px] font-bold tracking-tight text-tinta sm:text-[48px] sm:leading-[54px]">
-              {politico?.nomeSocial || politico?.nome}
+            <h1 className="break-words text-titulo-1 font-bold text-tinta sm:text-display">
+              {nomeProprio(politico?.nomeSocial || politico?.nome)}
             </h1>
             {recente && <ResumoCandidatura candidatura={recente} />}
           </div>
@@ -99,8 +99,8 @@ function TabelaCandidaturas({ candidaturas }: { candidaturas: CandidaturaRespons
         <MensagemVazia>Nenhuma candidatura registrada.</MensagemVazia>
       ) : (
         <div className="overflow-x-auto" role="region" aria-label="Tabela de candidaturas" tabIndex={0}>
-          <table className="w-full min-w-[640px] text-left text-base">
-            <thead className="border-b border-tinta text-base text-tinta-2">
+          <table className="w-full text-left text-base max-sm:block sm:min-w-[640px]">
+            <thead className="border-b border-tinta text-base text-tinta-2 max-sm:sr-only">
               <tr>
                 <th scope="col" className="py-4 pr-4">Ano</th>
                 <th scope="col" className="py-4 pr-4">Cargo</th>
@@ -110,16 +110,16 @@ function TabelaCandidaturas({ candidaturas }: { candidaturas: CandidaturaRespons
                 <th scope="col" className="py-4">Resultado</th>
               </tr>
             </thead>
-            <tbody className="text-tinta">
+            <tbody className="text-tinta max-sm:block">
               {ordenarCandidaturas(candidaturas).map((c, i) => (
                 <tr
                   key={c.sequencial ?? i}
-                  className="border-b border-fio"
+                  className="border-b border-fio max-sm:block max-sm:py-3"
                 >
-                  <td className="py-4 pr-4">{c.anoEleicao ?? VAZIO}</td>
-                  <td className="py-4 pr-4">{c.cargo ?? VAZIO}</td>
-                  <td className="py-4 pr-4">{c.uf ?? VAZIO}</td>
-                  <td className="py-4 pr-4">
+                  <td data-rotulo="Ano" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">{c.anoEleicao ?? VAZIO}</td>
+                  <td data-rotulo="Cargo" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">{c.cargo ?? VAZIO}</td>
+                  <td data-rotulo="Estado" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">{c.uf ?? VAZIO}</td>
+                  <td data-rotulo="Partido" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">
                     {c.siglaPartido && c.nrPartido ? (
                       <Link href={`/partidos/${c.nrPartido}`} className="underline">
                         {c.siglaPartido}
@@ -128,9 +128,9 @@ function TabelaCandidaturas({ candidaturas }: { candidaturas: CandidaturaRespons
                       (c.siglaPartido ?? VAZIO)
                     )}
                   </td>
-                  <td className="py-4 pr-4">{c.numeroUrna ?? VAZIO}</td>
-                  <td className="py-4" aria-describedby={!c.resultado?.trim() ? "nota-resultado" : undefined}>
-                    {c.resultado?.trim() ? c.resultado : <>Não informado<span>¹</span></>}
+                  <td data-rotulo="Nº de urna" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">{c.numeroUrna ?? VAZIO}</td>
+                  <td data-rotulo="Resultado" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4" aria-describedby={!c.resultado?.trim() ? "nota-resultado" : undefined}>
+                    {c.resultado?.trim() ? c.resultado : <span>Não informado<span>¹</span></span>}
                   </td>
                 </tr>
               ))}
