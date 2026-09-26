@@ -29,15 +29,15 @@ Hoje o bloco de sentimento mostra "método lexicon-baseline-v1 (versão v1)" e n
 Base do texto do método: `classifier-prisma/README.md` e `config/lexicon.yaml` (baseline v1, contagem de termos positivos e negativos por parágrafo com entidade).
 
 ## Critérios de aceite
-- [ ] A tela, com "Saiba mais" fechado, não mostra "lexicon", "baseline" nem o código da versão.
-- [ ] Os rótulos aparecem como "Negativo (critica)", "Neutro (só informa)" e "Positivo (elogia)", nessa ordem.
-- [ ] A linha de contexto mostra o total de parágrafos da resposta, formatado em pt-BR.
-- [ ] A `figcaption` começa com "Fig. 1", cita o nome da entidade da resposta e o total de parágrafos; sem `nome`, usa "esta entidade".
-- [ ] A barra tem `role="img"` e `aria-label` com os três percentuais na ordem fixa.
-- [ ] "Saiba mais" começa fechado; aberto, mostra os textos do escopo, incluindo que a classificação é compartilhada entre entidades do mesmo parágrafo e que não mede opinião pública.
-- [ ] Método e versão de cada proveniência aparecem dentro de "Saiba mais".
-- [ ] Sem parágrafos, aparece o estado vazio desenhado com o nome da entidade.
-- [ ] Nenhum texto do bloco de sentimento diz que o sentimento é feito por "IA" ou "modelo" (só o aviso obrigatório, que não muda).
+- [x] A tela, com "Saiba mais" fechado, não mostra "lexicon", "baseline" nem o código da versão.
+- [x] Os rótulos aparecem como "Negativo (critica)", "Neutro (só informa)" e "Positivo (elogia)", nessa ordem.
+- [x] A linha de contexto mostra o total de parágrafos da resposta, formatado em pt-BR.
+- [x] A `figcaption` começa com "Fig. 1", cita o nome da entidade da resposta e o total de parágrafos; sem `nome`, usa "esta entidade".
+- [x] A barra tem `role="img"` e `aria-label` com os três percentuais na ordem fixa.
+- [x] "Saiba mais" começa fechado; aberto, mostra os textos do escopo, incluindo que a classificação é compartilhada entre entidades do mesmo parágrafo e que não mede opinião pública.
+- [x] Método e versão de cada proveniência aparecem dentro de "Saiba mais".
+- [x] Sem parágrafos, aparece o estado vazio desenhado com o nome da entidade.
+- [x] Nenhum texto do bloco de sentimento diz que o sentimento é feito por "IA" ou "modelo" (só o aviso obrigatório, que não muda).
 
 ## Casos de borda
 - `porSentimento` sem algum sentimento: a linha aparece com 0 parágrafos e 0,0%.

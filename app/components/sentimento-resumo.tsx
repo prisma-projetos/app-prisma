@@ -1,74 +1,62 @@
 import type { ContagemSentimento, SentimentoResumoResponse } from "@/app/lib/api/types";
 import { formatarNumero, formatarPercentual } from "@/app/lib/formatacao";
 import { SENTIMENTO_COR, SENTIMENTO_LABEL, SENTIMENTOS } from "@/app/lib/sentimento";
-import { MensagemVazia } from "./estados";
+
+const EXPLICACAO = { negativo: "critica", neutro: "só informa", positivo: "elogia" };
 
 export function SentimentoResumo({ resumo }: { resumo: SentimentoResumoResponse }) {
+  const nome = resumo.nome?.trim() || "esta entidade";
+  const total = formatarNumero(resumo.totalParagrafos);
   const contagens = new Map<string, ContagemSentimento>(
     (resumo.porSentimento ?? []).map((c) => [c.sentimento ?? "", c])
   );
-  const somaTotais = SENTIMENTOS.reduce(
-    (soma, s) => soma + (contagens.get(s)?.total ?? 0),
-    0
-  );
+  const somaTotais = SENTIMENTOS.reduce((soma, s) => soma + (contagens.get(s)?.total ?? 0), 0);
 
   if (!resumo.totalParagrafos || somaTotais === 0) {
     return (
-      <MensagemVazia>Ainda não há parágrafos analisados sobre esta entidade.</MensagemVazia>
+      <figure className="border border-dashed border-tinta p-6">
+        <p className="font-semibold">Ainda não há parágrafos analisados sobre {nome}.</p>
+        <p className="mt-2 text-tinta-2">Quando o PRISMA encontrar e analisar matérias que citam {nome}, o sentimento da cobertura aparece aqui.</p>
+      </figure>
     );
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      <div
-        className="flex h-4 w-full gap-0.5 overflow-hidden rounded-full"
-        aria-hidden="true"
-      >
-        {SENTIMENTOS.map((s) => {
-          const total = contagens.get(s)?.total ?? 0;
-          if (total === 0) return null;
-          return (
-            <span
-              key={s}
-              data-sentimento={s}
-              className={SENTIMENTO_COR[s]}
-              style={{ width: `${(total / somaTotais) * 100}%` }}
-            />
-          );
-        })}
-      </div>
-
-      <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-        {SENTIMENTOS.map((s) => {
-          const contagem = contagens.get(s);
-          return (
-            <li key={s} data-sentimento={s} className="flex items-center gap-2">
-              <span
-                aria-hidden="true"
-                className={`inline-block h-3 w-3 rounded-sm ${SENTIMENTO_COR[s]}`}
-              />
-              <span className="font-medium text-zinc-800 dark:text-zinc-200">
-                {SENTIMENTO_LABEL[s]}
-              </span>
-              <span className="text-zinc-600 dark:text-zinc-400">
-                {formatarPercentual(contagem?.percentual)} ·{" "}
-                {formatarNumero(contagem?.total)} parágrafos
-              </span>
-            </li>
-          );
-        })}
-      </ul>
-
-      <p className="text-xs text-zinc-500">
-        Baseado em {formatarNumero(resumo.totalParagrafos)} parágrafos
-        {(resumo.proveniencia ?? []).map((p, i) => (
-          <span key={i}>
-            {" "}
-            · método {p.metodo ?? "desconhecido"}
-            {p.pipelineVersion && ` (versão ${p.pipelineVersion})`}
-          </span>
-        ))}
-      </p>
+    <div className="flex flex-col gap-6">
+      <p className="max-w-[65ch] text-[21px] leading-8">Análise automática de {total} parágrafos, baseada em palavras positivas e negativas. O resultado pode conter erros.</p>
+      <figure>
+        <div role="img" aria-label={SENTIMENTOS.map(s => `${SENTIMENTO_LABEL[s]} ${formatarPercentual(contagens.get(s)?.percentual)}`).join(", ")} className="flex h-8 w-full overflow-hidden border border-tinta">
+          {SENTIMENTOS.map(s => {
+            const contagem = contagens.get(s)?.total ?? 0;
+            return contagem > 0 ? <span key={s} data-sentimento={s} className={SENTIMENTO_COR[s]} style={{ width: `${contagem / somaTotais * 100}%` }} /> : null;
+          })}
+        </div>
+        <table className="mt-4 w-full tabular-nums text-base">
+          <caption className="sr-only">Parágrafos por sentimento</caption>
+          <thead className="sr-only"><tr><th>Sentimento</th><th>Parágrafos</th><th>Percentual</th></tr></thead>
+          <tbody>
+            {SENTIMENTOS.map(s => <tr key={s} data-sentimento={s} className="border-b border-fio">
+              <th scope="row" className="py-4 pr-2 text-left font-normal">
+                <span aria-hidden="true" className={`mr-2 inline-block h-3 w-3 border border-tinta ${SENTIMENTO_COR[s]}`} />
+                <span className="font-semibold">{SENTIMENTO_LABEL[s]} <span className="font-normal text-tinta-2">({EXPLICACAO[s]})</span></span>
+              </th>
+              <td className="py-4 pr-3 text-right text-tinta-2">{formatarNumero(contagens.get(s)?.total)} parágrafos</td>
+              <td className="py-4 text-right">{formatarPercentual(contagens.get(s)?.percentual)}</td>
+            </tr>)}
+          </tbody>
+        </table>
+        <figcaption className="mt-4 text-[15px] font-semibold leading-[22px] text-tinta-2"><span>Fig. 1</span> Parágrafos sobre {nome} por sentimento, em todo o período. Base: {total} parágrafos de matérias que citam {nome}.</figcaption>
+      </figure>
+      <details className="border-l border-tinta bg-papel-2 p-6">
+        <summary className="min-h-12 cursor-pointer text-[21px] font-bold">Saiba mais: como esta análise funciona</summary>
+        <div className="mt-4 flex max-w-[70ch] flex-col gap-4">
+          <p>O sistema compara a quantidade de palavras positivas e negativas em cada parágrafo que cita o partido ou o candidato. Quando as contagens empatam, ou quando nenhuma palavra da lista aparece, o parágrafo conta como neutro.</p>
+          <p>A classificação vale para o parágrafo inteiro. Se um parágrafo cita mais de um partido ou candidato, todos recebem a mesma classificação.</p>
+          <p>Positivo não quer dizer que o partido ou o candidato é bom, e negativo não quer dizer que é ruim. Isso também não mede opinião pública nem imparcialidade da imprensa: mostra só o tom das palavras no texto.</p>
+          <p>O método é experimental: a lista de palavras não foi validada cientificamente e pode errar com ironia, negação ou citações.</p>
+          {(resumo.proveniencia ?? []).length ? resumo.proveniencia!.map((p, i) => <p key={i} className="text-base text-tinta-2">Detalhes técnicos: método {p.metodo || "não informado"}, versão {p.pipelineVersion || "não informada"}.</p>) : <p className="text-base text-tinta-2">Detalhes técnicos: método não informado.</p>}
+        </div>
+      </details>
     </div>
   );
 }
