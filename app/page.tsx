@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { BuscaHome } from "@/app/components/busca-home";
 import { FiguraFeixe } from "@/app/components/figura-feixe";
 import { ListaPartidos } from "@/app/components/lista-partidos";
@@ -22,6 +23,12 @@ export default function Home() {
       <div className={`${CONTAINER} py-16 lg:py-24`}>
         <Secao id="partidos" titulo="Partidos, de A a Z">
           <ListaPartidos />
+          <Link
+            href="/candidatos"
+            className="mt-10 inline-flex min-h-14 items-center border-2 border-tinta px-6 text-corpo font-semibold text-tinta hover:bg-papel-2"
+          >
+            Ver todos os candidatos
+          </Link>
         </Secao>
       </div>
     </div>

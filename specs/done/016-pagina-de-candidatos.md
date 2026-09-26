@@ -35,18 +35,18 @@ Hoje só dá para chegar a um candidato pela página do partido dele. A nova pá
 - O parâmetro da URL da página é `partido` (número); na API, vira `nrPartido`.
 
 ## Critérios de aceite
-- [ ] `/candidatos` mostra o `h1` com o ano de `ANO_ELEICAO` e o total da consulta sem filtros.
-- [ ] A primeira requisição envia `anoEleicao=2026`, `pagina=0` e `tamanho=48`, sem `q`, `cargo` nem `nrPartido`.
-- [ ] Digitar "maria" no campo Nome envia `q=maria` depois de 300ms, grava `?q=maria` e volta para a página 1; digitar só "m" não envia `q`.
-- [ ] Escolher um cargo envia `cargo` com o valor da API e grava `?cargo=`; escolher um partido envia `nrPartido` e grava `?partido=`; os filtros se combinam na mesma requisição.
-- [ ] Abrir `/candidatos?q=maria&cargo=SENADOR&partido=55&pagina=2` restaura os três campos e pede `pagina=1` (a URL conta a partir de 1; a API, de 0).
-- [ ] `?cargo=INVALIDO` e `?partido=abc` são ignorados.
-- [ ] A contagem mostra "{n} candidaturas" e, com filtros, os filtros ativos por extenso.
-- [ ] Cada linha tem a foto, o nome formatado como link para `/politicos/{tituloEleitoral}` e o cargo.
-- [ ] Anterior fica desabilitado na página 1, e Próxima na última; trocar de página leva o foco para a contagem.
-- [ ] Vazio mostra a mensagem e "Limpar filtros", que zera os filtros e a URL.
-- [ ] O cabeçalho mostra "Candidatos" com `aria-current="page"` em `/candidatos`; a home mostra "Ver todos os candidatos" apontando para `/candidatos`.
-- [ ] Verificação visual em 390px e 1440px, claro e escuro, sem rolagem horizontal.
+- [x] `/candidatos` mostra o `h1` com o ano de `ANO_ELEICAO` e o total da consulta sem filtros.
+- [x] A primeira requisição envia `anoEleicao=2026`, `pagina=0` e `tamanho=48`, sem `q`, `cargo` nem `nrPartido`.
+- [x] Digitar "maria" no campo Nome envia `q=maria` depois de 300ms, grava `?q=maria` e volta para a página 1; digitar só "m" não envia `q`.
+- [x] Escolher um cargo envia `cargo` com o valor da API e grava `?cargo=`; escolher um partido envia `nrPartido` e grava `?partido=`; os filtros se combinam na mesma requisição.
+- [x] Abrir `/candidatos?q=maria&cargo=SENADOR&partido=55&pagina=2` restaura os três campos e pede `pagina=1` (a URL conta a partir de 1; a API, de 0).
+- [x] `?cargo=INVALIDO` e `?partido=abc` são ignorados.
+- [x] A contagem mostra "{n} candidaturas" e, com filtros, os filtros ativos por extenso.
+- [x] Cada linha tem a foto, o nome formatado como link para `/politicos/{tituloEleitoral}` e o cargo.
+- [x] Anterior fica desabilitado na página 1, e Próxima na última; trocar de página leva o foco para a contagem.
+- [x] Vazio mostra a mensagem e "Limpar filtros", que zera os filtros e a URL.
+- [x] O cabeçalho mostra "Candidatos" com `aria-current="page"` em `/candidatos`; a home mostra "Ver todos os candidatos" apontando para `/candidatos`.
+- [x] Verificação visual em 390px e 1440px, claro e escuro, sem rolagem horizontal.
 
 ## Casos de borda
 - Partidos ainda carregando: o select mostra só "Todos os partidos" e fica desabilitado até a lista chegar.
