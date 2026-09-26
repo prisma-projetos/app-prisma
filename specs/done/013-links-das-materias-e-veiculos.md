@@ -21,14 +21,14 @@ No panorama, os links de fonte mostram só o domínio do portal (ex.: "valor.glo
 `GET /api/analise/panorama` (sem mudança): `eixos[{ eixo, modelo, texto, temas[{ tema, ocorrencias, fontes[] }], fontes[{ itemId, veiculo, url, dataPublicacao }] }]`.
 
 ## Critérios de aceite
-- [ ] Cada link de matéria tem o texto "Ler matéria publicada por {veículo}" e aponta para a URL original da fonte, sem alteração.
-- [ ] Com `veiculo: null`, o texto usa o domínio da URL; sem URL válida, "Ler matéria".
-- [ ] Em "Fontes", as matérias aparecem agrupadas por veículo; cada grupo tem o nome do veículo com link para a origem da URL (`https://{host}/`).
-- [ ] Os grupos seguem a ordem alfabética do nome do veículo e, dentro do grupo, a data mais recente vem primeiro.
-- [ ] Duas matérias do mesmo portal continuam como dois links distintos, cada um com a sua URL.
-- [ ] Todos os links externos têm `target="_blank"`, `rel="noopener noreferrer"` e o texto oculto "(abre em nova aba)".
-- [ ] O contador "Fontes ({N})" é igual ao número de matérias do eixo.
-- [ ] O bloco "Gerado por IA · {modelo}" continua visível e separado da lista de fontes.
+- [x] Cada link de matéria tem o texto "Ler matéria publicada por {veículo}" e aponta para a URL original da fonte, sem alteração.
+- [x] Com `veiculo: null`, o texto usa o domínio da URL; sem URL válida, "Ler matéria".
+- [x] Em "Fontes", as matérias aparecem agrupadas por veículo; cada grupo tem o nome do veículo com link para a origem da URL (`https://{host}/`).
+- [x] Os grupos seguem a ordem alfabética do nome do veículo e, dentro do grupo, a data mais recente vem primeiro.
+- [x] Duas matérias do mesmo portal continuam como dois links distintos, cada um com a sua URL.
+- [x] Todos os links externos têm `target="_blank"`, `rel="noopener noreferrer"` e o texto oculto "(abre em nova aba)".
+- [x] O contador "Fontes ({N})" é igual ao número de matérias do eixo.
+- [x] O bloco "Gerado por IA · {modelo}" continua visível e separado da lista de fontes.
 
 ## Casos de borda
 - Fonte sem data: o link aparece sem a data.
