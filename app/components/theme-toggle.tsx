@@ -1,6 +1,6 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 const STORAGE_KEY = "prisma-theme";
 type Tema = "light" | "dark";
@@ -12,18 +12,24 @@ function temaAtual(): Tema {
     : "light";
 }
 
-export function ThemeToggle() {
-  const [tema, setTema] = useState<Tema>(temaAtual);
+function observarTema(notificar: () => void) {
+  window.addEventListener("prisma-theme-change", notificar);
+  return () => window.removeEventListener("prisma-theme-change", notificar);
+}
 
-  // Reaplica o atributo após o remount do React Strict Mode em desenvolvimento,
-  // que limpa atributos definidos pelo script inline fora do controle do React.
-  useLayoutEffect(() => {
-    document.documentElement.setAttribute("data-theme", tema);
-  }, [tema]);
+function temaServidor(): Tema {
+  return "light";
+}
+
+export function ThemeToggle() {
+  // A primeira árvore hidratada é igual à do servidor. O snapshot do navegador
+  // lê em seguida o tema que o script já aplicou antes da primeira pintura.
+  const tema = useSyncExternalStore(observarTema, temaAtual, temaServidor);
 
   function alternar() {
     const proximo: Tema = tema === "dark" ? "light" : "dark";
-    setTema(proximo);
+    document.documentElement.setAttribute("data-theme", proximo);
+    window.dispatchEvent(new Event("prisma-theme-change"));
     try {
       localStorage.setItem(STORAGE_KEY, proximo);
     } catch {
@@ -35,13 +41,10 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={alternar}
-      aria-label={
-        tema === "dark" ? "Alternar para modo claro" : "Alternar para modo escuro"
-      }
-      title={tema === "dark" ? "Alternar para modo claro" : "Alternar para modo escuro"}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+      className="flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-tinta bg-papel px-4 text-apoio text-tinta hover:bg-papel-2"
     >
       {tema === "dark" ? <SolIcon /> : <LuaIcon />}
+      <span>{tema === "dark" ? "Modo claro" : "Modo escuro"}</span>
     </button>
   );
 }

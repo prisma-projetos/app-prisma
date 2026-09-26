@@ -65,7 +65,10 @@ describe("Página de partido: conteúdo", () => {
     const fetchMock = rotasPT();
     renderComQuery(<PartidoView nrPartido={13} />);
     expect(screen.getByText(TEXTO_DISCLAIMER)).toBeTruthy();
-    expect(await screen.findByText(/Baseado em 15\.887 parágrafos/)).toBeTruthy();
+    const legenda = await screen.findByText(/Base: 15\.887 parágrafos de matérias que citam/);
+    expect(legenda.tagName).toBe("FIGCAPTION");
+    expect(legenda.textContent).toContain(`Parágrafos sobre ${sentimentoPT.nome} por sentimento, em todo o período.`);
+    expect(within(legenda.closest("figure")!).getByRole("table", { name: "Parágrafos por sentimento" })).toBeTruthy();
     expect(await screen.findByText("Texto do panorama neutro.")).toBeTruthy();
     expect(chamadasPara(fetchMock, "analise/sentimento")[0].get("nrPartido")).toBe("13");
     expect(chamadasPara(fetchMock, "analise/panorama")[0].get("nrPartido")).toBe("13");

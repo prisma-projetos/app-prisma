@@ -29,17 +29,17 @@ Aplicar o sistema de `DESIGN.md` (direção "Livro de Ciências", aprovada por B
 Nenhum endpoint novo nem alterado.
 
 ## Critérios de aceite
-- [ ] `app/globals.css` define os 11 tokens com os valores de `DESIGN.md` para claro e escuro e não contém `#000`, `#000000`, `#fff`, `#ffffff`, `black` nem `white` como valor de cor.
-- [ ] Nenhum arquivo `.tsx` em `app/` usa as classes `zinc-`, `slate-`, `amber-`, `bg-black`, `bg-white`, `text-black` ou `text-white`.
-- [ ] O `<html>` carrega a variável da Atkinson Hyperlegible Next e o `body` usa essa família.
-- [ ] Toda página renderiza um cabeçalho (`banner`) com o link "PRISMA, página inicial", a navegação "Partidos" e o botão de tema com texto visível.
-- [ ] Na home e em `/partidos/[nrPartido]`, o link "Partidos" tem `aria-current="page"`; em `/politicos/[tituloEleitoral]`, não tem.
-- [ ] O botão de tema mostra "Modo escuro" com `data-theme="light"` e "Modo claro" com `data-theme="dark"`, alterna o tema e grava `prisma-theme` (comportamento da spec 002 preservado).
-- [ ] Toda página renderiza um rodapé (`contentinfo`) com o texto exato de `TEXTO_DISCLAIMER`.
-- [ ] `Disclaimer` mantém o texto exato e não usa classes âmbar.
-- [ ] `SENTIMENTO_COR` usa só os tokens `sent-*`; a ordem continua Negativo, Neutro, Positivo.
-- [ ] Os testes existentes continuam passando; `pnpm run build`, `pnpm run lint` e `pnpm run test` passam.
-- [ ] Verificação visual (Playwright) da home, de um partido com dados e de um político, em 1440px e 390px, nos temas claro e escuro: sem rolagem horizontal, foco visível ao navegar por Tab.
+- [x] `app/globals.css` define os 11 tokens com os valores de `DESIGN.md` para claro e escuro e não contém `#000`, `#000000`, `#fff`, `#ffffff`, `black` nem `white` como valor de cor.
+- [x] Nenhum arquivo `.tsx` em `app/` usa as classes `zinc-`, `slate-`, `amber-`, `bg-black`, `bg-white`, `text-black` ou `text-white`.
+- [x] O `<html>` carrega a variável da Atkinson Hyperlegible Next e o `body` usa essa família.
+- [x] Toda página renderiza um cabeçalho (`banner`) com o link "PRISMA, página inicial", a navegação "Partidos" e o botão de tema com texto visível.
+- [x] Na home e em `/partidos/[nrPartido]`, o link "Partidos" tem `aria-current="page"`; em `/politicos/[tituloEleitoral]`, não tem.
+- [x] O botão de tema mostra "Modo escuro" com `data-theme="light"` e "Modo claro" com `data-theme="dark"`, alterna o tema e grava `prisma-theme` (comportamento da spec 002 preservado).
+- [x] Toda página renderiza um rodapé (`contentinfo`) com o texto exato de `TEXTO_DISCLAIMER`.
+- [x] `Disclaimer` mantém o texto exato e não usa classes âmbar.
+- [x] `SENTIMENTO_COR` usa só os tokens `sent-*`; a ordem continua Negativo, Neutro, Positivo.
+- [x] Os testes existentes continuam passando; `pnpm run build`, `pnpm run lint` e `pnpm run test` passam.
+- [x] Verificação visual (Playwright) da home, de um partido com dados e de um político, em 1440px e 390px, nos temas claro e escuro: sem rolagem horizontal, foco visível ao navegar por Tab.
 
 ## Casos de borda
 - Sem JavaScript: o script inline de tema continua aplicando `data-theme` antes da pintura; o texto do botão reflete o tema após a hidratação.

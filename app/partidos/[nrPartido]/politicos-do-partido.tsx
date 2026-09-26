@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Secao } from "@/app/components/secao";
 import { EntidadeAvatar } from "@/app/components/entidade-avatar";
 import { ErroCarregamento, GradeSkeleton, MensagemVazia } from "@/app/components/estados";
 import { usePoliticos } from "@/app/lib/api/hooks";
@@ -73,33 +74,28 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
   }, [paginaForaDoTotal, q, cargo]);
 
   return (
-    <section className="flex flex-col gap-4" aria-labelledby="titulo-politicos">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id="titulo-politicos" className="text-lg font-semibold text-black dark:text-white">
-          Candidatos em {ANO_ELEICAO}
-        </h2>
-        {dados && (
-          <span className="text-sm text-zinc-500">
-            {formatarNumero(dados.totalElements)} candidatos
-          </span>
-        )}
-      </div>
+    <Secao id="titulo-politicos" titulo={`Candidatos em ${ANO_ELEICAO}`}>
+      {dados && (
+        <span className="text-apoio text-tinta-2">
+          {formatarNumero(dados.totalElements)} candidatos
+        </span>
+      )}
 
-      <div className="flex flex-col gap-2 sm:flex-row">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
         <input
           type="search"
           value={busca}
           onChange={(e) => setBusca(e.target.value)}
           placeholder="Buscar por nome"
           aria-label="Buscar candidato por nome"
-          className="min-w-0 flex-1 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+          className="min-h-14 min-w-0 flex-1 border-2 border-tinta bg-papel px-4 py-3 text-corpo text-tinta placeholder:text-tinta-3"
         />
-        <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+        <label className="flex min-w-0 flex-col gap-2 text-apoio text-tinta-2">
           Cargo
           <select
             value={cargo}
             onChange={(e) => navegar({ cargo: e.target.value })}
-            className="rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+            className="min-h-14 min-w-0 border-2 border-tinta bg-papel px-4 py-3 text-corpo text-tinta"
           >
             <option value="">Todos os cargos</option>
             {CARGOS.map((c) => (
@@ -120,13 +116,13 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
       )}
       {candidatos.length > 0 && (
         <ul
-          className={`flex flex-wrap gap-8 transition-opacity ${
+          className={`grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 ${
             carregandoPagina ? "opacity-60" : ""
           }`}
         >
           {candidatos.map((candidato) => (
             <li key={candidato.tituloEleitoral}>
-              <Link href={`/politicos/${candidato.tituloEleitoral}`} aria-label={candidato.nome}>
+              <Link href={`/politicos/${candidato.tituloEleitoral}`} aria-label={candidato.nome} className="flex min-h-12 justify-center py-4 text-tinta underline hover:bg-papel-2 hover:decoration-2">
                 <EntidadeAvatar
                   nome={candidato.nome ?? ""}
                   imagemUrl={candidato.urlFoto}
@@ -140,29 +136,29 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
       )}
 
       {dados && totalPaginas > 1 && (
-        <nav aria-label="Paginação" className="flex items-center justify-between gap-4 text-sm">
+        <nav aria-label="Paginação" className="flex flex-wrap items-center justify-between gap-3 text-apoio">
           <button
             type="button"
             onClick={() => navegar({ pagina: pagina - 1 })}
             disabled={carregandoPagina || (dados.first ?? pagina === 0)}
-            className="rounded-md border border-zinc-300 px-3 py-1 disabled:opacity-40 dark:border-zinc-700"
+            className="min-h-12 border-2 border-tinta px-4 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:cursor-default disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent"
           >
             Anterior
           </button>
-          <span className="text-zinc-600 dark:text-zinc-400">
+          <span className="text-tinta-2">
             Página {pagina + 1} de {totalPaginas}
           </span>
           <button
             type="button"
             onClick={() => navegar({ pagina: pagina + 1 })}
             disabled={carregandoPagina || (dados.last ?? pagina >= totalPaginas - 1)}
-            className="rounded-md border border-zinc-300 px-3 py-1 disabled:opacity-40 dark:border-zinc-700"
+            className="min-h-12 border-2 border-tinta px-4 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:cursor-default disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent"
           >
             Próxima
           </button>
         </nav>
       )}
-    </section>
+    </Secao>
   );
 }
 
