@@ -1,22 +1,57 @@
 "use client";
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useAnalisePorTema, usePanorama, useSentimento } from "@/app/lib/api/hooks";
 import type { ConsultaRequest } from "@/app/lib/api/types";
+import { janelaPorExtenso } from "@/app/lib/formatacao";
+import { intervaloDaJanela, lerJanela, mesesDisponiveis } from "@/app/lib/janela";
 import { Disclaimer } from "./disclaimer";
-import { Secao } from "./secao";
 import { ErroCarregamento, Skeleton } from "./estados";
 import { PanoramaAbas } from "./panorama-abas";
+import { Secao } from "./secao";
 import { SentimentoResumo } from "./sentimento-resumo";
 import { TemasCitados } from "./temas-citados";
 
-/** Disclaimer + sentimento da cobertura + temas + panorama, comuns a partido e político. */
+/** Seletor de janela + disclaimer + sentimento + temas + panorama, comuns a partido e político. */
 export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
-  const sentimento = useSentimento(entidade);
-  const temas = useAnalisePorTema(entidade);
-  const panorama = usePanorama(entidade);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const meses = mesesDisponiveis();
+  const janela = lerJanela(searchParams.get("janela"), meses);
+
+  // A API filtra sentimento e temas por datas; `janela` só vale para o panorama (spec 018).
+  const porDatas: ConsultaRequest = janela ? { ...entidade, ...intervaloDaJanela(janela) } : entidade;
+  const sentimento = useSentimento(porDatas);
+  const temas = useAnalisePorTema(porDatas);
+  const panorama = usePanorama(janela ? { ...entidade, janela } : entidade);
+
+  function escolher(valor: string) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (valor) params.set("janela", valor);
+    else params.delete("janela");
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  }
 
   return (
     <>
+      <label className="flex max-w-[420px] flex-col gap-2 text-corpo font-semibold">
+        Janela (mês das matérias)
+        <select
+          value={janela}
+          onChange={(evento) => escolher(evento.target.value)}
+          className="min-h-14 border-2 border-tinta bg-papel px-4 py-3 text-corpo font-normal text-tinta"
+        >
+          <option value="">Todo o período</option>
+          {meses.map((mes) => (
+            <option key={mes} value={mes}>
+              {janelaPorExtenso(mes)}
+            </option>
+          ))}
+        </select>
+      </label>
+
       <Disclaimer />
 
       <Secao id="titulo-sentimento" titulo="Sentimento da cobertura">
@@ -24,7 +59,7 @@ export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
         {sentimento.isError && (
           <ErroCarregamento onTentarDeNovo={() => sentimento.refetch()} />
         )}
-        {sentimento.data && <SentimentoResumo resumo={sentimento.data} />}
+        {sentimento.data && <SentimentoResumo resumo={sentimento.data} janela={janela} />}
       </Secao>
 
       <Secao id="titulo-temas" titulo="Temas mais citados">
@@ -38,7 +73,7 @@ export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
         {temas.isError && (
           <ErroCarregamento mensagem="Não foi possível carregar os temas." onTentarDeNovo={() => temas.refetch()} />
         )}
-        {temas.data && <TemasCitados resposta={temas.data} periodo="em todo o período" />}
+        {temas.data && <TemasCitados resposta={temas.data} janela={janela} />}
       </Secao>
 
       <Secao id="titulo-panorama" titulo="Panorama">
@@ -46,7 +81,7 @@ export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
         {panorama.isError && (
           <ErroCarregamento onTentarDeNovo={() => panorama.refetch()} />
         )}
-        {panorama.data && <PanoramaAbas panorama={panorama.data} />}
+        {panorama.data && <PanoramaAbas panorama={panorama.data} janelaEscolhida={janela} />}
       </Secao>
     </>
   );

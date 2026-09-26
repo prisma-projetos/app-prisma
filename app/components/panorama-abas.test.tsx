@@ -24,7 +24,8 @@ describe("PanoramaAbas", () => {
   it("exibe janela por extenso, total de matérias, temas e avisos", () => {
     render(<PanoramaAbas panorama={panoramaPT} />);
     const p = within(painel());
-    expect(p.getByText(/Panorama de setembro de 2026/).textContent).toContain("151 matérias");
+    expect(screen.getByText("Janela: setembro de 2026 (a mais recente)")).toBeTruthy();
+    expect(p.getByText("151 matérias")).toBeTruthy();
     expect(p.getByText("Lula · 34 ocorrências")).toBeTruthy();
     expect(p.getByText("Divergências registradas na verificação automática")).toBeTruthy();
     expect(p.getByText(/declarou 12 ocorrências/)).toBeTruthy();

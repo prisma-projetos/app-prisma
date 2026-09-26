@@ -6,7 +6,7 @@ import { dataCurta, dominio, formatarNumero, janelaPorExtenso, nomeProprio } fro
 import { SENTIMENTO_LABEL, SENTIMENTOS } from "@/app/lib/sentimento";
 import { MensagemVazia } from "./estados";
 
-export function PanoramaAbas({ panorama }: { panorama: PanoramaResponse }) {
+export function PanoramaAbas({ panorama, janelaEscolhida = "" }: { panorama: PanoramaResponse; janelaEscolhida?: string }) {
   const id = useId();
   const [aba, setAba] = useState<Sentimento>("neutro");
   const eixos = panorama.eixos ?? [];
@@ -17,7 +17,10 @@ export function PanoramaAbas({ panorama }: { panorama: PanoramaResponse }) {
       (panorama.tipo === "politico" ? nomeProprio(panorama.nome) : panorama.nome?.trim()) || "esta entidade";
     return (
       <div className="border border-dashed border-tinta p-6">
-        <p className="font-semibold">Ainda não há panorama sobre {nome}.</p>
+        <p className="font-semibold">
+          Ainda não há panorama sobre {nome}
+          {janelaEscolhida && ` em ${janelaPorExtenso(janelaEscolhida)}`}.
+        </p>
         <p className="mt-2 text-tinta-2">
           Quando houver matérias analisadas sobre {nome}, o resumo de cada sentimento aparece aqui.
         </p>
@@ -27,8 +30,14 @@ export function PanoramaAbas({ panorama }: { panorama: PanoramaResponse }) {
 
   const eixo = eixos.find((e) => e.eixo === aba);
 
+  // Com "Todo o período", a API devolve o panorama do mês mais recente: isso fica dito.
+  const rotuloJanela = panorama.janela
+    ? `Janela: ${janelaPorExtenso(panorama.janela)}${janelaEscolhida ? "" : " (a mais recente)"}`
+    : undefined;
+
   return (
     <div>
+      {rotuloJanela && <p className="mb-4 text-apoio font-semibold text-tinta-2">{rotuloJanela}</p>}
       <div
         role="tablist"
         aria-label="Sentimento"
@@ -71,7 +80,7 @@ export function PanoramaAbas({ panorama }: { panorama: PanoramaResponse }) {
       >
         {eixo && (eixo.fontes ?? []).length > 0 ? (
           // key por aba: cada aba abre com fontes e temas recolhidos
-          <EixoPanorama key={aba} eixo={eixo} janela={panorama.janela} />
+          <EixoPanorama key={aba} eixo={eixo} />
         ) : (
           <MensagemVazia>
             Não há panorama {SENTIMENTO_LABEL[aba].toLowerCase()} para este período.
@@ -82,7 +91,7 @@ export function PanoramaAbas({ panorama }: { panorama: PanoramaResponse }) {
   );
 }
 
-function EixoPanorama({ eixo, janela }: { eixo: PanoramaEixo; janela?: string }) {
+function EixoPanorama({ eixo }: { eixo: PanoramaEixo }) {
   const temas = eixo.temas ?? [];
   const avisos = eixo.avisos ?? [];
   const fontes = eixo.fontes ?? [];
@@ -90,8 +99,7 @@ function EixoPanorama({ eixo, janela }: { eixo: PanoramaEixo; janela?: string })
   return (
     <div className="flex flex-col gap-6">
       <p className="text-base text-tinta-2">
-        {janela && <>Panorama de {janelaPorExtenso(janela)} · </>}
-        {formatarNumero(eixo.totalItens)} matérias
+                {formatarNumero(eixo.totalItens)} matérias
       </p>
 
       <figure className="max-w-[760px] border-l border-tinta bg-papel-2 p-6">

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { AnalisePorTemaResponse } from "@/app/lib/api/types";
 import { formatarNumero, formatarPercentual, nomeProprio } from "@/app/lib/formatacao";
+import { periodoPorExtenso } from "@/app/lib/janela";
 
 const LIMITE = 10;
 
@@ -10,7 +11,8 @@ const BOTAO_VISAO =
   "min-h-12 px-5 text-apoio font-semibold aria-pressed:bg-tinta aria-pressed:text-papel hover:bg-papel-2 aria-pressed:hover:bg-tinta";
 
 /** Fig. 2: em quantas matérias cada tema aparece, em barras ou tabela (spec 017). */
-export function TemasCitados({ resposta, periodo }: { resposta: AnalisePorTemaResponse; periodo: string }) {
+export function TemasCitados({ resposta, janela = "" }: { resposta: AnalisePorTemaResponse; janela?: string }) {
+  const periodo = periodoPorExtenso(janela);
   const [visao, setVisao] = useState<"grafico" | "tabela">("grafico");
   const [todos, setTodos] = useState(false);
   const temas = resposta.temas ?? [];
@@ -21,7 +23,7 @@ export function TemasCitados({ resposta, periodo }: { resposta: AnalisePorTemaRe
   if (temas.length === 0) {
     return (
       <div className="border border-dashed border-tinta p-6">
-        <p className="font-semibold">Ainda não há temas identificados sobre {nome}.</p>
+        <p className="font-semibold">Ainda não há temas identificados sobre {nome}{janela && ` ${periodo}`}.</p>
         <p className="mt-2 text-tinta-2">Quando houver matérias analisadas sobre {nome}, os temas mais citados aparecem aqui.</p>
       </div>
     );

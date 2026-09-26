@@ -30,16 +30,16 @@ Hoje as análises mostram sempre todo o período, e o panorama mostra o mês mai
 - O proxy já aceita `de`, `ate` e `janela` nesses caminhos.
 
 ## Critérios de aceite
-- [ ] O seletor aparece nas páginas de partido e de político com "Todo o período" e os 12 últimos meses, do mais recente para o mais antigo.
-- [ ] Escolher "agosto de 2026" grava `?janela=2026-08` sem apagar `q`, `cargo` e `pagina` existentes.
-- [ ] Com `?janela=2026-08`, sentimento e temas são pedidos com `de=2026-08-01&ate=2026-08-31`, e o panorama com `janela=2026-08`.
-- [ ] Fevereiro usa o último dia correto (`2026-02-28`); meses de 30 e 31 dias também.
-- [ ] Sem `janela`, nenhuma análise recebe `de`, `ate` ou `janela`.
-- [ ] `?janela=2026-13` e `?janela=abc` são ignorados (tratados como "Todo o período").
-- [ ] As legendas das figuras e a linha de contexto dizem o mês escolhido ou "em todo o período".
-- [ ] O panorama mostra "Janela: {mês}" e, sem mês escolhido, "(a mais recente)".
-- [ ] Os estados vazios citam o mês quando há um escolhido.
-- [ ] Verificação visual em 390px e 1440px, claro e escuro.
+- [x] O seletor aparece nas páginas de partido e de político com "Todo o período" e os 12 últimos meses, do mais recente para o mais antigo.
+- [x] Escolher "agosto de 2026" grava `?janela=2026-08` sem apagar `q`, `cargo` e `pagina` existentes.
+- [x] Com `?janela=2026-08`, sentimento e temas são pedidos com `de=2026-08-01&ate=2026-08-31`, e o panorama com `janela=2026-08`.
+- [x] Fevereiro usa o último dia correto (`2026-02-28`); meses de 30 e 31 dias também.
+- [x] Sem `janela`, nenhuma análise recebe `de`, `ate` ou `janela`.
+- [x] `?janela=2026-13` e `?janela=abc` são ignorados (tratados como "Todo o período").
+- [x] As legendas das figuras e a linha de contexto dizem o mês escolhido ou "em todo o período".
+- [x] O panorama mostra "Janela: {mês}" e, sem mês escolhido, "(a mais recente)".
+- [x] Os estados vazios citam o mês quando há um escolhido.
+- [x] Verificação visual em 390px e 1440px, claro e escuro.
 
 ## Casos de borda
 - Mês atual ainda em andamento: os números cobrem só os dias já publicados; nada muda na interface.

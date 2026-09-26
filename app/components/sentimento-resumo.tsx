@@ -1,10 +1,12 @@
 import type { ContagemSentimento, SentimentoResumoResponse } from "@/app/lib/api/types";
 import { formatarNumero, formatarPercentual, nomeProprio } from "@/app/lib/formatacao";
+import { periodoPorExtenso } from "@/app/lib/janela";
 import { SENTIMENTO_COR, SENTIMENTO_LABEL, SENTIMENTOS } from "@/app/lib/sentimento";
 
 const EXPLICACAO = { negativo: "critica", neutro: "só informa", positivo: "elogia" };
 
-export function SentimentoResumo({ resumo }: { resumo: SentimentoResumoResponse }) {
+export function SentimentoResumo({ resumo, janela = "" }: { resumo: SentimentoResumoResponse; janela?: string }) {
+  const periodo = periodoPorExtenso(janela);
   // Para partido, a API manda a sigla como nome: só nomes de pessoas são reformatados.
   const nome =
     (resumo.tipoEntidade === "politico" ? nomeProprio(resumo.nome) : resumo.nome?.trim()) || "esta entidade";
@@ -17,7 +19,7 @@ export function SentimentoResumo({ resumo }: { resumo: SentimentoResumoResponse 
   if (!resumo.totalParagrafos || somaTotais === 0) {
     return (
       <figure className="border border-dashed border-tinta p-6">
-        <p className="font-semibold">Ainda não há parágrafos analisados sobre {nome}.</p>
+        <p className="font-semibold">Ainda não há parágrafos analisados sobre {nome}{janela && ` ${periodo}`}.</p>
         <p className="mt-2 text-tinta-2">Quando o PRISMA encontrar e analisar matérias que citam {nome}, o sentimento da cobertura aparece aqui.</p>
       </figure>
     );
@@ -25,7 +27,7 @@ export function SentimentoResumo({ resumo }: { resumo: SentimentoResumoResponse 
 
   return (
     <div className="flex flex-col gap-6">
-      <p className="max-w-[65ch] text-[21px] leading-8">Análise automática de {total} parágrafos, baseada em palavras positivas e negativas. O resultado pode conter erros.</p>
+      <p className="max-w-[65ch] text-[21px] leading-8">Análise automática de {total} parágrafos{janela && ` publicados ${periodo}`}, baseada em palavras positivas e negativas. O resultado pode conter erros.</p>
       <figure>
         <div role="img" aria-label={SENTIMENTOS.map(s => `${SENTIMENTO_LABEL[s]} ${formatarPercentual(contagens.get(s)?.percentual)}`).join(", ")} className="flex h-8 w-full overflow-hidden border border-tinta">
           {SENTIMENTOS.map(s => {
@@ -47,7 +49,7 @@ export function SentimentoResumo({ resumo }: { resumo: SentimentoResumoResponse 
             </tr>)}
           </tbody>
         </table>
-        <figcaption className="mt-4 text-[15px] font-semibold leading-[22px] text-tinta-2"><span className="mr-1 text-tinta [font-variant-caps:all-small-caps] tracking-[0.06em]">Fig. 1</span> Parágrafos sobre {nome} por sentimento, em todo o período. Base: {total} parágrafos de matérias que citam {nome}.</figcaption>
+        <figcaption className="mt-4 text-[15px] font-semibold leading-[22px] text-tinta-2"><span className="mr-1 text-tinta [font-variant-caps:all-small-caps] tracking-[0.06em]">Fig. 1</span> Parágrafos sobre {nome} por sentimento, {periodo}. Base: {total} parágrafos de matérias que citam {nome}.</figcaption>
       </figure>
       <details className="max-w-[760px] border-l border-tinta bg-papel-2 px-8 py-6">
         <summary className="min-h-12 cursor-pointer text-[21px] font-bold">Saiba mais: como esta análise funciona</summary>
