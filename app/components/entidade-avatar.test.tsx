@@ -59,3 +59,16 @@ describe("EntidadeAvatar", () => {
     expect(container.querySelector("img")?.getAttribute("alt")).toBe("");
   });
 });
+
+describe("EntidadeAvatar: carregamento (spec 019)", () => {
+  it("carrega a imagem sob demanda, sem travar, com o espaço reservado", () => {
+    const { container } = render(
+      <EntidadeAvatar nome="PT" imagemUrl="https://minio.test/PT.svg" variante="partido" tamanho={64} />
+    );
+    const img = container.querySelector("img")!;
+    expect(img.getAttribute("loading")).toBe("lazy");
+    expect(img.getAttribute("decoding")).toBe("async");
+    expect(img.getAttribute("width")).toBeTruthy();
+    expect(img.getAttribute("height")).toBeTruthy();
+  });
+});

@@ -41,6 +41,10 @@ export function EntidadeAvatar({
           <img
             src={imagemUrl ?? undefined}
             alt=""
+            width={tamanho}
+            height={tamanho}
+            loading="lazy"
+            decoding="async"
             onError={() => setUrlComFalha(imagemUrl ?? null)}
             className={
               circular ? "h-full w-full object-cover" : "h-3/4 w-3/4 object-contain"

@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { NextRequest } from "next/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { limitadorDoProxy } from "@/app/lib/api/server/limite-requisicoes";
 import { DELETE, GET, PATCH, POST, PUT } from "./route";
 
 const BASE = "https://api.exemplo.test";
@@ -21,6 +22,7 @@ async function chamar(path: string[], query = "") {
 let fetchMock: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
+  limitadorDoProxy.limpar();
   vi.stubEnv("API_PRISMA", BASE);
   vi.stubEnv("API_PRISMA_KEY", CHAVE);
   fetchMock = vi.fn(async () => Response.json({ ok: true }));
@@ -174,4 +176,25 @@ describe("proxy /api/prisma", () => {
       expect(fetchMock).not.toHaveBeenCalled();
     }
   );
+});
+
+describe("proxy /api/prisma: limite de requisições (spec 019)", () => {
+  function doIp(ip: string) {
+    return GET(
+      new NextRequest("http://localhost/api/prisma/partidos", { headers: { "x-forwarded-for": `${ip}, 10.0.0.1` } }),
+      ctx(["partidos"])
+    );
+  }
+
+  it("a 61ª requisição do mesmo IP em um minuto recebe 429 sem chamar o backend", async () => {
+    for (let i = 0; i < 60; i++) expect((await doIp("9.9.9.9")).status).toBe(200);
+    fetchMock.mockClear();
+    const resposta = await doIp("9.9.9.9");
+    expect(resposta.status).toBe(429);
+    expect(Number(resposta.headers.get("Retry-After"))).toBeGreaterThan(0);
+    expect(resposta.headers.get("Cache-Control")).toBe("no-store");
+    expect(await resposta.json()).toEqual({ erro: "Muitas requisições. Tente de novo em instantes." });
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect((await doIp("8.8.8.8")).status).toBe(200);
+  });
 });

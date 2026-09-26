@@ -1,4 +1,5 @@
 import type { NextRequest } from "next/server";
+import { ipDaRequisicao, limitadorDoProxy } from "@/app/lib/api/server/limite-requisicoes";
 import { encaminhar } from "@/app/lib/api/server/prisma-service";
 
 const SEM_CACHE = { "Cache-Control": "no-store" };
@@ -14,6 +15,13 @@ export async function GET(
   request: NextRequest,
   ctx: RouteContext<"/api/prisma/[...path]">
 ) {
+  const limite = limitadorDoProxy.verificar(ipDaRequisicao(request.headers));
+  if (!limite.permitido) {
+    return erro(429, "Muitas requisições. Tente de novo em instantes.", {
+      "Retry-After": String(limite.retryAfterSegundos),
+    });
+  }
+
   const { path } = await ctx.params;
   const resultado = await encaminhar(
     path.join("/"),

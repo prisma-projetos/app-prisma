@@ -35,20 +35,22 @@ Esta spec fecha essas três lacunas sem mudar nada no backend.
 Nenhum endpoint novo. O 429 é resposta do próprio proxy.
 
 ## Critérios de aceite
-- [ ] A 61ª requisição do mesmo IP dentro de 60 segundos recebe 429 com `Retry-After`, a mensagem de erro e `Cache-Control: no-store`, e o backend não é chamado.
-- [ ] Outro IP não é afetado pelo limite do primeiro.
-- [ ] Depois de 60 segundos, o mesmo IP volta a ser atendido.
-- [ ] O IP é lido do primeiro valor de `x-forwarded-for` (ex.: `"1.1.1.1, 10.0.0.1"` → `1.1.1.1`) e, na falta dele, de `x-real-ip`.
-- [ ] Toda rota responde com os cabeçalhos do item 2; a CSP permite imagens da origem configurada e proíbe ser embutida em frame.
-- [ ] `Strict-Transport-Security` aparece em produção e não aparece em desenvolvimento.
-- [ ] Não há `X-Powered-By`.
-- [ ] As imagens de logo e foto têm `loading="lazy"`, `decoding="async"`, `width` e `height`.
-- [ ] O site continua funcionando com a CSP: tema sem piscar, busca, logos e fotos carregando, sem erros de CSP no console (verificação no navegador).
+- [x] A 61ª requisição do mesmo IP dentro de 60 segundos recebe 429 com `Retry-After`, a mensagem de erro e `Cache-Control: no-store`, e o backend não é chamado.
+- [x] Outro IP não é afetado pelo limite do primeiro.
+- [x] Depois de 60 segundos, o mesmo IP volta a ser atendido.
+- [x] O IP é lido do primeiro valor de `x-forwarded-for` (ex.: `"1.1.1.1, 10.0.0.1"` → `1.1.1.1`) e, na falta dele, de `x-real-ip`.
+- [x] Toda rota responde com os cabeçalhos do item 2; a CSP permite imagens da origem configurada e proíbe ser embutida em frame.
+- [x] `Strict-Transport-Security` aparece em produção e não aparece em desenvolvimento.
+- [x] Não há `X-Powered-By`.
+- [x] As imagens de logo e foto têm `loading="lazy"`, `decoding="async"`, `width` e `height`.
+- [x] O site continua funcionando com a CSP: tema sem piscar, busca, logos e fotos carregando, sem erros de CSP no console (verificação no navegador).
 
 ## Casos de borda
 - `x-forwarded-for` vazio ou com espaços: é aparado; vazio cai para `x-real-ip`.
 - Relógio: a janela usa o tempo do servidor; nada vem do cliente.
 - Muitos IPs diferentes: entradas vencidas são removidas a cada verificação, para a memória não crescer sem limite.
+- **Requisito de deploy:** o proxy reverso na frente do Next precisa repassar o IP real em `X-Forwarded-For` (ou `X-Real-IP`). Sem isso, todos os visitantes caem no balde "desconhecido" e dividem as mesmas 60 requisições por minuto. Medido em 26/09/2026: uma página faz de 1 a 5 chamadas (home 1, busca 2, partido 5, troca de mês 3, candidatos 3, político 4).
+- Muitas pessoas atrás do mesmo IP (rede de escola ou laboratório) dividem o limite. Se isso acontecer, é preciso subir o limite ou mover o controle para o proxy reverso.
 
 ## Fora do escopo desta versão (futuro)
 - Limite no proxy reverso ou na CDN, compartilhado entre instâncias.
