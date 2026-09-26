@@ -151,3 +151,18 @@ describe("BuscaHome (spec 015)", () => {
     expect(screen.getByRole("option", { name: /PSD/ })).toBeTruthy();
   });
 });
+
+describe("BuscaHome: opção ativa visível", () => {
+  it("rola até a opção ativa ao navegar pelas setas", async () => {
+    navegacao.reset("/");
+    const rolar = vi.fn();
+    Element.prototype.scrollIntoView = rolar;
+    rotas({ partidos: [PSD], candidatos: paginaCandidatos(["MARIA DA SILVA"]) });
+    renderComQuery(<BuscaHome />);
+    fireEvent.change(campo(), { target: { value: "maria" } });
+    await screen.findByText("Maria da Silva");
+    fireEvent.keyDown(campo(), { key: "ArrowDown" });
+    fireEvent.keyDown(campo(), { key: "ArrowDown" });
+    await waitFor(() => expect(rolar).toHaveBeenLastCalledWith({ block: "nearest" }));
+  });
+});

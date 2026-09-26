@@ -75,6 +75,12 @@ export function BuscaHome() {
   const mostrarPainel = aberto && pronto && termo.trim().length >= MINIMO;
   const itemAtivo = mostrarPainel && ativo >= 0 ? itens[ativo] : undefined;
 
+  // A opção ativa pelas setas precisa ficar visível, inclusive no celular,
+  // onde o painel pode abrir abaixo da dobra.
+  useEffect(() => {
+    if (itemAtivo) document.getElementById(itemAtivo.id)?.scrollIntoView?.({ block: "nearest" });
+  }, [itemAtivo]);
+
   const anuncio =
     pronto && partidos.isSuccess && candidatos.isSuccess && !candidatos.isPlaceholderData
       ? `${plural(partidos.data.length, "partido", "partidos")} e ${plural(totalCandidatos, "candidato", "candidatos")} encontrados`
