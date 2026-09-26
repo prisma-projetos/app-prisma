@@ -36,17 +36,17 @@ Hoje a home só lista partidos, e quem procura um candidato não tem por onde co
 - Nenhum endpoint novo. Os hooks `usePartidos({ q })` e `usePoliticos({ q, anoEleicao, tamanho })` já existem.
 
 ## Critérios de aceite
-- [ ] A home mostra o `h1` "Sobre quem você quer saber?", a linha de apoio, o campo com rótulo visível e o botão "Buscar"; "Partidos, de A a Z" passa a ser `h2`.
-- [ ] Com 1 caractere, nenhuma requisição de busca é feita; com 2 ou mais, uma requisição para `partidos` e uma para `politicos` com `q`, `anoEleicao=2026` e `tamanho=5`, depois de 300ms sem digitar.
-- [ ] O painel mostra os grupos "Partidos" e "Candidatos", com no máximo 5 itens cada, nos formatos do escopo.
-- [ ] Com `totalElements` maior que 5, aparece o link "Ver os {total} candidatos com "{termo}"" para `/candidatos?q={termo}`.
-- [ ] Grupo vazio mostra a frase de orientação correspondente.
-- [ ] Setas percorrem os itens (atualizando `aria-activedescendant`), Enter abre o item ativo e Esc fecha o painel sem apagar o texto.
-- [ ] Enviar "psd" abre `/partidos/55`; enviar "maria" abre `/candidatos?q=maria`; enviar "a" mostra "Digite pelo menos 2 letras." e não navega.
-- [ ] Erro na busca de um grupo mostra a mensagem de erro nesse grupo e mantém o outro.
-- [ ] A região `aria-live` anuncia as quantidades encontradas.
-- [ ] A Fig. 1 aparece com a legenda; com `prefers-reduced-motion`, sem animação.
-- [ ] Verificação visual em 390px e 1440px, claro e escuro, com o painel aberto; foco visível em campo, botão e itens.
+- [x] A home mostra o `h1` "Sobre quem você quer saber?", a linha de apoio, o campo com rótulo visível e o botão "Buscar"; "Partidos, de A a Z" passa a ser `h2`.
+- [x] Com 1 caractere, nenhuma requisição de busca é feita; com 2 ou mais, uma requisição para `partidos` e uma para `politicos` com `q`, `anoEleicao=2026` e `tamanho=5`, depois de 300ms sem digitar.
+- [x] O painel mostra os grupos "Partidos" e "Candidatos", com no máximo 5 itens cada, nos formatos do escopo.
+- [x] Com `totalElements` maior que 5, aparece o link "Ver os {total} candidatos com "{termo}"" para `/candidatos?q={termo}`.
+- [x] Grupo vazio mostra a frase de orientação correspondente.
+- [x] Setas percorrem os itens (atualizando `aria-activedescendant`), Enter abre o item ativo e Esc fecha o painel sem apagar o texto.
+- [x] Enviar "psd" abre `/partidos/55`; enviar "maria" abre `/candidatos?q=maria`; enviar "a" mostra "Digite pelo menos 2 letras." e não navega.
+- [x] Erro na busca de um grupo mostra a mensagem de erro nesse grupo e mantém o outro.
+- [x] A região `aria-live` anuncia as quantidades encontradas.
+- [x] A Fig. 1 aparece com a legenda; com `prefers-reduced-motion`, sem animação.
+- [x] Verificação visual em 390px e 1440px, claro e escuro, com o painel aberto; foco visível em campo, botão e itens.
 
 ## Casos de borda
 - Termo com espaços nas pontas: é aparado antes da busca e do envio.

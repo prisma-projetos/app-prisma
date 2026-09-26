@@ -177,3 +177,21 @@ details[open] > summary::before {
     transition: none;
   }
 }
+
+/* Fig. 1 da home: o leque do espectro se abre uma vez a partir do prisma. */
+.feixe-leque {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: feixe-abre 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes feixe-abre {
+  from {
+    opacity: 0.2;
+    transform: scaleY(0.02);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .feixe-leque {
+    animation: none;
+  }
+}

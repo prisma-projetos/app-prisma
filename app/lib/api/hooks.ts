@@ -30,12 +30,13 @@ export function entidadeIdentificada(consulta: ConsultaRequest): boolean {
   return presente(consulta.tituloEleitoral) !== presente(consulta.nrPartido);
 }
 
-export function usePoliticos(filtro: FiltroPoliticos = {}) {
+export function usePoliticos(filtro: FiltroPoliticos = {}, { enabled = true } = {}) {
   return useQuery({
     queryKey: prismaKeys.politicos.lista(filtro),
     queryFn: ({ signal }) =>
       apiGet<Page<CandidatoResumoResponse>>("politicos", { ...filtro }, signal),
     placeholderData: keepPreviousData,
+    enabled,
   });
 }
 
@@ -52,11 +53,12 @@ export function usePolitico(tituloEleitoral: string | undefined) {
   });
 }
 
-export function usePartidos(filtro: FiltroPartidos = {}) {
+export function usePartidos(filtro: FiltroPartidos = {}, { enabled = true } = {}) {
   return useQuery({
     queryKey: prismaKeys.partidos.lista(filtro),
     queryFn: ({ signal }) =>
       apiGet<PartidoResponse[]>("partidos", { ...filtro }, signal),
+    enabled,
   });
 }
 

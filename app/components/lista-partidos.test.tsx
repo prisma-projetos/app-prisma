@@ -1,15 +1,17 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { partidos } from "@/test/fixtures/dados";
 import { chamadasPara, mockApi, renderComQuery } from "@/test/utils";
 import Home from "@/app/page";
 import { ListaPartidos } from "./lista-partidos";
 
+vi.mock("next/navigation", async () => (await import("@/test/navegacao")).mockNextNavigation());
+
 describe("Home: ListaPartidos", () => {
   it("mostra título e contagem recebida", async () => {
     mockApi({ partidos });
     renderComQuery(<Home />);
-    expect(screen.getByRole("heading", { level: 1, name: "Partidos, de A a Z" })).toBeTruthy();
+    expect(screen.getByRole("heading", { level: 2, name: "Partidos, de A a Z" })).toBeTruthy();
     expect(await screen.findByText("3 partidos, em ordem alfabética pela sigla.")).toBeTruthy();
   });
 
