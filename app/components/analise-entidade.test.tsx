@@ -71,6 +71,17 @@ describe("Seletor de janela (spec 018)", () => {
     expect((screen.getByRole("combobox", { name: "Janela (mês das matérias)" }) as HTMLSelectElement).value).toBe("");
   });
 
+  it("mês antigo de link compartilhado vale e aparece como opção extra", async () => {
+    navegacao.reset("/partidos/13", "janela=2025-09");
+    const fetchMock = rotas();
+    renderComQuery(<AnaliseEntidade entidade={{ nrPartido: 13 }} />);
+    const seletor = screen.getByRole("combobox", { name: "Janela (mês das matérias)" }) as HTMLSelectElement;
+    expect(seletor.value).toBe("2025-09");
+    expect([...seletor.options].at(-1)?.textContent).toBe("setembro de 2025");
+    await waitFor(() => expect(chamadasPara(fetchMock, "analise/sentimento")).toHaveLength(1));
+    expect(chamadasPara(fetchMock, "analise/sentimento")[0].get("de")).toBe("2025-09-01");
+  });
+
   it("escolher um mês grava ?janela= e preserva os outros parâmetros", () => {
     navegacao.reset("/partidos/13", "q=maria&cargo=SENADOR&pagina=2");
     rotas();

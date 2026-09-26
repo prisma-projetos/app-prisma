@@ -19,6 +19,8 @@ export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
   const searchParams = useSearchParams();
   const meses = mesesDisponiveis();
   const janela = lerJanela(searchParams.get("janela"), meses);
+  // Mês antigo vindo de link compartilhado entra como opção extra no fim.
+  const opcoes = janela && !meses.includes(janela) ? [...meses, janela] : meses;
 
   // A API filtra sentimento e temas por datas; `janela` só vale para o panorama (spec 018).
   const porDatas: ConsultaRequest = janela ? { ...entidade, ...intervaloDaJanela(janela) } : entidade;
@@ -44,7 +46,7 @@ export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
           className="min-h-14 border-2 border-tinta bg-papel px-4 py-3 text-corpo font-normal text-tinta"
         >
           <option value="">Todo o período</option>
-          {meses.map((mes) => (
+          {opcoes.map((mes) => (
             <option key={mes} value={mes}>
               {janelaPorExtenso(mes)}
             </option>

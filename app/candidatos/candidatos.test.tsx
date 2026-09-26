@@ -164,3 +164,17 @@ describe("Navegação para candidatos (spec 016)", () => {
     expect(screen.getByRole("link", { name: "Ver todos os candidatos" }).getAttribute("href")).toBe("/candidatos");
   });
 });
+
+describe("Filtro de nome acompanha a URL (code-review)", () => {
+  it("navegar para /candidatos sem q limpa o campo e não devolve o filtro antigo", async () => {
+    navegacao.reset("/candidatos", "q=maria");
+    rotas();
+    const { rerender } = renderComQuery(<CandidatosView />);
+    expect((screen.getByRole("searchbox", { name: "Nome" }) as HTMLInputElement).value).toBe("maria");
+    navegacao.reset("/candidatos");
+    rerender(<CandidatosView />);
+    expect((screen.getByRole("searchbox", { name: "Nome" }) as HTMLInputElement).value).toBe("");
+    await new Promise((r) => setTimeout(r, 400));
+    expect(navegacao.replace).not.toHaveBeenCalled();
+  });
+});

@@ -337,3 +337,17 @@ describe("Página de partido: filtro por cargo", () => {
     expect(chamadasPara(fetchMock, "politicos")[0].get("cargo")).toBe(enviado);
   });
 });
+
+describe("Lista do partido: filtro de nome acompanha a URL (code-review)", () => {
+  it("URL sem q limpa o campo e não devolve o filtro antigo", async () => {
+    navegacao.reset("/partidos/13", "q=maria");
+    rotasPT();
+    const { rerender } = renderComQuery(<PartidoView nrPartido={13} />);
+    expect((screen.getByRole("searchbox", { name: "Buscar candidato por nome" }) as HTMLInputElement).value).toBe("maria");
+    navegacao.reset("/partidos/13");
+    rerender(<PartidoView nrPartido={13} />);
+    expect((screen.getByRole("searchbox", { name: "Buscar candidato por nome" }) as HTMLInputElement).value).toBe("");
+    await new Promise((r) => setTimeout(r, 400));
+    expect(navegacao.replace).not.toHaveBeenCalled();
+  });
+});

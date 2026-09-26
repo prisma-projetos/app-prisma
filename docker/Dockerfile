@@ -19,6 +19,10 @@ FROM base AS builder
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1
+# Os cabeçalhos de segurança (CSP) são calculados no build: a origem das imagens
+# entra aqui, e não no container em execução (spec 019).
+ARG IMAGENS_ORIGEM=https://api-minio.ajvale.com.br
+ENV IMAGENS_ORIGEM=${IMAGENS_ORIGEM}
 RUN pnpm run build
 
 # ---------- runner ----------

@@ -52,6 +52,14 @@ export function CandidatosView() {
   const partidoSelecionado = listaPartidos.find((p) => String(p.numero) === partido);
   const pagina = lerPaginaDaUrl(searchParams.get("pagina"));
   const [busca, setBusca] = useState(q);
+  // O campo acompanha a URL quando ela muda por fora (link, cabeçalho, voltar),
+  // mas não desfaz o que a própria busca acabou de gravar.
+  const [qSincronizado, setQSincronizado] = useState(q);
+  const [qEnviado, setQEnviado] = useState(q);
+  if (q !== qSincronizado) {
+    setQSincronizado(q);
+    if (q !== qEnviado) setBusca(q);
+  }
 
   const total = usePoliticos({ anoEleicao: ANO_ELEICAO, tamanho: 1 });
   const lista = usePoliticos({
@@ -76,6 +84,7 @@ export function CandidatosView() {
 
   function limpar() {
     setBusca("");
+    setQEnviado("");
     navegar({ q: "", cargo: "", partido: "" });
   }
 
@@ -83,7 +92,10 @@ export function CandidatosView() {
     const termo = busca.trim();
     const alvo = termo.length >= MINIMO ? termo : "";
     if (alvo === (q.length >= MINIMO ? q : "")) return;
-    const timer = setTimeout(() => navegar({ q: alvo }), DEBOUNCE_MS);
+    const timer = setTimeout(() => {
+      setQEnviado(alvo);
+      navegar({ q: alvo });
+    }, DEBOUNCE_MS);
     return () => clearTimeout(timer);
     // navegar só depende de valores já listados aqui
     // eslint-disable-next-line react-hooks/exhaustive-deps

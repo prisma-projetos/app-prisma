@@ -23,12 +23,14 @@ describe("janela (spec 018)", () => {
     expect(intervaloDaJanela(janela)).toEqual({ de, ate });
   });
 
-  it("aceita só meses da lista", () => {
+  it("aceita meses válidos até o atual, inclusive fora da lista (links antigos)", () => {
     const meses = ["2026-09", "2026-08"];
     expect(lerJanela("2026-08", meses)).toBe("2026-08");
+    expect(lerJanela("2025-09", meses)).toBe("2025-09");
+    expect(lerJanela("2026-10", meses)).toBe("");
     expect(lerJanela("2026-13", meses)).toBe("");
+    expect(lerJanela("2026-00", meses)).toBe("");
     expect(lerJanela("abc", meses)).toBe("");
-    expect(lerJanela("2020-01", meses)).toBe("");
     expect(lerJanela(null, meses)).toBe("");
   });
 

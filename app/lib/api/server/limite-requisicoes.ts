@@ -13,8 +13,12 @@ export interface Verificacao {
 
 export function criarLimitador({ limite, janelaMs }: { limite: number; janelaMs: number }) {
   const acessos = new Map<string, number[]>();
+  let ultimaLimpeza = Number.NEGATIVE_INFINITY;
 
+  // Varre o mapa no máximo uma vez por janela, e não a cada requisição.
   function limparVencidos(agora: number) {
+    if (agora - ultimaLimpeza < janelaMs) return;
+    ultimaLimpeza = agora;
     for (const [chave, instantes] of acessos) {
       if (instantes[instantes.length - 1] <= agora - janelaMs) acessos.delete(chave);
     }
@@ -33,15 +37,49 @@ export function criarLimitador({ limite, janelaMs }: { limite: number; janelaMs:
       return { permitido: true, retryAfterSegundos: 0 };
     },
     tamanho: () => acessos.size,
-    limpar: () => acessos.clear(),
+    limpar: () => {
+      acessos.clear();
+      ultimaLimpeza = Number.NEGATIVE_INFINITY;
+    },
   };
 }
 
-/** Primeiro IP de x-forwarded-for; depois x-real-ip; senão, um balde comum. */
-export function ipDaRequisicao(cabecalhos: Headers): string {
-  const encaminhado = cabecalhos.get("x-forwarded-for")?.split(",")[0]?.trim();
-  if (encaminhado) return encaminhado;
-  return cabecalhos.get("x-real-ip")?.trim() || "desconhecido";
+/**
+ * IP do visitante segundo os proxies confiáveis. O início de x-forwarded-for é
+ * escrito pelo próprio cliente; cada proxy confiável acrescenta um valor no fim.
+ * Com N proxies, o IP do visitante é o N-ésimo valor contado da direita.
+ * Sem proxy confiável (N = 0), não há IP em que confiar: devolve null.
+ */
+export function ipDaRequisicao(cabecalhos: Headers, proxiesConfiaveis: number): string | null {
+  if (proxiesConfiaveis < 1) return null;
+  const valores = (cabecalhos.get("x-forwarded-for") ?? "")
+    .split(",")
+    .map((valor) => valor.trim())
+    .filter(Boolean);
+  return valores[valores.length - proxiesConfiaveis] ?? "desconhecido";
 }
 
 export const limitadorDoProxy = criarLimitador({ limite: 60, janelaMs: 60_000 });
+
+let avisouSemProxy = false;
+
+/** Lê PROXIES_CONFIAVEIS a cada requisição (runtime, não build). */
+export function proxiesConfiaveis(): number {
+  const valor = Number(process.env.PROXIES_CONFIAVEIS ?? 0);
+  return Number.isInteger(valor) && valor > 0 ? valor : 0;
+}
+
+/** Sem proxy confiável o limite fica desligado; isso é dito uma vez no log. */
+export function avisarSemProxyUmaVez() {
+  if (avisouSemProxy) return;
+  avisouSemProxy = true;
+  console.warn(
+    "[prisma] Limite de requisições desligado: defina PROXIES_CONFIAVEIS com o número de proxies " +
+      "reversos que acrescentam o IP do visitante em X-Forwarded-For (spec 019)."
+  );
+}
+
+/** Só para testes: volta o aviso ao estado inicial. */
+export function reiniciarAvisoSemProxy() {
+  avisouSemProxy = false;
+}

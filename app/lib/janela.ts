@@ -25,9 +25,14 @@ export function mesesDisponiveis(agora: Date = new Date()): string[] {
   });
 }
 
-/** Janela válida da URL, ou "" (todo o período). */
+/**
+ * Janela válida da URL, ou "" (todo o período). Aceita qualquer mês até o
+ * atual (meses[0]), inclusive fora da lista: um link compartilhado com um mês
+ * antigo continua mostrando aquele mês (spec 018, emenda).
+ */
 export function lerJanela(valor: string | null, meses: readonly string[]): string {
-  return valor && meses.includes(valor) ? valor : "";
+  if (!valor || !/^\d{4}-(0[1-9]|1[0-2])$/.test(valor)) return "";
+  return meses.length > 0 && valor <= meses[0] ? valor : "";
 }
 
 /** "2026-02" → { de: "2026-02-01", ate: "2026-02-28" }. */

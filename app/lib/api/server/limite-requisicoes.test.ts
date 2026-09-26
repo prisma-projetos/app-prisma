@@ -36,12 +36,17 @@ describe("limitador de requisições (spec 019)", () => {
   });
 
   it.each([
-    [{ "x-forwarded-for": "1.1.1.1, 10.0.0.1" }, "1.1.1.1"],
-    [{ "x-forwarded-for": "  2.2.2.2 " }, "2.2.2.2"],
-    [{ "x-forwarded-for": " ", "x-real-ip": "3.3.3.3" }, "3.3.3.3"],
-    [{ "x-real-ip": "4.4.4.4" }, "4.4.4.4"],
-    [{}, "desconhecido"],
-  ])("IP de %j é %s", (cabecalhos, esperado) => {
-    expect(ipDaRequisicao(new Headers(cabecalhos))).toBe(esperado);
+    [1, { "x-forwarded-for": "forjado, 1.1.1.1" }, "1.1.1.1"],
+    [1, { "x-forwarded-for": "1.1.1.1" }, "1.1.1.1"],
+    [2, { "x-forwarded-for": "forjado, 2.2.2.2, 10.0.0.1" }, "2.2.2.2"],
+    [2, { "x-forwarded-for": "10.0.0.1" }, "desconhecido"],
+    [1, {}, "desconhecido"],
+    [1, { "x-real-ip": "3.3.3.3" }, "desconhecido"],
+  ])("com %i proxy(s) confiável(is), o IP de %j é %s", (proxies, cabecalhos, esperado) => {
+    expect(ipDaRequisicao(new Headers(cabecalhos), proxies)).toBe(esperado);
+  });
+
+  it("sem proxy confiável, não há IP em que confiar", () => {
+    expect(ipDaRequisicao(new Headers({ "x-forwarded-for": "1.1.1.1" }), 0)).toBeNull();
   });
 });

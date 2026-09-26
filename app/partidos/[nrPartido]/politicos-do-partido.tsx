@@ -29,6 +29,14 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
   const cargo = lerCargo(searchParams.get("cargo"));
   const pagina = lerPagina(searchParams.get("pagina"));
   const [busca, setBusca] = useState(q);
+  // O campo acompanha a URL quando ela muda por fora (link, cabeçalho, voltar),
+  // mas não desfaz o que a própria busca acabou de gravar.
+  const [qSincronizado, setQSincronizado] = useState(q);
+  const [qEnviado, setQEnviado] = useState(q);
+  if (q !== qSincronizado) {
+    setQSincronizado(q);
+    if (q !== qEnviado) setBusca(q);
+  }
 
   const politicos = usePoliticos({
     nrPartido,
@@ -53,7 +61,10 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
   useEffect(() => {
     const termo = busca.trim();
     if (termo === q) return;
-    const timer = setTimeout(() => navegar({ q: termo }), DEBOUNCE_BUSCA_MS);
+    const timer = setTimeout(() => {
+      setQEnviado(termo);
+      navegar({ q: termo });
+    }, DEBOUNCE_BUSCA_MS);
     return () => clearTimeout(timer);
     // navegar só depende de valores já listados aqui
     // eslint-disable-next-line react-hooks/exhaustive-deps
