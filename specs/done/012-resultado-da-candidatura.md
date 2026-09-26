@@ -20,12 +20,12 @@ Na tabela de candidaturas do político, o traço "—" na coluna Resultado não 
 `GET /api/politicos/detalhe` (sem mudança): `candidaturas[{ anoEleicao, turno, cargo, uf, siglaPartido, nrPartido, numeroUrna, resultado, ... }]`. No backend, `resultado` deriva da situação do turno.
 
 ## Critérios de aceite
-- [ ] Com `resultado: null`, a célula mostra "Não informado¹" e a nota aparece abaixo da tabela.
-- [ ] Com `resultado: ""` (vazio ou só espaços), o comportamento é o mesmo do nulo.
-- [ ] Com `resultado: "ELEITO"`, a célula mostra "ELEITO" e, se nenhuma outra linha estiver sem resultado, a nota não aparece.
-- [ ] Nenhum valor nulo vira "em andamento" nem qualquer texto além de "Não informado".
-- [ ] O cabeçalho da coluna de sigla do estado é "Estado".
-- [ ] Com várias candidaturas, cada linha mostra o resultado do seu próprio registro (ordem de hoje: ano e turno decrescentes).
+- [x] Com `resultado: null`, a célula mostra "Não informado¹" e a nota aparece abaixo da tabela.
+- [x] Com `resultado: ""` (vazio ou só espaços), o comportamento é o mesmo do nulo.
+- [x] Com `resultado: "ELEITO"`, a célula mostra "ELEITO" e, se nenhuma outra linha estiver sem resultado, a nota não aparece.
+- [x] Nenhum valor nulo vira "em andamento" nem qualquer texto além de "Não informado".
+- [x] O cabeçalho da coluna de sigla do estado é "Estado".
+- [x] Com várias candidaturas, cada linha mostra o resultado do seu próprio registro (ordem de hoje: ano e turno decrescentes).
 
 ## Casos de borda
 - Sem candidaturas: "Nenhuma candidatura registrada." (como hoje), sem nota.
