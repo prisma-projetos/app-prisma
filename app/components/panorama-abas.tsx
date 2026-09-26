@@ -170,7 +170,7 @@ function ListaFontes({ fontes, agrupadas = false }: { fontes: Fonte[]; agrupadas
   }
   const data = (fonte: Fonte) => Date.parse(fonte.dataPublicacao ?? "") || 0;
   return <div className="mt-4 space-y-6">{[...grupos].sort(([a], [b]) => a.localeCompare(b, "pt-BR")).map(([nome, grupo]) => <section key={nome}>
-    <h4 className="font-semibold">{grupo.origem ? <><LinkExterno href={grupo.origem}>{nome}</LinkExterno><span className="ml-2 font-normal text-tinta-2">página inicial</span></> : nome}</h4>
+    <h4 className="font-semibold">{grupo.origem ? <><LinkExterno href={grupo.origem}>{nome}<span className="font-normal text-tinta-2"> · página inicial</span></LinkExterno></> : nome}</h4>
     <ul>{grupo.fontes.sort((a, b) => data(b) - data(a)).map((fonte, i) => <Materia key={`${fonte.itemId ?? fonte.url}-${i}`} fonte={fonte} />)}</ul>
   </section>)}</div>;
 }

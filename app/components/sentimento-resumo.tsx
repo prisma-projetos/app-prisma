@@ -35,19 +35,19 @@ export function SentimentoResumo({ resumo }: { resumo: SentimentoResumoResponse 
           <caption className="sr-only">Parágrafos por sentimento</caption>
           <thead className="sr-only"><tr><th>Sentimento</th><th>Parágrafos</th><th>Percentual</th></tr></thead>
           <tbody>
-            {SENTIMENTOS.map(s => <tr key={s} data-sentimento={s} className="border-b border-fio">
-              <th scope="row" className="py-4 pr-2 text-left font-normal">
+            {SENTIMENTOS.map(s => <tr key={s} data-sentimento={s} className="grid grid-cols-[1fr_auto] gap-x-3 border-b border-fio py-3 sm:table-row sm:py-0">
+              <th scope="row" className="text-left font-normal sm:py-4 sm:pr-2">
                 <span aria-hidden="true" className={`mr-2 inline-block h-3 w-3 border border-tinta ${SENTIMENTO_COR[s]}`} />
-                <span className="font-semibold">{SENTIMENTO_LABEL[s]} <span className="font-normal text-tinta-2">({EXPLICACAO[s]})</span></span>
+                <span className="font-semibold">{SENTIMENTO_LABEL[s]}</span>{" "}<span className="text-tinta-2">({EXPLICACAO[s]})</span>
               </th>
-              <td className="py-4 pr-3 text-right text-tinta-2">{formatarNumero(contagens.get(s)?.total)} parágrafos</td>
-              <td className="py-4 text-right">{formatarPercentual(contagens.get(s)?.percentual)}</td>
+              <td className="col-start-1 row-start-2 whitespace-nowrap pl-5 text-left text-tinta-2 sm:py-4 sm:pl-0 sm:pr-3 sm:text-right">{formatarNumero(contagens.get(s)?.total)} parágrafos</td>
+              <td className="col-start-2 row-span-2 row-start-1 self-center whitespace-nowrap text-right sm:py-4">{formatarPercentual(contagens.get(s)?.percentual)}</td>
             </tr>)}
           </tbody>
         </table>
-        <figcaption className="mt-4 text-[15px] font-semibold leading-[22px] text-tinta-2"><span>Fig. 1</span> Parágrafos sobre {nome} por sentimento, em todo o período. Base: {total} parágrafos de matérias que citam {nome}.</figcaption>
+        <figcaption className="mt-4 text-[15px] font-semibold leading-[22px] text-tinta-2"><span className="mr-1 text-tinta [font-variant-caps:all-small-caps] tracking-[0.06em]">Fig. 1</span> Parágrafos sobre {nome} por sentimento, em todo o período. Base: {total} parágrafos de matérias que citam {nome}.</figcaption>
       </figure>
-      <details className="border-l border-tinta bg-papel-2 p-6">
+      <details className="max-w-[760px] border-l border-tinta bg-papel-2 px-8 py-6">
         <summary className="min-h-12 cursor-pointer text-[21px] font-bold">Saiba mais: como esta análise funciona</summary>
         <div className="mt-4 flex max-w-[70ch] flex-col gap-4">
           <p>O sistema compara a quantidade de palavras positivas e negativas em cada parágrafo que cita o partido ou o candidato. Quando as contagens empatam, ou quando nenhuma palavra da lista aparece, o parágrafo conta como neutro.</p>

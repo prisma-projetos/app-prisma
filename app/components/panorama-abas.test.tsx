@@ -107,7 +107,8 @@ it("agrupa alfabeticamente, ordena datas e recusa URLs inseguras", () => {
   ] }] }} />);
   const bloco = screen.getByText("Fontes (5)").closest("details")!;
   fireEvent.click(screen.getByText("Fontes (5)"));
-  expect(within(bloco).getAllByRole("heading").map(h => h.textContent?.split(" (abre")[0])).toEqual(["Alfa", "Outros", "Zulu"]);
+  expect(within(bloco).getAllByRole("heading").map(h => h.textContent?.split(" (abre")[0])).toEqual(["Alfa · página inicial", "Outros", "Zulu · página inicial"]);
+  expect(within(bloco).getByRole("link", { name: /^Alfa\s?· página inicial/ }).getAttribute("href")).toBe("https://a.com/");
   const links = within(bloco).getAllByRole("link");
   expect(links.map(l => l.getAttribute("href"))).toEqual(["https://a.com/", "https://a.com/materia", "https://z.com/", "https://z.com/nova?x=1", "https://z.com/antiga"]);
   expect(within(bloco).getAllByText("Ler matéria")).toHaveLength(2);
