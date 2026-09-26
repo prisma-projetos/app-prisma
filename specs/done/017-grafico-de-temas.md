@@ -24,15 +24,15 @@ Hoje os temas só aparecem dentro do panorama, como lista recolhida, e não dá 
 `GET /api/analise/por-tema` com a mesma consulta da página (`nrPartido` ou `tituloEleitoral`, mais o período da spec 018) → `{ nome, totalMaterias, semTema, temas[{ tema, total, percentual }] }`. Validado: PSD em todo o período → 423 matérias, 4 sem tema, 943 temas. O hook `useAnalisePorTema` já existe.
 
 ## Critérios de aceite
-- [ ] As páginas de partido e de político mostram a seção "Temas mais citados" depois de "Sentimento da cobertura".
-- [ ] O gráfico mostra no máximo 10 temas, na ordem da API, cada um com nome e número visíveis.
-- [ ] A largura de cada barra é proporcional ao total dela dividido pelo maior total exibido.
-- [ ] O botão "Tabela" troca para a tabela com os mesmos temas, totais e percentuais do gráfico; `aria-pressed` acompanha a visão ativa.
-- [ ] Com mais de 10 temas, "Ver todos os {n} temas" mostra todos, e "Mostrar só os 10 primeiros" volta.
-- [ ] A legenda começa com "Fig. 2" e mostra o total de matérias, as sem tema e o período.
-- [ ] Sem temas, aparece o estado vazio desenhado com o nome da entidade; com erro, a mensagem e "Tentar de novo".
-- [ ] Nenhuma barra usa o espectro nem cor além de `grafico`.
-- [ ] Verificação visual em 390px e 1440px, claro e escuro.
+- [x] As páginas de partido e de político mostram a seção "Temas mais citados" depois de "Sentimento da cobertura".
+- [x] O gráfico mostra no máximo 10 temas, na ordem da API, cada um com nome e número visíveis.
+- [x] A largura de cada barra é proporcional ao total dela dividido pelo maior total exibido.
+- [x] O botão "Tabela" troca para a tabela com os mesmos temas, totais e percentuais do gráfico; `aria-pressed` acompanha a visão ativa.
+- [x] Com mais de 10 temas, "Ver todos os {n} temas" mostra todos, e "Mostrar só os 10 primeiros" volta.
+- [x] A legenda começa com "Fig. 2" e mostra o total de matérias, as sem tema e o período.
+- [x] Sem temas, aparece o estado vazio desenhado com o nome da entidade; com erro, a mensagem e "Tentar de novo".
+- [x] Nenhuma barra usa o espectro nem cor além de `grafico`.
+- [x] Verificação visual em 390px e 1440px, claro e escuro.
 
 ## Casos de borda
 - Temas com o mesmo total: mantêm a ordem da API.

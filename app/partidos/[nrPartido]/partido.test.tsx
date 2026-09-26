@@ -6,6 +6,7 @@ import {
   paginaDeCandidatos,
   partidoPT,
   sentimentoPT,
+  temasPT,
 } from "@/test/fixtures/dados";
 import { navegacao, NotFoundError } from "@/test/navegacao";
 import { chamadasPara, erroApi, mockApi, renderComQuery } from "@/test/utils";
@@ -19,6 +20,7 @@ function rotasPT(extra: Record<string, unknown> = {}) {
     "partidos/detalhe": partidoPT,
     "analise/sentimento": sentimentoPT,
     "analise/panorama": panoramaPT,
+    "analise/por-tema": temasPT,
     politicos: (p: URLSearchParams) =>
       Response.json(paginaDeCandidatos(Number(p.get("pagina") ?? 0), 3)),
     ...extra,

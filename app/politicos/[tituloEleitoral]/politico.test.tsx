@@ -1,7 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { TEXTO_DISCLAIMER } from "@/app/components/disclaimer";
-import { panoramaPT, panoramaVazio, politicoDetalhe, sentimentoPT, sentimentoVazio } from "@/test/fixtures/dados";
+import { panoramaPT, panoramaVazio, politicoDetalhe, sentimentoPT, sentimentoVazio, temasPT } from "@/test/fixtures/dados";
 import { NotFoundError } from "@/test/navegacao";
 import { chamadasPara, erroApi, mockApi, renderComQuery } from "@/test/utils";
 import PoliticoPage from "./page";
@@ -16,6 +16,7 @@ function rotas(extra: Record<string, unknown> = {}) {
     "politicos/detalhe": politicoDetalhe,
     "analise/sentimento": sentimentoPT,
     "analise/panorama": panoramaPT,
+    "analise/por-tema": temasPT,
     ...extra,
   });
 }
