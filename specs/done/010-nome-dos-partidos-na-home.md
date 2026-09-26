@@ -24,14 +24,14 @@ Quem não reconhece os símbolos não consegue achar um partido só pela logo. A
 `GET /api/partidos` (sem mudança): `PartidoResponse` = `{ numero, sigla, nome, descricao, urlLogo }`.
 
 ## Critérios de aceite
-- [ ] A home mostra o `h1` "Partidos, de A a Z" e a contagem de partidos recebidos.
-- [ ] Cada partido aparece como um link com nome acessível "{sigla}, {nome por extenso}, número {numero}" apontando para `/partidos/{numero}`.
-- [ ] Sigla, nome por extenso e "nº {numero}" ficam visíveis sem hover.
-- [ ] As fichas seguem a ordem alfabética da sigla.
-- [ ] Quando `urlLogo` é nulo ou a imagem falha, a sigla aparece na placa e o restante da ficha continua visível.
-- [ ] `nomeProprio("PARTIDO SOCIALISTA  DOS TRABALHADORES UNIFICADO")` retorna "Partido Socialista dos Trabalhadores Unificado"; `nomeProprio("REDE SUSTENTABILIDADE")` retorna "Rede Sustentabilidade"; `nomeProprio("DEMOCRACIA CRISTÃ")` retorna "Democracia Cristã"; `nomeProprio(null)` retorna "".
-- [ ] Carregando, erro e lista vazia continuam com os estados de hoje ("Nenhum partido encontrado."), no visual da spec 009.
-- [ ] Verificação visual em 390px e 1440px, claro e escuro: nenhum "nº" cortado, nenhuma rolagem horizontal.
+- [x] A home mostra o `h1` "Partidos, de A a Z" e a contagem de partidos recebidos.
+- [x] Cada partido aparece como um link com nome acessível "{sigla}, {nome por extenso}, número {numero}" apontando para `/partidos/{numero}`.
+- [x] Sigla, nome por extenso e "nº {numero}" ficam visíveis sem hover.
+- [x] As fichas seguem a ordem alfabética da sigla.
+- [x] Quando `urlLogo` é nulo ou a imagem falha, a sigla aparece na placa e o restante da ficha continua visível.
+- [x] `nomeProprio("PARTIDO SOCIALISTA  DOS TRABALHADORES UNIFICADO")` retorna "Partido Socialista dos Trabalhadores Unificado"; `nomeProprio("REDE SUSTENTABILIDADE")` retorna "Rede Sustentabilidade"; `nomeProprio("DEMOCRACIA CRISTÃ")` retorna "Democracia Cristã"; `nomeProprio(null)` retorna "".
+- [x] Carregando, erro e lista vazia continuam com os estados de hoje ("Nenhum partido encontrado."), no visual da spec 009.
+- [x] Verificação visual em 390px e 1440px, claro e escuro: nenhum "nº" cortado, nenhuma rolagem horizontal.
 
 ## Casos de borda
 - Nome nulo: a ficha mostra só a sigla e o número; o nome acessível omite a parte do nome.

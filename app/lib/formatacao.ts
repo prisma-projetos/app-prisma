@@ -57,3 +57,13 @@ export function candidaturaMaisRecente(
 ): CandidaturaResponse | undefined {
   return ordenarCandidaturas(candidaturas)[0];
 }
+
+/** Normaliza nomes dos partidos recebidos em caixa alta. */
+export function nomeProprio(nome?: string | null): string {
+  const minusculas = new Set(["a", "à", "e", "o", "da", "das", "de", "do", "dos"]);
+  return (nome ?? "").trim().toLocaleLowerCase("pt-BR").split(/\s+/)
+    .map((palavra, indice) => indice > 0 && minusculas.has(palavra)
+      ? palavra
+      : palavra.charAt(0).toLocaleUpperCase("pt-BR") + palavra.slice(1))
+    .join(" ");
+}
