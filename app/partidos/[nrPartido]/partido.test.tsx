@@ -351,3 +351,22 @@ describe("Lista do partido: filtro de nome acompanha a URL (code-review)", () =>
     expect(navegacao.replace).not.toHaveBeenCalled();
   });
 });
+
+describe("Ver candidatos no topo do partido (spec 022)", () => {
+  it("leva à lista filtrada pelo partido e vem antes do seletor de janela", async () => {
+    navegacao.reset("/partidos/13");
+    rotasPT();
+    renderComQuery(<PartidoView nrPartido={13} />);
+    const link = await screen.findByRole("link", { name: "Ver candidatos do PT" });
+    expect(link.getAttribute("href")).toBe("/candidatos?partido=13");
+    const seletor = screen.getByRole("combobox", { name: "Janela (mês das matérias)" });
+    expect(link.compareDocumentPosition(seletor) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+
+  it("sem sigla, usa o texto genérico", async () => {
+    navegacao.reset("/partidos/13");
+    rotasPT({ "partidos/detalhe": { ...partidoPT, sigla: undefined } });
+    renderComQuery(<PartidoView nrPartido={13} />);
+    expect(await screen.findByRole("link", { name: "Ver candidatos do partido" })).toBeTruthy();
+  });
+});

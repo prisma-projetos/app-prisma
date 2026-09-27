@@ -8,6 +8,6 @@ Pedido de Bea (27/09/2026): a página do partido ganha, logo no início, o botã
 - A lista de candidatos no fim da página do partido continua como está.
 
 ## Critérios de aceite
-- [ ] Na página do partido 55, o link "Ver candidatos do PSD" aponta para `/candidatos?partido=55`.
-- [ ] O link aparece logo após o cabeçalho do partido, antes do seletor de janela.
-- [ ] Sem sigla, o texto é "Ver candidatos do partido".
+- [x] Na página do partido 55, o link "Ver candidatos do PSD" aponta para `/candidatos?partido=55`.
+- [x] O link aparece logo após o cabeçalho do partido, antes do seletor de janela.
+- [x] Sem sigla, o texto é "Ver candidatos do partido".

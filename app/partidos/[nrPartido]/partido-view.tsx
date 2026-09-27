@@ -42,21 +42,29 @@ export function PartidoView({ nrPartido }: { nrPartido: number }) {
         <ErroCarregamento onTentarDeNovo={() => partido.refetch()} />
       )}
       {partido.data && (
-        <div className="flex items-center gap-6">
-          <EntidadeAvatar
-            nome={partido.data.sigla ?? ""}
-            imagemUrl={partido.data.urlLogo}
-            variante="partido"
-            tamanho={64}
-          />
-          <div className="min-w-0">
-            <h1 className="text-titulo-1 font-bold text-tinta sm:text-display">
-              {partido.data.sigla}
-            </h1>
-            <p className="text-corpo text-tinta-2">
-              {nomeProprio(partido.data.nome)} <span className="whitespace-nowrap">· nº {partido.data.numero}</span>
-            </p>
+        <div className="flex flex-col items-start gap-6 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-center gap-6">
+            <EntidadeAvatar
+              nome={partido.data.sigla ?? ""}
+              imagemUrl={partido.data.urlLogo}
+              variante="partido"
+              tamanho={64}
+            />
+            <div className="min-w-0">
+              <h1 className="text-titulo-1 font-bold text-tinta sm:text-display">
+                {partido.data.sigla}
+              </h1>
+              <p className="text-corpo text-tinta-2">
+                {nomeProprio(partido.data.nome)} <span className="whitespace-nowrap">· nº {partido.data.numero}</span>
+              </p>
+            </div>
           </div>
+          <Link
+            href={`/candidatos?partido=${partido.data.numero ?? nrPartido}`}
+            className="inline-flex min-h-12 shrink-0 items-center border-2 border-tinta px-5 text-corpo font-semibold text-tinta hover:bg-papel-2"
+          >
+            Ver candidatos do {partido.data.sigla || "partido"}
+          </Link>
         </div>
       )}
 
