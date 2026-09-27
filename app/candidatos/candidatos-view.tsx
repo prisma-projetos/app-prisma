@@ -3,12 +3,11 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { EntidadeAvatar } from "@/app/components/entidade-avatar";
+import { LinhaCandidato } from "@/app/components/linha-candidato";
 import { CampoSelect } from "@/app/components/campo-select";
 import { ErroCarregamento, Skeleton } from "@/app/components/estados";
 import { usePartidos, usePoliticos } from "@/app/lib/api/hooks";
-import type { CandidatoResumoResponse } from "@/app/lib/api/types";
-import { CARGOS, lerCargo } from "@/app/lib/cargos";
+import { CARGOS, lerCargo, rotuloDoCargo } from "@/app/lib/cargos";
 import { CARGOS_ESTADUAIS, ESTADOS, filtroUfAtivo, lerUf, nomeDoEstado } from "@/app/lib/estados";
 import { ANO_ELEICAO, POLITICOS_POR_PAGINA } from "@/app/lib/config";
 import { formatarNumero, nomeProprio } from "@/app/lib/formatacao";
@@ -27,11 +26,6 @@ interface Filtros {
 
 function lerPaginaDaUrl(valor: string | null): number {
   return valor && /^\d+$/.test(valor) && Number(valor) > 0 ? Number(valor) : 1;
-}
-
-function rotuloCargo(cargo?: string | null): string | undefined {
-  if (!cargo) return undefined;
-  return CARGOS.find((c) => c.valor === cargo.toLocaleUpperCase("pt-BR"))?.rotulo ?? nomeProprio(cargo);
 }
 
 const CAMPO =
@@ -127,7 +121,7 @@ export function CandidatosView() {
   const temFiltro = Boolean(q || cargo || partido || uf);
   const descricaoFiltros = [
     q.length >= MINIMO && `Nome: "${q}"`,
-    cargo && `Cargo: ${rotuloCargo(cargo)}`,
+    cargo && `Cargo: ${rotuloDoCargo(cargo)}`,
     partidoSelecionado && `Partido: ${partidoSelecionado.sigla}`,
     uf && `Estado: ${nomeDoEstado(uf)}`,
   ].filter(Boolean);
@@ -287,24 +281,6 @@ export function CandidatosView() {
   );
 }
 
-function LinhaCandidato({ candidato: c }: { candidato: CandidatoResumoResponse }) {
-  return (
-    <li className="relative grid min-h-[88px] grid-cols-[64px_1fr] items-center gap-x-4 border-b border-fio py-3 hover:bg-papel-2 sm:grid-cols-[88px_1fr_minmax(0,320px)] sm:gap-x-6">
-      <span className="row-span-2 sm:row-span-1">
-        <EntidadeAvatar nome={nomeProprio(c.nome)} imagemUrl={c.urlFoto} variante="politico" tamanho={64} />
-      </span>
-      <Link
-        href={`/politicos/${c.tituloEleitoral}`}
-        // O link cobre a linha inteira (foto, nome e cargo): alvo de toque grande.
-        className="text-corpo font-semibold text-tinta underline underline-offset-4 after:absolute after:inset-0 after:content-[''] hover:decoration-2"
-      >
-        {nomeProprio(c.nome)}
-      </Link>
-      <span className="text-apoio text-tinta-2 sm:text-corpo sm:text-tinta">{rotuloCargo(c.cargo)}</span>
-    </li>
-  );
-}
-
 const POR_CARGO = 6;
 
 /** Candidatos de um estado divididos por cargo estadual (spec 023). */
@@ -324,7 +300,7 @@ function SecaoCargo({ uf, cargo }: { uf: string; cargo: string }) {
   const candidatos = (consulta.data?.content ?? []).filter((c) => c.nome);
   // Cargo sem candidatos no estado não aparece.
   if (!consulta.data || total === 0) return null;
-  const rotulo = rotuloCargo(cargo) ?? cargo;
+  const rotulo = rotuloDoCargo(cargo) ?? cargo;
   const titulo = `${rotulo} (${formatarNumero(total)})`;
 
   return (

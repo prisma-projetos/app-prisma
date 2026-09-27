@@ -30,7 +30,9 @@ describe("Home: ListaPartidos", () => {
     mockApi({ partidos });
     const { container } = renderComQuery(<ListaPartidos />);
 
-    const links = await screen.findAllByRole("link");
+    // Os links de letra (spec 024) ficam fora da lista das fichas.
+    const lista = await screen.findByRole("list");
+    const links = within(lista).getAllByRole("link");
     expect(links.map((l) => l.getAttribute("aria-label"))).toEqual(["AGIR, Agir, número 36", "AVANTE, Avante, número 70", "PT, Partido dos Trabalhadores, número 13"]);
     expect(links.map((l) => l.getAttribute("href"))).toEqual([
       "/partidos/36",

@@ -23,9 +23,9 @@ Fechar os pontos de frontend que ficaram pendentes na revisão das fases 3 e 4 (
 - Glossário na home e em `/candidatos`.
 
 ## Critérios de aceite
-- [ ] Partido e político mostram o `aside` "Palavras desta página" com os 6 termos e as definições, depois da análise na ordem do documento.
-- [ ] A partir de `lg`, a análise e a margem ficam lado a lado; no celular, a margem vem depois da análise.
-- [ ] A home mostra "Ir para a letra" com uma letra por inicial de sigla, sem letras repetidas e em ordem alfabética; cada link aponta para `#letra-{X}` e existe um elemento com esse id na primeira ficha da letra.
-- [ ] A lista de candidatos do partido mostra, para cada candidato, a foto, o nome formatado como link para `/politicos/{tituloEleitoral}` e o cargo.
-- [ ] `DESIGN.md` registra o foco que desliza como descartado, com o motivo.
-- [ ] Testes, lint e build passam; verificação visual em 390px e 1440px, claro e escuro.
+- [x] Partido e político mostram o `aside` "Palavras desta página" com os 6 termos e as definições, depois da análise na ordem do documento.
+- [x] A partir de `lg`, a análise e a margem ficam lado a lado; no celular, a margem vem depois da análise.
+- [x] A home mostra "Ir para a letra" com uma letra por inicial de sigla, sem letras repetidas e em ordem alfabética; cada link aponta para `#letra-{X}` e existe um elemento com esse id na primeira ficha da letra.
+- [x] A lista de candidatos do partido mostra, para cada candidato, a foto, o nome formatado como link para `/politicos/{tituloEleitoral}` e o cargo.
+- [x] `DESIGN.md` registra o foco que desliza como descartado, com o motivo.
+- [x] Testes, lint e build passam; verificação visual em 390px e 1440px, claro e escuro.

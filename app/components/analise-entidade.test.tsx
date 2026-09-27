@@ -111,3 +111,17 @@ describe("Seletor de janela (spec 018)", () => {
     expect(await screen.findByText("Ainda não há panorama sobre PT em setembro de 2026.")).toBeTruthy();
   });
 });
+
+describe("Glossário na margem (spec 024)", () => {
+  it("mostra Palavras desta página com os 6 termos, depois da análise", () => {
+    navegacao.reset("/partidos/13");
+    rotas();
+    renderComQuery(<AnaliseEntidade entidade={{ nrPartido: 13 }} />);
+    const margem = screen.getByRole("complementary", { name: "Palavras desta página" });
+    const termos = [...margem.querySelectorAll("dt")].map((dt) => dt.textContent);
+    expect(termos).toEqual(["Parágrafo", "Sentimento", "Tema", "Janela", "Panorama", "Fonte"]);
+    expect(margem.textContent).toContain("Negativo se o parágrafo critica, neutro se só informa, positivo se elogia");
+    const panorama = screen.getByRole("heading", { level: 2, name: "Panorama" });
+    expect(panorama.compareDocumentPosition(margem) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
+});

@@ -16,11 +16,23 @@ export function ListaPartidos() {
     (a.sigla ?? "").localeCompare(b.sigla ?? "", "pt-BR")
   );
 
+  // Primeira ficha de cada letra inicial recebe a âncora do índice (spec 024).
+  const letras: string[] = [];
+  const ancoras = new Map<number, string>();
+  for (const partido of partidos) {
+    const letra = (partido.sigla ?? "").charAt(0).toLocaleUpperCase("pt-BR");
+    if (letra && !letras.includes(letra)) {
+      letras.push(letra);
+      ancoras.set(partido.numero ?? -1, letra);
+    }
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <p className="text-xl text-tinta-2">
         {partidos.length} partidos, em ordem alfabética pela sigla.
       </p>
+      {partidos.length > 0 && <IndicePorLetra letras={letras} />}
       {partidos.length === 0 ? (
         <MensagemVazia>Nenhum partido encontrado.</MensagemVazia>
       ) : (
@@ -29,7 +41,11 @@ export function ListaPartidos() {
             const sigla = partido.sigla || `Partido nº ${partido.numero}`;
             const nome = nomeProprio(partido.nome);
             return (
-              <li key={partido.numero} className="min-w-0 bg-papel">
+              <li
+                key={partido.numero}
+                id={ancoras.has(partido.numero ?? -1) ? `letra-${ancoras.get(partido.numero ?? -1)}` : undefined}
+                className="min-w-0 scroll-mt-8 bg-papel"
+              >
                 <Link
                   href={`/partidos/${partido.numero}`}
                   aria-label={[sigla, nome, `número ${partido.numero}`].filter(Boolean).join(", ")}
@@ -53,5 +69,24 @@ export function ListaPartidos() {
         </ul>
       )}
     </div>
+  );
+}
+
+function IndicePorLetra({ letras }: { letras: string[] }) {
+  return (
+    <nav aria-label="Ir para a letra" className="flex flex-wrap items-center gap-2">
+      <span className="mr-2 text-apoio text-tinta-2" aria-hidden="true">
+        Ir para a letra
+      </span>
+      {letras.map((letra) => (
+        <a
+          key={letra}
+          href={`#letra-${letra}`}
+          className="inline-flex min-h-12 min-w-12 items-center justify-center border border-fio text-corpo font-semibold text-tinta hover:bg-papel-2"
+        >
+          {letra}
+        </a>
+      ))}
+    </nav>
   );
 }

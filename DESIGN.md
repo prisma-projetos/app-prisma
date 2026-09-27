@@ -184,7 +184,9 @@ Cantos retos em tudo. Duas exceções: fotos de candidato em círculo e a pílul
 - Veículo em Corpo forte, data em Apoio, sentimento como etiqueta de texto com o termo, contorno de 1px e canto reto (a pílula das capturas contraria a regra de formas). Parágrafo em Corpo. Link "Ler matéria no {veículo}" sublinhado em repouso, com seta SVG. Fio de 1px entre itens.
 
 ### Lista paginada
-- Lista de candidatos (/candidatos): foto circular de 64px, nome como link sublinhado em repouso que cobre a linha inteira (alvo grande), e cargo. Sem estado nem partido: a listagem da API não traz esses campos. Linha de 1px entre itens, hover em papel-2. Rodapé com "Anterior", "Página n de N" e "Próxima" em botões secundários de 48px.
+- Margem de glossário (partido e político, spec 024): `<aside>` "Palavras desta página" na coluna de 360px, com fio de 3px e `<dl>` dos termos do glossário (Parágrafo, Sentimento, Tema, Janela, Panorama, Fonte) e a explicação simples; `sticky` no desktop, depois da análise no celular.
+- Índice por letra (home, spec 024): "Ir para a letra" com uma letra por inicial de sigla, cada uma com alvo de 48px, apontando para a primeira ficha da letra.
+- Lista de candidatos (/candidatos e lista do partido, componente `LinhaCandidato`): foto circular de 64px, nome como link sublinhado em repouso que cobre a linha inteira (alvo grande), e cargo. Sem estado nem partido: a listagem da API não traz esses campos. Linha de 1px entre itens, hover em papel-2. Rodapé com "Anterior", "Página n de N" e "Próxima" em botões secundários de 48px.
 
 ### Seletor de janela
 - Rótulo "Janela (mês das matérias)" + select de 56px com borda 2px em tinta e chevron SVG (`CampoSelect`, sem a seta nativa). Opções: "Todo o período" e os 12 últimos meses; um mês mais antigo vindo de link entra como opção extra. Sem texto de ajuda: a API não informa quais meses têm dados.
@@ -221,4 +223,5 @@ Cantos retos em tudo. Duas exceções: fotos de candidato em círculo e a pílul
 - **Retícula para sentimentos**: padrões de pontos ou hachura além do cinza. Não decidido.
 - **Posição do feixe**: decidida na spec 015. Fica abaixo da busca, como Fig. 1 com legenda na medida de leitura (760px), e não como fio de abertura junto ao wordmark.
 - **Texto do aviso**: se continua dizendo "gerados por modelos de IA", já que o classificador atual é uma lista de palavras (baseline v1). O texto só muda no CLAUDE.md.
+- **Foco que desliza** (contrato de direção): descartado em 27/09/2026 (spec 024). A regra de um só momento autoral de movimento (o feixe da home) vale mais; o indicador ativo e o foco aparecem parados.
 - **Versalete**: confirmar que a Atkinson Hyperlegible Next tem versalete de verdade (smcp); versalete sintetizado pelo navegador não serve.

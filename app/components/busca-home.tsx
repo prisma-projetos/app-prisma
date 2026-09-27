@@ -3,7 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { usePartidos, usePoliticos } from "@/app/lib/api/hooks";
-import { CARGOS } from "@/app/lib/cargos";
+import { rotuloDoCargo } from "@/app/lib/cargos";
 import { ANO_ELEICAO } from "@/app/lib/config";
 import { formatarNumero, nomeProprio } from "@/app/lib/formatacao";
 
@@ -16,11 +16,6 @@ interface Item {
   href: string;
   titulo: string;
   detalhe?: string;
-}
-
-function rotuloCargo(cargo?: string | null): string | undefined {
-  if (!cargo) return undefined;
-  return CARGOS.find((c) => c.valor === cargo.toLocaleUpperCase("pt-BR"))?.rotulo ?? nomeProprio(cargo);
 }
 
 function plural(n: number, singular: string, pluralizado: string) {
@@ -62,7 +57,7 @@ export function BuscaHome() {
     id: `${id}-candidato-${c.tituloEleitoral}`,
     href: `/politicos/${c.tituloEleitoral}`,
     titulo: nomeProprio(c.nome),
-    detalhe: rotuloCargo(c.cargo),
+    detalhe: rotuloDoCargo(c.cargo),
   }));
   if (totalCandidatos > LIMITE) {
     itensCandidatos.push({

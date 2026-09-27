@@ -1,3 +1,5 @@
+import { nomeProprio } from "./formatacao";
+
 /**
  * Cargos das candidaturas, com o valor exato usado pela API (filtro `cargo`).
  * Lista fixa: a API não expõe um endpoint de cargos. Ordem do TSE, da esfera
@@ -21,4 +23,10 @@ export function lerCargo(valor: string | null): string {
   if (!valor) return "";
   const alvo = valor.toLocaleUpperCase("pt-BR");
   return CARGOS.find((c) => c.valor === alvo)?.valor ?? "";
+}
+
+/** Rótulo em caixa normal de um cargo vindo da API; fora da lista, formata o texto. */
+export function rotuloDoCargo(cargo?: string | null): string | undefined {
+  if (!cargo) return undefined;
+  return CARGOS.find((c) => c.valor === cargo.toLocaleUpperCase("pt-BR"))?.rotulo ?? nomeProprio(cargo);
 }

@@ -55,6 +55,9 @@ export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
         </CampoSelect>
       </label>
 
+      {/* Grade de livro (DESIGN.md): texto de até 792px, medianiz de 96px e margem de 360px. */}
+      <div className="grid gap-16 lg:grid-cols-[minmax(0,792px)_360px] lg:gap-24">
+        <div className="flex min-w-0 flex-col gap-16">
       <Disclaimer />
 
       <Secao id="titulo-sentimento" titulo="Sentimento da cobertura">
@@ -86,6 +89,37 @@ export function AnaliseEntidade({ entidade }: { entidade: ConsultaRequest }) {
         )}
         {panorama.data && <PanoramaAbas panorama={panorama.data} janelaEscolhida={janela} />}
       </Secao>
+        </div>
+        <Glossario />
+      </div>
     </>
+  );
+}
+
+const TERMOS: [string, string][] = [
+  ["Parágrafo", "Parte de uma matéria que cita o partido ou o candidato. É o que se conta no sentimento."],
+  ["Sentimento", "Negativo se o parágrafo critica, neutro se só informa, positivo se elogia."],
+  ["Tema", "Assunto identificado na matéria. Uma matéria pode ter vários."],
+  ["Janela", "O mês das matérias consideradas."],
+  ["Panorama", "Resumo, gerado por IA, do que as matérias de cada sentimento dizem."],
+  ["Fonte", "A matéria de um veículo que sustenta um panorama."],
+];
+
+/** Margem de glossário (spec 024): acompanha a leitura no desktop e vem depois da análise no celular. */
+function Glossario() {
+  return (
+    <aside aria-labelledby="titulo-glossario" className="self-start border-t-[3px] border-tinta pt-6 lg:sticky lg:top-8">
+      <h2 id="titulo-glossario" className="mb-4 text-titulo-3 text-tinta">
+        Palavras desta página
+      </h2>
+      <dl className="flex flex-col">
+        {TERMOS.map(([termo, definicao]) => (
+          <div key={termo} className="border-b border-fio py-3">
+            <dt className="text-corpo font-semibold text-tinta">{termo}</dt>
+            <dd className="text-apoio text-tinta-2">{definicao}</dd>
+          </div>
+        ))}
+      </dl>
+    </aside>
   );
 }

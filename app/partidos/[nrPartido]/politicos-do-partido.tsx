@@ -1,16 +1,15 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Secao } from "@/app/components/secao";
 import { CampoSelect } from "@/app/components/campo-select";
-import { EntidadeAvatar } from "@/app/components/entidade-avatar";
+import { LinhaCandidato } from "@/app/components/linha-candidato";
 import { ErroCarregamento, GradeSkeleton, MensagemVazia } from "@/app/components/estados";
 import { usePoliticos } from "@/app/lib/api/hooks";
 import { CARGOS, lerCargo } from "@/app/lib/cargos";
 import { ANO_ELEICAO, POLITICOS_POR_PAGINA } from "@/app/lib/config";
-import { formatarNumero, nomeProprio } from "@/app/lib/formatacao";
+import { formatarNumero } from "@/app/lib/formatacao";
 import { lerPagina } from "@/app/lib/identificadores";
 
 const DEBOUNCE_BUSCA_MS = 300;
@@ -127,22 +126,9 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
         <MensagemVazia>Nenhum político encontrado.</MensagemVazia>
       )}
       {candidatos.length > 0 && (
-        <ul
-          className={`grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-3 lg:grid-cols-4 ${
-            carregandoPagina ? "opacity-60" : ""
-          }`}
-        >
+        <ul className={carregandoPagina ? "opacity-60" : ""}>
           {candidatos.map((candidato) => (
-            <li key={candidato.tituloEleitoral}>
-              <Link href={`/politicos/${candidato.tituloEleitoral}`} aria-label={nomeProprio(candidato.nome)} className="flex min-h-12 justify-center py-4 text-tinta underline hover:bg-papel-2 hover:decoration-2">
-                <EntidadeAvatar
-                  nome={nomeProprio(candidato.nome)}
-                  imagemUrl={candidato.urlFoto}
-                  variante="politico"
-                  mostrarNome
-                />
-              </Link>
-            </li>
+            <LinhaCandidato key={candidato.tituloEleitoral} candidato={candidato} />
           ))}
         </ul>
       )}

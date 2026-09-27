@@ -209,13 +209,19 @@ describe("Página de partido: políticos", () => {
     );
   });
 
-  it("exibe o nome de cada político sem depender de hover", async () => {
-    rotasPT();
+  it("mostra cada candidato em linha, como em /candidatos: foto, nome com link e cargo (spec 024)", async () => {
+    rotasPT({
+      politicos: () => {
+        const pagina = paginaDeCandidatos(0, 1);
+        return Response.json({ ...pagina, content: pagina.content.map((c) => ({ ...c, cargo: "DEPUTADO FEDERAL" })) });
+      },
+    });
     renderComQuery(<PartidoView nrPartido={13} />);
     const link = await screen.findByRole("link", { name: "Candidato 0-0" });
-    const nome = within(link).getByText("Candidato 0-0");
-    expect(nome.className).not.toMatch(/opacity-0/);
-    expect(nome.className).not.toMatch(/absolute/);
+    const linha = link.closest("li")!;
+    expect(within(linha).getByText("Deputado federal")).toBeTruthy();
+    expect(linha.querySelector("img")?.getAttribute("src")).toBe("https://minio.test/0-0.jpg");
+    expect(link.textContent).toBe("Candidato 0-0");
   });
 });
 
