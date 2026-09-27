@@ -3,9 +3,9 @@ import { Atkinson_Hyperlegible_Next } from "next/font/google";
 import { Cabecalho } from "@/app/components/cabecalho";
 import { Rodape } from "@/app/components/rodape";
 import { Providers } from "@/app/providers";
+import { SCRIPT_TEMA_INICIAL } from "@/app/lib/tema";
 import "./globals.css";
 
-const THEME_INIT_SCRIPT = `(function(){try{var k="prisma-theme";var s=localStorage.getItem(k);var t=s==="dark"||s==="light"?s:(window.matchMedia&&window.matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");document.documentElement.setAttribute("data-theme",t)}catch(e){}})()`;
 
 const atkinson = Atkinson_Hyperlegible_Next({
   variable: "--font-atkinson",
@@ -30,7 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     >
       <head>
         <script
-          dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }}
+          dangerouslySetInnerHTML={{ __html: SCRIPT_TEMA_INICIAL }}
         />
       </head>
       <body className="min-h-full flex flex-col">

@@ -16,8 +16,8 @@ Pedido de Bea (27/09/2026): o modo claro ou escuro deve seguir automaticamente o
 - Opção "Automático" explícita no botão.
 
 ## Critérios de aceite
-- [ ] Sem escolha na sessão, o `data-theme` segue `prefers-color-scheme` no carregamento.
-- [ ] Mudar `prefers-color-scheme` com a página aberta muda o `data-theme`, se não houver escolha na sessão.
-- [ ] Clicar no botão troca o tema e grava em `sessionStorage`, não em `localStorage`; com escolha na sessão, a mudança do sistema não sobrescreve.
-- [ ] Um `prisma-theme` antigo em `localStorage` é removido e ignorado.
-- [ ] No celular, o botão não mostra o texto, mas mantém o nome acessível; no desktop, mostra.
+- [x] Sem escolha na sessão, o `data-theme` segue `prefers-color-scheme` no carregamento.
+- [x] Mudar `prefers-color-scheme` com a página aberta muda o `data-theme`, se não houver escolha na sessão.
+- [x] Clicar no botão troca o tema e grava em `sessionStorage`, não em `localStorage`; com escolha na sessão, a mudança do sistema não sobrescreve.
+- [x] Um `prisma-theme` antigo em `localStorage` é removido e ignorado.
+- [x] No celular, o botão não mostra o texto, mas mantém o nome acessível; no desktop, mostra.

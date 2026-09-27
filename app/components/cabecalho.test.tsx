@@ -11,6 +11,7 @@ describe("Cabecalho (spec 009)", () => {
   beforeEach(() => {
     document.documentElement.setAttribute("data-theme", "light");
     localStorage.clear();
+    sessionStorage.clear();
   });
 
   it("tem a marca com link para a home e a navegação", () => {
@@ -37,7 +38,7 @@ describe("Cabecalho (spec 009)", () => {
     render(<Cabecalho />);
     fireEvent.click(screen.getByRole("button", { name: "Modo claro" }));
     expect(document.documentElement.getAttribute("data-theme")).toBe("light");
-    expect(localStorage.getItem("prisma-theme")).toBe("light");
+    expect(sessionStorage.getItem("prisma-theme")).toBe("light");
     expect(screen.getByRole("button", { name: "Modo escuro" })).toBeTruthy();
   });
 
@@ -47,7 +48,7 @@ describe("Cabecalho (spec 009)", () => {
     const botao = screen.getByRole("button", { name: "Modo escuro" });
     fireEvent.click(botao);
     expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
-    expect(localStorage.getItem("prisma-theme")).toBe("dark");
+    expect(sessionStorage.getItem("prisma-theme")).toBe("dark");
     expect(screen.getByRole("button", { name: "Modo claro" })).toBeTruthy();
   });
 });

@@ -1,7 +1,7 @@
-import { act } from "@testing-library/react";
+import { act, fireEvent, render, screen } from "@testing-library/react";
 import { hydrateRoot } from "react-dom/client";
 import { renderToString } from "react-dom/server";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ThemeToggle } from "./theme-toggle";
 
 afterEach(() => {
@@ -27,5 +27,48 @@ describe("hidratação do tema", () => {
     expect(erro).not.toHaveBeenCalled();
     await act(async () => root!.unmount());
     container.remove();
+  });
+});
+
+describe("tema segue o sistema (spec 020)", () => {
+  function sistemaControlavel(escuroInicial: boolean) {
+    const ouvintes: ((e: { matches: boolean }) => void)[] = [];
+    vi.stubGlobal("matchMedia", () => ({
+      matches: escuroInicial,
+      addEventListener: (_: string, fn: (e: { matches: boolean }) => void) => ouvintes.push(fn),
+      removeEventListener: vi.fn(),
+    }));
+    return (escuro: boolean) => act(() => ouvintes.forEach((fn) => fn({ matches: escuro })));
+  }
+
+  beforeEach(() => {
+    sessionStorage.clear();
+    localStorage.clear();
+    document.documentElement.setAttribute("data-theme", "light");
+  });
+
+  it("muda junto com o sistema quando não há escolha na sessão", async () => {
+    const mudarSistema = sistemaControlavel(false);
+    render(<ThemeToggle />);
+    await mudarSistema(true);
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+    expect(screen.getByRole("button", { name: "Modo claro" })).toBeTruthy();
+  });
+
+  it("o botão grava só na sessão e a escolha vence a mudança do sistema", async () => {
+    const mudarSistema = sistemaControlavel(false);
+    render(<ThemeToggle />);
+    fireEvent.click(screen.getByRole("button", { name: "Modo escuro" }));
+    expect(sessionStorage.getItem("prisma-theme")).toBe("dark");
+    expect(localStorage.getItem("prisma-theme")).toBeNull();
+    await mudarSistema(false);
+    expect(document.documentElement.getAttribute("data-theme")).toBe("dark");
+  });
+
+  it("no celular o texto some, mas o nome acessível fica", () => {
+    sistemaControlavel(false);
+    render(<ThemeToggle />);
+    const botao = screen.getByRole("button", { name: "Modo escuro" });
+    expect(botao.querySelector("span")?.className).toContain("hidden sm:inline");
   });
 });
