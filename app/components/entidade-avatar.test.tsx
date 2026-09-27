@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { EntidadeAvatar } from "./entidade-avatar";
@@ -20,6 +21,15 @@ describe("EntidadeAvatar", () => {
     expect(container.querySelector("svg")).not.toBeNull();
   });
 
+  it("preserva a sigla longa no fallback quando a logo falha", () => {
+    const { container, getByText } = render(
+      <EntidadeAvatar nome="SOLIDARIEDADE" imagemUrl="x.svg" variante="partido" />
+    );
+    fireEvent.error(container.querySelector("img")!);
+    expect(container.querySelector("img")).toBeNull();
+    expect(getByText("SOLIDARIEDADE").textContent).toBe("SOLIDARIEDADE");
+  });
+
   it("tenta de novo quando a URL muda depois de uma falha", () => {
     const { container, rerender } = render(
       <EntidadeAvatar nome="PT" imagemUrl="https://x.test/a.svg" variante="partido" />
@@ -36,8 +46,29 @@ describe("EntidadeAvatar", () => {
     expect(getByText("FULANO DE TAL").className).not.toMatch(/opacity-0/);
   });
 
-  it("sem mostrarNome, o rótulo só aparece no hover (tooltip)", () => {
-    const { getByText } = render(<EntidadeAvatar nome="PT" imagemUrl="x.svg" variante="partido" />);
-    expect(getByText("PT").className).toMatch(/opacity-0 .*group-hover:opacity-100/);
+  it("sem mostrarNome, mantém a imagem decorativa e o nome no conteúdo adjacente", () => {
+    const { getByRole, getAllByText, container } = render(
+      <Link href="/partidos/13" aria-label="PT, Partido dos Trabalhadores, número 13">
+        <EntidadeAvatar nome="PT" imagemUrl="x.svg" variante="partido" />
+        <span>PT</span>
+        <span>Partido dos Trabalhadores</span>
+      </Link>
+    );
+    expect(getByRole("link", { name: "PT, Partido dos Trabalhadores, número 13" })).toBeTruthy();
+    expect(getAllByText("PT")).toHaveLength(1);
+    expect(container.querySelector("img")?.getAttribute("alt")).toBe("");
+  });
+});
+
+describe("EntidadeAvatar: carregamento (spec 019)", () => {
+  it("carrega a imagem sob demanda, sem travar, com o espaço reservado", () => {
+    const { container } = render(
+      <EntidadeAvatar nome="PT" imagemUrl="https://minio.test/PT.svg" variante="partido" tamanho={64} />
+    );
+    const img = container.querySelector("img")!;
+    expect(img.getAttribute("loading")).toBe("lazy");
+    expect(img.getAttribute("decoding")).toBe("async");
+    expect(img.getAttribute("width")).toBeTruthy();
+    expect(img.getAttribute("height")).toBeTruthy();
   });
 });

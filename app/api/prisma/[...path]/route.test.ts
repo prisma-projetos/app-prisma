@@ -1,6 +1,7 @@
 // @vitest-environment node
 import { NextRequest } from "next/server";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { limitadorDoProxy, reiniciarAvisoSemProxy } from "@/app/lib/api/server/limite-requisicoes";
 import { DELETE, GET, PATCH, POST, PUT } from "./route";
 
 const BASE = "https://api.exemplo.test";
@@ -21,6 +22,8 @@ async function chamar(path: string[], query = "") {
 let fetchMock: ReturnType<typeof vi.fn>;
 
 beforeEach(() => {
+  limitadorDoProxy.limpar();
+  reiniciarAvisoSemProxy();
   vi.stubEnv("API_PRISMA", BASE);
   vi.stubEnv("API_PRISMA_KEY", CHAVE);
   fetchMock = vi.fn(async () => Response.json({ ok: true }));
@@ -174,4 +177,49 @@ describe("proxy /api/prisma", () => {
       expect(fetchMock).not.toHaveBeenCalled();
     }
   );
+});
+
+describe("proxy /api/prisma: limite de requisições (spec 019)", () => {
+  function comCabecalho(xff: string) {
+    return GET(
+      new NextRequest("http://localhost/api/prisma/partidos", { headers: { "x-forwarded-for": xff } }),
+      ctx(["partidos"])
+    );
+  }
+
+  it("com 1 proxy confiável, a 61ª requisição do mesmo IP recebe 429 sem chamar o backend", async () => {
+    vi.stubEnv("PROXIES_CONFIAVEIS", "1");
+    for (let i = 0; i < 60; i++) expect((await comCabecalho(`forjado-${i}, 9.9.9.9`)).status).toBe(200);
+    fetchMock.mockClear();
+    const resposta = await comCabecalho("outro-forjado, 9.9.9.9");
+    expect(resposta.status).toBe(429);
+    expect(Number(resposta.headers.get("Retry-After"))).toBeGreaterThan(0);
+    expect(resposta.headers.get("Cache-Control")).toBe("no-store");
+    expect(await resposta.json()).toEqual({ erro: "Muitas requisições. Tente de novo em instantes." });
+    expect(fetchMock).not.toHaveBeenCalled();
+    expect((await comCabecalho("9.9.9.9, 8.8.8.8")).status).toBe(200);
+  });
+
+  it("sem proxy confiável, o limite fica desligado e avisa uma vez no log", async () => {
+    const aviso = vi.spyOn(console, "warn").mockImplementation(() => {});
+    for (let i = 0; i < 70; i++) expect((await comCabecalho("1.1.1.1")).status).toBe(200);
+    expect(aviso).toHaveBeenCalledTimes(1);
+    expect(String(aviso.mock.calls[0][0])).toContain("PROXIES_CONFIAVEIS");
+  });
+});
+
+describe("proxy /api/prisma: filtro por UF (spec 023)", () => {
+  it("repassa uf válido em politicos", async () => {
+    const resposta = await chamar(["politicos"], "?uf=RO&anoEleicao=2026");
+    expect(resposta.status).toBe(200);
+    expect(chamadaAoBackend().url.searchParams.get("uf")).toBe("RO");
+  });
+
+  it.each(["abc", "R", "12"])("recusa uf=%s", async (uf) => {
+    expect((await chamar(["politicos"], `?uf=${uf}`)).status).toBe(400);
+  });
+
+  it("recusa uf fora de politicos", async () => {
+    expect((await chamar(["partidos"], "?uf=RO")).status).toBe(400);
+  });
 });

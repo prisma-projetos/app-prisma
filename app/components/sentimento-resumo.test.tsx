@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { SENTIMENTO_COR } from "@/app/lib/sentimento";
 import { sentimentoPT, sentimentoVazio } from "@/test/fixtures/dados";
@@ -7,7 +7,7 @@ import { SentimentoResumo } from "./sentimento-resumo";
 describe("SentimentoResumo", () => {
   it("exibe Negativo, Neutro, Positivo nessa ordem, independentemente da ordem da API", () => {
     const { container } = render(<SentimentoResumo resumo={sentimentoPT} />);
-    const legenda = [...container.querySelectorAll("li[data-sentimento]")];
+    const legenda = [...container.querySelectorAll("tr[data-sentimento]")];
     expect(legenda.map((li) => li.getAttribute("data-sentimento"))).toEqual([
       "negativo",
       "neutro",
@@ -23,10 +23,10 @@ describe("SentimentoResumo", () => {
 
   it("exibe rótulo, percentual e total de cada sentimento", () => {
     render(<SentimentoResumo resumo={sentimentoPT} />);
-    expect(screen.getByText("Negativo")).toBeTruthy();
-    expect(screen.getByText(/5,9% · 931 parágrafos/)).toBeTruthy();
-    expect(screen.getByText(/84,6% · 13\.432 parágrafos/)).toBeTruthy();
-    expect(screen.getByText(/9,6% · 1\.524 parágrafos/)).toBeTruthy();
+    expect(screen.getByRole("rowheader", { name: "Negativo (critica)" })).toBeTruthy();
+    expect(screen.getByText("931 parágrafos")).toBeTruthy();
+    expect(screen.getByText("13.432 parágrafos")).toBeTruthy();
+    expect(screen.getByText("1.524 parágrafos")).toBeTruthy();
   });
 
   it("calcula a largura da barra pelos totais, fechando 100%", () => {
@@ -37,23 +37,89 @@ describe("SentimentoResumo", () => {
     expect(larguras.reduce((a, b) => a + b, 0)).toBeCloseTo(100, 5);
   });
 
-  it("exibe o rodapé de proveniência", () => {
-    render(<SentimentoResumo resumo={sentimentoPT} />);
-    expect(
-      screen.getByText(/Baseado em 15\.887 parágrafos/).textContent
-    ).toContain("método lexicon-baseline-v1 (versão v1)");
+  it("explica a base e identifica a figura sem expor detalhes técnicos fora de Saiba mais", () => {
+    const { container } = render(<SentimentoResumo resumo={sentimentoPT} />);
+    expect(screen.getByText(/Análise automática de 15\.887 parágrafos/)).toBeTruthy();
+    expect(container.querySelector("figcaption")?.textContent).toBe("Fig. 1 Parágrafos sobre PT por sentimento, em todo o período. Base: 15.887 parágrafos de matérias que citam PT.");
+    expect(screen.getByRole("img").getAttribute("aria-label")).toBe("Negativo 5,9%, Neutro 84,6%, Positivo 9,6%");
+    const details = container.querySelector("details")!;
+    expect(details.open).toBe(false);
+    expect(details.textContent).toContain("Detalhes técnicos: método lexicon-baseline-v1, versão v1.");
+    expect(details.textContent).toContain("todos recebem a mesma classificação");
+    expect(details.textContent).toContain("não mede opinião pública");
+    expect(container.textContent).not.toMatch(/IA|modelo/);
   });
 
-  it("mostra a mensagem de vazio quando não há parágrafos", () => {
+  it("mantém todas as proveniências consultáveis apenas dentro de Saiba mais", () => {
+    const proveniencia = [
+      { metodo: "lexicon-baseline-v1", pipelineVersion: "pipeline-2026-01", total: 100 },
+      { metodo: "lexicon-baseline-v2", pipelineVersion: "pipeline-2026-02", total: 200 },
+    ];
+    const { container } = render(
+      <SentimentoResumo resumo={{ ...sentimentoPT, proveniencia }} />
+    );
+    const resumo = screen.getByText("Saiba mais: como esta análise funciona");
+    const detalhes = resumo.closest("details")!;
+    expect(detalhes.open).toBe(false);
+
+    const foraDosDetalhes = container.cloneNode(true) as HTMLElement;
+    foraDosDetalhes.querySelectorAll("details").forEach((elemento) => elemento.remove());
+    for (const origem of proveniencia) {
+      expect(foraDosDetalhes.textContent).not.toContain(origem.metodo);
+      expect(foraDosDetalhes.textContent).not.toContain(origem.pipelineVersion);
+    }
+
+    fireEvent.click(resumo);
+    expect(detalhes.open).toBe(true);
+    for (const origem of proveniencia) {
+      expect(within(detalhes).getByText(
+        `Detalhes técnicos: método ${origem.metodo}, versão ${origem.pipelineVersion}.`
+      )).toBeTruthy();
+    }
+  });
+
+  it("mostra o estado vazio com nome e orientação", () => {
     render(<SentimentoResumo resumo={sentimentoVazio} />);
-    expect(
-      screen.getByText("Ainda não há parágrafos analisados sobre esta entidade.")
-    ).toBeTruthy();
+    expect(screen.getByText("Ainda não há parágrafos analisados sobre AGIR.")).toBeTruthy();
+    expect(screen.getByText(/Quando o PRISMA encontrar e analisar matérias que citam AGIR/)).toBeTruthy();
+  });
+
+  it("preenche sentimentos ausentes e proveniência ausente", () => {
+    const { container } = render(<SentimentoResumo resumo={{ totalParagrafos: 1, porSentimento: [{ sentimento: "neutro", total: 1, percentual: 100 }] }} />);
+    expect(screen.getAllByText("0 parágrafos")).toHaveLength(2);
+    expect(screen.getAllByText("0,0%")).toHaveLength(2);
+    expect(container.querySelector("figcaption")?.textContent).toContain("esta entidade");
+    expect(screen.getByText("Detalhes técnicos: método não informado.")).toBeTruthy();
   });
 
   it("não usa verde nem vermelho nas cores dos sentimentos", () => {
     for (const classes of Object.values(SENTIMENTO_COR)) {
       expect(classes).not.toMatch(/(green|emerald|lime|red|rose)-/);
+    }
+  });
+});
+
+describe("SentimentoResumo: nome da entidade (spec 014)", () => {
+  it("formata o nome de pessoa e preserva a sigla de partido", () => {
+    const { unmount } = render(
+      <SentimentoResumo resumo={{ ...sentimentoVazio, tipoEntidade: "politico", nome: "MARIA DA SILVA" }} />
+    );
+    expect(screen.getByText("Ainda não há parágrafos analisados sobre Maria da Silva.")).toBeTruthy();
+    unmount();
+    render(<SentimentoResumo resumo={{ ...sentimentoVazio, tipoEntidade: "partido", nome: "AGIR" }} />);
+    expect(screen.getByText("Ainda não há parágrafos analisados sobre AGIR.")).toBeTruthy();
+  });
+});
+
+describe("SentimentoResumo: retícula (spec 025)", () => {
+  it("barra e legenda usam as mesmas classes, com amostra de 16px", () => {
+    const { container } = render(<SentimentoResumo resumo={sentimentoPT} />);
+    for (const s of ["negativo", "neutro", "positivo"] as const) {
+      const segmento = container.querySelector(`span[data-sentimento="${s}"]`)!;
+      const amostra = container.querySelector(`tr[data-sentimento="${s}"] [aria-hidden="true"]`)!;
+      expect(segmento.className).toContain(`reticula-${s}`);
+      expect(amostra.className).toContain(`reticula-${s}`);
+      expect(amostra.className).toContain("h-4 w-4");
     }
   });
 });

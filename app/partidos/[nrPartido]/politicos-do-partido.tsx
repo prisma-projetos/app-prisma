@@ -1,9 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { EntidadeAvatar } from "@/app/components/entidade-avatar";
+import { Secao } from "@/app/components/secao";
+import { CampoSelect } from "@/app/components/campo-select";
+import { CabecalhoLista, LinhaCandidato } from "@/app/components/linha-candidato";
 import { ErroCarregamento, GradeSkeleton, MensagemVazia } from "@/app/components/estados";
 import { usePoliticos } from "@/app/lib/api/hooks";
 import { CARGOS, lerCargo } from "@/app/lib/cargos";
@@ -28,6 +29,14 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
   const cargo = lerCargo(searchParams.get("cargo"));
   const pagina = lerPagina(searchParams.get("pagina"));
   const [busca, setBusca] = useState(q);
+  // O campo acompanha a URL quando ela muda por fora (link, cabeçalho, voltar),
+  // mas não desfaz o que a própria busca acabou de gravar.
+  const [qSincronizado, setQSincronizado] = useState(q);
+  const [qEnviado, setQEnviado] = useState(q);
+  if (q !== qSincronizado) {
+    setQSincronizado(q);
+    if (q !== qEnviado) setBusca(q);
+  }
 
   const politicos = usePoliticos({
     nrPartido,
@@ -52,7 +61,10 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
   useEffect(() => {
     const termo = busca.trim();
     if (termo === q) return;
-    const timer = setTimeout(() => navegar({ q: termo }), DEBOUNCE_BUSCA_MS);
+    const timer = setTimeout(() => {
+      setQEnviado(termo);
+      navegar({ q: termo });
+    }, DEBOUNCE_BUSCA_MS);
     return () => clearTimeout(timer);
     // navegar só depende de valores já listados aqui
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,33 +85,31 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
   }, [paginaForaDoTotal, q, cargo]);
 
   return (
-    <section className="flex flex-col gap-4" aria-labelledby="titulo-politicos">
-      <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id="titulo-politicos" className="text-lg font-semibold text-black dark:text-white">
-          Candidatos em {ANO_ELEICAO}
-        </h2>
-        {dados && (
-          <span className="text-sm text-zinc-500">
-            {formatarNumero(dados.totalElements)} candidatos
-          </span>
-        )}
-      </div>
+    <Secao id="titulo-politicos" titulo={`Candidatos em ${ANO_ELEICAO}`}>
+      {dados && (
+        <span className="text-apoio text-tinta-2">
+          {formatarNumero(dados.totalElements)} candidatos
+        </span>
+      )}
 
-      <div className="flex flex-col gap-2 sm:flex-row">
-        <input
-          type="search"
-          value={busca}
-          onChange={(e) => setBusca(e.target.value)}
-          placeholder="Buscar por nome"
-          aria-label="Buscar candidato por nome"
-          className="min-w-0 flex-1 rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950"
-        />
-        <label className="flex items-center gap-2 text-sm text-zinc-700 dark:text-zinc-300">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
+        {/* Mesmos rótulos visíveis de /candidatos (spec 024). */}
+        <label className="flex min-w-0 flex-1 flex-col gap-2 text-corpo font-semibold text-tinta">
+          Nome
+          <input
+            type="search"
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+            placeholder="Digite um nome"
+            className="min-h-14 min-w-0 border-2 border-tinta bg-papel px-4 py-3 text-corpo font-normal text-tinta placeholder:text-tinta-3"
+          />
+        </label>
+        <label className="flex min-w-0 flex-col gap-2 text-corpo font-semibold text-tinta">
           Cargo
-          <select
+          <CampoSelect
             value={cargo}
             onChange={(e) => navegar({ cargo: e.target.value })}
-            className="rounded-md border border-zinc-300 bg-white px-3 py-2 text-sm dark:border-zinc-700 dark:bg-zinc-950"
+            className="min-h-14 min-w-0 border-2 border-tinta bg-papel px-4 py-3 text-corpo font-normal text-tinta"
           >
             <option value="">Todos os cargos</option>
             {CARGOS.map((c) => (
@@ -107,7 +117,7 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
                 {c.rotulo}
               </option>
             ))}
-          </select>
+          </CampoSelect>
         </label>
       </div>
 
@@ -119,50 +129,40 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
         <MensagemVazia>Nenhum político encontrado.</MensagemVazia>
       )}
       {candidatos.length > 0 && (
-        <ul
-          className={`flex flex-wrap gap-8 transition-opacity ${
-            carregandoPagina ? "opacity-60" : ""
-          }`}
-        >
+        <>
+        <CabecalhoLista className="mt-8" />
+        <ul className={carregandoPagina ? "opacity-60" : ""}>
           {candidatos.map((candidato) => (
-            <li key={candidato.tituloEleitoral}>
-              <Link href={`/politicos/${candidato.tituloEleitoral}`} aria-label={candidato.nome}>
-                <EntidadeAvatar
-                  nome={candidato.nome ?? ""}
-                  imagemUrl={candidato.urlFoto}
-                  variante="politico"
-                  mostrarNome
-                />
-              </Link>
-            </li>
+            <LinhaCandidato key={candidato.tituloEleitoral} candidato={candidato} />
           ))}
         </ul>
+        </>
       )}
 
       {dados && totalPaginas > 1 && (
-        <nav aria-label="Paginação" className="flex items-center justify-between gap-4 text-sm">
+        <nav aria-label="Paginação" className="flex flex-wrap items-center justify-between gap-3 text-apoio">
           <button
             type="button"
             onClick={() => navegar({ pagina: pagina - 1 })}
             disabled={carregandoPagina || (dados.first ?? pagina === 0)}
-            className="rounded-md border border-zinc-300 px-3 py-1 disabled:opacity-40 dark:border-zinc-700"
+            className="min-h-12 border-2 border-tinta px-4 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent"
           >
             Anterior
           </button>
-          <span className="text-zinc-600 dark:text-zinc-400">
+          <span className="text-tinta-2">
             Página {pagina + 1} de {totalPaginas}
           </span>
           <button
             type="button"
             onClick={() => navegar({ pagina: pagina + 1 })}
             disabled={carregandoPagina || (dados.last ?? pagina >= totalPaginas - 1)}
-            className="rounded-md border border-zinc-300 px-3 py-1 disabled:opacity-40 dark:border-zinc-700"
+            className="min-h-12 border-2 border-tinta px-4 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent"
           >
             Próxima
           </button>
         </nav>
       )}
-    </section>
+    </Secao>
   );
 }
 

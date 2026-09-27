@@ -1,4 +1,5 @@
 import type {
+  AnalisePorTemaResponse,
   PanoramaResponse,
   PartidoResponse,
   PoliticoDetalheResponse,
@@ -130,3 +131,15 @@ export function paginaDeCandidatos(pagina: number, totalPages: number, quantidad
     empty: quantidade === 0,
   };
 }
+
+export const temasPT: AnalisePorTemaResponse = {
+  tipo: "partido",
+  identificador: "13",
+  nome: "PT",
+  totalMaterias: 120,
+  semTema: 2,
+  temas: [
+    { tema: "eleições", total: 30, percentual: 25 },
+    { tema: "economia", total: 12, percentual: 10 },
+  ],
+};

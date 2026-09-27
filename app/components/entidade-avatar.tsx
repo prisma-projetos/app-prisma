@@ -8,7 +8,7 @@ interface EntidadeAvatarProps {
   imagemUrl?: string | null;
   variante: "partido" | "politico";
   tamanho?: number;
-  /** Exibe o rótulo sempre abaixo da imagem, em vez de só no hover. */
+  /** Exibe o rótulo abaixo da imagem quando ele não está no conteúdo adjacente. */
   mostrarNome?: boolean;
 }
 
@@ -17,7 +17,7 @@ export function EntidadeAvatar({
   rotulo = nome,
   imagemUrl,
   variante,
-  tamanho = 96,
+  tamanho = 64,
   mostrarNome = false,
 }: EntidadeAvatarProps) {
   const circular = variante === "politico";
@@ -28,11 +28,11 @@ export function EntidadeAvatar({
   return (
     <span
       title={rotulo}
-      className="group relative inline-flex flex-col items-center gap-2"
+      className="relative inline-flex min-w-0 max-w-full flex-col items-center gap-2"
     >
       <span
-        className={`flex items-center justify-center overflow-hidden border border-zinc-100 bg-zinc-200 transition-transform group-hover:scale-105 dark:border-zinc-800 dark:bg-zinc-900 ${
-          circular ? "rounded-full" : "rounded-2xl"
+        className={`flex shrink-0 items-center justify-center overflow-hidden ${
+          circular ? "rounded-full bg-papel-2" : "bg-placa-logo"
         }`}
         style={{ width: tamanho, height: tamanho }}
       >
@@ -41,6 +41,10 @@ export function EntidadeAvatar({
           <img
             src={imagemUrl ?? undefined}
             alt=""
+            width={tamanho}
+            height={tamanho}
+            loading="lazy"
+            decoding="async"
             onError={() => setUrlComFalha(imagemUrl ?? null)}
             className={
               circular ? "h-full w-full object-cover" : "h-3/4 w-3/4 object-contain"
@@ -52,16 +56,11 @@ export function EntidadeAvatar({
       </span>
       {mostrarNome ? (
         <span
-          className="break-words text-center text-xs font-medium leading-snug text-zinc-700 dark:text-zinc-300"
-          style={{ width: tamanho + 24 }}
+          className="w-full max-w-[18ch] break-words text-center text-apoio text-tinta-2"
         >
           {rotulo}
         </span>
-      ) : (
-        <span className="pointer-events-none absolute -bottom-6 left-1/2 z-10 -translate-x-1/2 whitespace-nowrap rounded bg-black/85 px-2 py-1 text-xs font-medium text-white opacity-0 transition-opacity group-hover:opacity-100">
-          {rotulo}
-        </span>
-      )}
+      ) : null}
     </span>
   );
 }
@@ -72,8 +71,8 @@ function AvatarFallback({ circular, nome }: { circular: boolean; nome: string })
   }
 
   return (
-    <span className="text-lg font-semibold text-zinc-500">
-      {nome.slice(0, 3).toUpperCase()}
+    <span className={`max-w-full px-1 text-center font-semibold text-[#474747] ${nome.length > 5 ? "break-all text-[12px] leading-4" : "text-lg"}`}>
+      {nome}
     </span>
   );
 }
@@ -83,7 +82,7 @@ function PersonIcon() {
     <svg
       viewBox="0 0 24 24"
       fill="none"
-      className="h-1/2 w-1/2 text-zinc-400"
+      className="h-1/2 w-1/2 text-tinta-3"
       aria-hidden="true"
     >
       <circle cx="12" cy="8" r="4" fill="currentColor" />

@@ -3,24 +3,265 @@
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --papel: #f7f7f7;
+  --papel-2: #ededed;
+  --tinta: #1a1a1a;
+  --tinta-2: #474747;
+  --tinta-3: #666666;
+  --fio: #d4d4d4;
+  --placa-logo: #efefef;
+  --sent-negativo: #1a1a1a;
+  --sent-neutro: #c4c4c4;
+  --sent-positivo: #6b6b6b;
+  --grafico: #1a1a1a;
+  --espectro: linear-gradient(90deg, #ff3b30 0%, #ff9f0a 17%, #ffd60a 33%, #30d158 50%, #64d2ff 66%, #0a84ff 80%, #bf5af2 100%);
+  color-scheme: light;
 }
 
 [data-theme="dark"] {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --papel: #141414;
+  --papel-2: #1f1f1f;
+  --tinta: #ededed;
+  --tinta-2: #b0b0b0;
+  --tinta-3: #8f8f8f;
+  --fio: #333333;
+  --placa-logo: #efefef;
+  --sent-negativo: #f0f0f0;
+  --sent-neutro: #3f3f3f;
+  --sent-positivo: #8a8a8a;
+  --grafico: #ededed;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-papel: var(--papel);
+  --color-papel-2: var(--papel-2);
+  --color-tinta: var(--tinta);
+  --color-tinta-2: var(--tinta-2);
+  --color-tinta-3: var(--tinta-3);
+  --color-fio: var(--fio);
+  --color-placa-logo: var(--placa-logo);
+  --color-sent-negativo: var(--sent-negativo);
+  --color-sent-neutro: var(--sent-neutro);
+  --color-sent-positivo: var(--sent-positivo);
+  --color-grafico: var(--grafico);
+  --font-sans: var(--font-atkinson);
+}
+
+@utility text-display {
+  font-size: 64px;
+  line-height: 68px;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+}
+
+@utility text-titulo-1 {
+  font-size: 40px;
+  line-height: 46px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+@utility text-titulo-2 {
+  font-size: 28px;
+  line-height: 34px;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+
+@utility text-titulo-3 {
+  font-size: 21px;
+  line-height: 28px;
+  font-weight: 700;
+  letter-spacing: 0px;
+}
+
+@utility text-corpo-grande {
+  font-size: 21px;
+  line-height: 32px;
+  font-weight: 400;
+  letter-spacing: 0px;
+}
+
+@utility text-corpo {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 400;
+  letter-spacing: 0px;
+}
+
+@utility text-corpo-forte {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 600;
+  letter-spacing: 0px;
+}
+
+@utility text-apoio {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+  letter-spacing: 0px;
+}
+
+@utility text-legenda {
+  font-size: 15px;
+  line-height: 22px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: var(--font-atkinson), system-ui, sans-serif;
+  font-size: 18px;
+  line-height: 28px;
+  font-feature-settings: "tnum";
+  caret-color: var(--tinta);
+  accent-color: var(--tinta);
+  text-underline-offset: 0.2em;
+}
+
+::selection { background: var(--tinta); color: var(--papel); }
+
+/* The solid outline remains visible in forced-colors and on every spectrum stop. */
+:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 2px;
+  border-image-source: var(--espectro);
+  border-image-slice: 1;
+  border-image-width: 3px;
+  border-image-outset: 7px;
+}
+
+.nav-ativo::after {
+  position: absolute;
+  content: "";
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: var(--espectro);
+}
+
+@media (max-width: 639px) {
+  .text-display { font-size: 40px; line-height: 46px; letter-spacing: -0.8px; }
+  .text-titulo-1 { font-size: 32px; line-height: 38px; }
+}
+
+/* Recolhíveis (<details>): seta desenhada no lugar do marcador do navegador. */
+summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  display: none;
+}
+summary::before {
+  content: "";
+  flex: none;
+  width: 12px;
+  height: 12px;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M4 2l4 4-4 4' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / contain no-repeat;
+  transition: transform 150ms ease-out;
+}
+details[open] > summary::before {
+  transform: rotate(90deg);
+}
+@media (prefers-reduced-motion: reduce) {
+  summary::before {
+    transition: none;
+  }
+}
+
+/* Fig. 1 da home: o leque do espectro se abre uma vez a partir do prisma. */
+.feixe-leque {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: feixe-abre 600ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes feixe-abre {
+  from {
+    opacity: 0.2;
+    transform: scaleY(0.02);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .feixe-leque {
+    animation: none;
+  }
+}
+
+/* Campo de busca: sem o botão nativo de limpar do navegador (spec 019, revisão). */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Busca da home com o painel aberto: o contorno de foco fica rente ao campo,
+   para o painel continuar a borda em vez de cortar o contorno. */
+input[aria-expanded="true"]:focus-visible {
+  outline-offset: -5px;
+  border-image-outset: 0;
+}
+
+/* Ponteiro: o Tailwind v4 deixa o cursor padrão em botões; tudo que é clicável
+   mostra a mão, e o que está desabilitado mostra que não aceita clique (spec 021). */
+button,
+summary,
+select,
+[role="option"],
+[role="tab"],
+label:has(input, select) {
+  cursor: pointer;
+}
+:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+/* Mapa por estado (spec 023): fio de tinta, sem cor por estado. */
+.mapa-estados path {
+  fill: var(--papel);
+  stroke: var(--tinta);
+  stroke-width: 1px;
+  stroke-linejoin: round;
+}
+.mapa-estados a:hover path,
+.mapa-estados a:focus-visible path {
+  fill: var(--papel-2);
+}
+.mapa-estados a:focus-visible {
+  outline: none;
+}
+/* Contorno do estado em destaque (hover ou foco): o espectro, por cima dos vizinhos. */
+.mapa-estados .mapa-destaque-anel {
+  stroke-width: 7px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+.mapa-estados .mapa-destaque {
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
+
+/* Retícula dos sentimentos (spec 025): textura sobre o cinza, como nos gráficos
+   de livro impresso. Negativo sólido, neutro em pontos, positivo em listras. */
+.reticula-negativo {
+  background-color: var(--sent-negativo);
+}
+.reticula-neutro {
+  background-color: var(--sent-neutro);
+  background-image: radial-gradient(var(--tinta-2) 1.5px, transparent 1.6px);
+  background-size: 6px 6px;
+}
+.reticula-positivo {
+  background-color: var(--sent-positivo);
+  background-image: repeating-linear-gradient(45deg, var(--papel) 0 2px, transparent 2px 7px);
 }

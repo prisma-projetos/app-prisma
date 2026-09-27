@@ -1,9 +1,25 @@
 "use client";
 
-import { useLayoutEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
-const STORAGE_KEY = "prisma-theme";
+import { CHAVE_TEMA } from "@/app/lib/tema";
+
 type Tema = "light" | "dark";
+const CONSULTA_ESCURO = "(prefers-color-scheme: dark)";
+
+function escolhaDaSessao(): Tema | null {
+  try {
+    const valor = sessionStorage.getItem(CHAVE_TEMA);
+    return valor === "dark" || valor === "light" ? valor : null;
+  } catch {
+    return null;
+  }
+}
+
+function aplicar(tema: Tema) {
+  document.documentElement.setAttribute("data-theme", tema);
+  window.dispatchEvent(new Event("prisma-theme-change"));
+}
 
 function temaAtual(): Tema {
   if (typeof document === "undefined") return "light";
@@ -12,22 +28,38 @@ function temaAtual(): Tema {
     : "light";
 }
 
-export function ThemeToggle() {
-  const [tema, setTema] = useState<Tema>(temaAtual);
+function observarTema(notificar: () => void) {
+  window.addEventListener("prisma-theme-change", notificar);
+  // O sistema manda enquanto não houver escolha nesta sessão (spec 020).
+  const sistema = window.matchMedia?.(CONSULTA_ESCURO);
+  const aoMudarSistema = (evento: { matches: boolean }) => {
+    if (!escolhaDaSessao()) aplicar(evento.matches ? "dark" : "light");
+  };
+  sistema?.addEventListener?.("change", aoMudarSistema);
+  return () => {
+    window.removeEventListener("prisma-theme-change", notificar);
+    sistema?.removeEventListener?.("change", aoMudarSistema);
+  };
+}
 
-  // Reaplica o atributo após o remount do React Strict Mode em desenvolvimento,
-  // que limpa atributos definidos pelo script inline fora do controle do React.
-  useLayoutEffect(() => {
-    document.documentElement.setAttribute("data-theme", tema);
-  }, [tema]);
+function temaServidor(): Tema {
+  return "light";
+}
+
+export function ThemeToggle() {
+  // A primeira árvore hidratada é igual à do servidor. O snapshot do navegador
+  // lê em seguida o tema que o script já aplicou antes da primeira pintura.
+  const tema = useSyncExternalStore(observarTema, temaAtual, temaServidor);
+
+  const rotulo = tema === "dark" ? "Modo claro" : "Modo escuro";
 
   function alternar() {
     const proximo: Tema = tema === "dark" ? "light" : "dark";
-    setTema(proximo);
+    aplicar(proximo);
     try {
-      localStorage.setItem(STORAGE_KEY, proximo);
+      sessionStorage.setItem(CHAVE_TEMA, proximo);
     } catch {
-      // localStorage indisponível: a escolha vale apenas para a sessão atual.
+      // sessionStorage indisponível: a escolha vale até recarregar a página.
     }
   }
 
@@ -35,13 +67,12 @@ export function ThemeToggle() {
     <button
       type="button"
       onClick={alternar}
-      aria-label={
-        tema === "dark" ? "Alternar para modo claro" : "Alternar para modo escuro"
-      }
-      title={tema === "dark" ? "Alternar para modo claro" : "Alternar para modo escuro"}
-      className="flex h-10 w-10 items-center justify-center rounded-full border border-zinc-200 bg-white text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-800 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800"
+      aria-label={rotulo}
+      className="flex min-h-12 min-w-12 items-center justify-center gap-2 rounded-full border-2 border-tinta bg-papel px-3 text-apoio text-tinta hover:bg-papel-2 sm:px-4"
     >
       {tema === "dark" ? <SolIcon /> : <LuaIcon />}
+      {/* No celular, só o ícone; o nome acessível continua no aria-label. */}
+      <span className="hidden sm:inline">{rotulo}</span>
     </button>
   );
 }

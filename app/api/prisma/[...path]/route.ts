@@ -1,4 +1,10 @@
 import type { NextRequest } from "next/server";
+import {
+  avisarSemProxyUmaVez,
+  ipDaRequisicao,
+  limitadorDoProxy,
+  proxiesConfiaveis,
+} from "@/app/lib/api/server/limite-requisicoes";
 import { encaminhar } from "@/app/lib/api/server/prisma-service";
 
 const SEM_CACHE = { "Cache-Control": "no-store" };
@@ -14,6 +20,16 @@ export async function GET(
   request: NextRequest,
   ctx: RouteContext<"/api/prisma/[...path]">
 ) {
+  // Sem proxy confiável não há IP confiável: o limite fica desligado (spec 019).
+  const ip = ipDaRequisicao(request.headers, proxiesConfiaveis());
+  const limite = ip === null ? undefined : limitadorDoProxy.verificar(ip);
+  if (ip === null) avisarSemProxyUmaVez();
+  if (limite && !limite.permitido) {
+    return erro(429, "Muitas requisições. Tente de novo em instantes.", {
+      "Retry-After": String(limite.retryAfterSegundos),
+    });
+  }
+
   const { path } = await ctx.params;
   const resultado = await encaminhar(
     path.join("/"),

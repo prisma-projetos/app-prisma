@@ -57,3 +57,15 @@ export function candidaturaMaisRecente(
 ): CandidaturaResponse | undefined {
   return ordenarCandidaturas(candidaturas)[0];
 }
+
+/** Normaliza nomes de partidos e pessoas recebidos em caixa alta. */
+export function nomeProprio(nome?: string | null): string {
+  const minusculas = new Set(["a", "à", "e", "o", "da", "das", "de", "do", "dos"]);
+  const maiuscula = (parte: string) => parte.charAt(0).toLocaleUpperCase("pt-BR") + parte.slice(1);
+  return (nome ?? "").trim().toLocaleLowerCase("pt-BR").split(/\s+/)
+    .map((palavra, indice) => indice > 0 && minusculas.has(palavra)
+      ? palavra
+      // Cada parte após hífen ou apóstrofo também começa em maiúscula (Sant'Anna, Ana-Luísa).
+      : palavra.split(/(?<=['’-])/).map(maiuscula).join(""))
+    .join(" ");
+}
