@@ -103,7 +103,7 @@ Monocromático em dois modos, com um único gradiente espectral fora da paleta d
 ### Named Rules
 **A Regra do Papel e da Tinta.** Nenhuma cor da interface é preto puro (#000000) ou branco puro (#FFFFFF). O papel claro é #F7F7F7, o papel escuro é #141414, a tinta é #1A1A1A / #EDEDED. Decisão de Bea em 25/09/2026. Vale também para texto sobre botão, placas e fundos de imagem.
 
-**A Regra da Luz.** O espectro entra em quatro lugares: marca PRISMA, feixe da abertura, contorno de foco e indicador de item ativo (navegação e aba). Não entra em barra, gráfico, sentimento, fundo de seção, card nem texto.
+**A Regra da Luz.** O espectro entra em cinco lugares: marca PRISMA, feixe da abertura, contorno de foco, indicador de item ativo (navegação e aba) e o contorno do estado em destaque no mapa (hover ou foco, spec 023). Não entra em barra, gráfico, sentimento, fundo de seção, card nem texto.
 
 **A Regra do Gradiente Contínuo.** O espectro é sempre um gradiente contínuo. Faixas separadas de cor são proibidas: leem como bandeira.
 

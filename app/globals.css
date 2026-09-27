@@ -235,12 +235,13 @@ label:has(input, select) {
 .mapa-estados a:hover path,
 .mapa-estados a:focus-visible path {
   fill: var(--papel-2);
-  stroke-width: 2.5px;
 }
 .mapa-estados a:focus-visible {
   outline: none;
 }
-.mapa-estados a:focus-visible path {
-  stroke: var(--tinta);
+/* Contorno do estado em destaque (hover ou foco): o espectro, por cima dos vizinhos. */
+.mapa-estados .mapa-destaque {
   stroke-width: 3px;
+  stroke-linejoin: round;
+  pointer-events: none;
 }

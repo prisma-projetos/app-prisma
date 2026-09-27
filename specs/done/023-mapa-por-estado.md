@@ -8,7 +8,8 @@ Pedido de Bea (27/09/2026): uma aba "Estados" com o mapa do Brasil. Ao clicar nu
 2. **Proxy do front:** aceita `uf` em `politicos`, validado como duas letras.
 3. **Página `/estados`** (link "Estados" no cabeçalho, com `aria-current` nela):
    - `h1` "Candidatos por estado" e a linha "Escolha um estado no mapa ou na lista.";
-   - mapa SVG das 27 unidades (malha do IBGE, embutida no código), cada estado um link com nome acessível "{nome} ({UF})"; hover em `papel-2`, foco com o foco da spec 009, fios de 1px em tinta; sem cor por estado;
+   - mapa SVG das 27 unidades (malha do IBGE, embutida no código), cada estado um link com nome acessível "{nome} ({UF})", com fios de 1px em tinta e sem cor por estado;
+   - **emenda de 27/09/2026 (pedido de Bea):** ao passar o mouse ou focar um estado, o fundo fica em `papel-2` e o contorno ganha o espectro contínuo (3px), redesenhado por cima dos vizinhos para não ficar coberto pela borda deles. É destaque de estado ativo, não dado;
    - ao lado do mapa (abaixo no celular), a lista das 27 unidades em ordem alfabética, cada uma um link: é a alternativa ao mapa para teclado, leitor de tela e toque em estados pequenos (DF, SE, AL);
    - o mapa não é a única forma de escolher.
 4. **Candidatos de um estado** (`/candidatos?uf=RO`):
@@ -34,4 +35,5 @@ Pedido de Bea (27/09/2026): uma aba "Estados" com o mapa do Brasil. Ao clicar nu
 - [x] `/candidatos?uf=RO&cargo=SENADOR` mostra a lista paginada normal com o filtro de estado.
 - [x] O select "Estado" grava `?uf=` e se combina com nome, cargo e partido.
 - [x] Com o recurso desligado, não há link "Estados" nem filtro "Estado", e `/estados` responde 404.
+- [x] Passar o mouse ou focar um estado desenha o contorno dele em espectro, por cima dos vizinhos.
 - [x] Verificação visual em 390px e 1440px, claro e escuro, com teclado.

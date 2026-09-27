@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { Cabecalho } from "@/app/components/cabecalho";
 import { lerUf } from "@/app/lib/estados";
@@ -24,6 +24,22 @@ describe("página /estados (spec 023)", () => {
     expect(lista[0].textContent).toBe("Acre");
     expect(lista[26].textContent).toBe("Tocantins");
     expect(lista[21].getAttribute("href")).toBe("/candidatos?uf=RO");
+  });
+
+  it("passar o mouse ou focar um estado desenha o contorno dele em espectro, por cima dos vizinhos", () => {
+    vi.stubEnv("NEXT_PUBLIC_FILTRO_UF", "1");
+    const { container } = render(<EstadosPage />);
+    const mapa = screen.getByRole("group", { name: "Mapa do Brasil" });
+    expect(container.querySelector("[data-destaque]")).toBeNull();
+    fireEvent.mouseEnter(within(mapa).getByRole("link", { name: "Rondônia (RO)" }));
+    const destaque = container.querySelector<SVGPathElement>("[data-destaque]")!;
+    expect(destaque.getAttribute("data-destaque")).toBe("RO");
+    expect(destaque.getAttribute("stroke")).toMatch(/^url\(#.+\)$/);
+    expect(destaque.parentElement?.lastElementChild).toBe(destaque);
+    fireEvent.mouseLeave(within(mapa).getByRole("link", { name: "Rondônia (RO)" }));
+    expect(container.querySelector("[data-destaque]")).toBeNull();
+    fireEvent.focus(within(mapa).getByRole("link", { name: "Bahia (BA)" }));
+    expect(container.querySelector("[data-destaque]")?.getAttribute("data-destaque")).toBe("BA");
   });
 
   it("com o recurso desligado, responde 404", () => {
