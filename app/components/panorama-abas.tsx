@@ -131,7 +131,7 @@ function EixoPanorama({ eixo }: { eixo: PanoramaEixo }) {
             {temas.map((tema, i) => (
               <li key={`${tema.tema}-${i}`}>
                 <details className="border-b border-fio py-2">
-                  <summary className="min-h-12 cursor-pointer py-3 text-tinta">
+                  <summary className="min-h-12 py-3 text-tinta">
                     {tema.tema} · {formatarNumero(tema.ocorrencias)} ocorrências
                   </summary>
                   <ListaFontes fontes={tema.fontes ?? []} />
@@ -143,7 +143,7 @@ function EixoPanorama({ eixo }: { eixo: PanoramaEixo }) {
       )}
 
       <details className="border-b border-fio py-2">
-        <summary className="min-h-12 cursor-pointer py-3 font-semibold text-tinta">
+        <summary className="min-h-12 py-3 font-semibold text-tinta">
           Fontes ({formatarNumero(fontes.length)})
         </summary>
         <ListaFontes fontes={fontes} agrupadas />

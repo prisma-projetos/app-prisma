@@ -8,6 +8,6 @@ Pedidos de Bea (27/09/2026): ao passar o mouse sobre botões, o ponteiro não vi
 2. **Favicon:** o ícone da marca (feixe, prisma em contorno e leque do espectro) vira `app/icon.svg` (convenção do Next), legível em 16px nos temas claro e escuro do navegador. Sai o `app/favicon.ico` do template. Também entra `app/apple-icon.png` (180px) para atalho no celular.
 
 ## Critérios de aceite
-- [ ] `globals.css` define `cursor: pointer` para os elementos do escopo e `not-allowed` para os desabilitados.
-- [ ] `app/icon.svg` existe e `app/favicon.ico` foi removido; o `<head>` aponta para o ícone novo.
-- [ ] Verificação visual do ícone na aba, em 16px e 32px.
+- [x] `globals.css` define `cursor: pointer` para os elementos do escopo e `not-allowed` para os desabilitados.
+- [x] `app/icon.svg` existe e `app/favicon.ico` foi removido; o `<head>` aponta para o ícone novo.
+- [x] Verificação visual do ícone na aba, em 16px e 32px.

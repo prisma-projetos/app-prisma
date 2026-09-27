@@ -34,7 +34,7 @@ function rotuloCargo(cargo?: string | null): string | undefined {
 const CAMPO =
   "min-h-14 w-full min-w-0 border-2 border-tinta bg-papel px-4 py-3 text-corpo text-tinta placeholder:text-tinta-3 disabled:border-fio disabled:text-tinta-3";
 const BOTAO =
-  "min-h-12 border-2 border-tinta px-5 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:cursor-default disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent";
+  "min-h-12 border-2 border-tinta px-5 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent";
 
 /** Lista de todas as candidaturas da eleição configurada, com filtros na URL (spec 016). */
 export function CandidatosView() {

@@ -209,3 +209,18 @@ input[aria-expanded="true"]:focus-visible {
   outline-offset: -5px;
   border-image-outset: 0;
 }
+
+/* Ponteiro: o Tailwind v4 deixa o cursor padrão em botões; tudo que é clicável
+   mostra a mão, e o que está desabilitado mostra que não aceita clique (spec 021). */
+button,
+summary,
+select,
+[role="option"],
+[role="tab"],
+label:has(input, select) {
+  cursor: pointer;
+}
+:disabled,
+[aria-disabled="true"] {
+  cursor: not-allowed;
+}

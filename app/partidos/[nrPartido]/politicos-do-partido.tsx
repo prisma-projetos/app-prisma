@@ -153,7 +153,7 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
             type="button"
             onClick={() => navegar({ pagina: pagina - 1 })}
             disabled={carregandoPagina || (dados.first ?? pagina === 0)}
-            className="min-h-12 border-2 border-tinta px-4 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:cursor-default disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent"
+            className="min-h-12 border-2 border-tinta px-4 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent"
           >
             Anterior
           </button>
@@ -164,7 +164,7 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
             type="button"
             onClick={() => navegar({ pagina: pagina + 1 })}
             disabled={carregandoPagina || (dados.last ?? pagina >= totalPaginas - 1)}
-            className="min-h-12 border-2 border-tinta px-4 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:cursor-default disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent"
+            className="min-h-12 border-2 border-tinta px-4 py-2 text-corpo font-semibold hover:bg-papel-2 disabled:border-fio disabled:text-tinta-3 disabled:hover:bg-transparent"
           >
             Próxima
           </button>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    .contorno { fill: #f7f7f7; stroke: #1a1a1a; }
+    .feixe { stroke: #1a1a1a; }
+    @media (prefers-color-scheme: dark) {
+      .contorno { fill: #141414; stroke: #ededed; }
+      .feixe { stroke: #ededed; }
+    }
+  </style>
+  <defs>
+    <linearGradient id="espectro" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ff3b30"/>
+      <stop offset=".17" stop-color="#ff9f0a"/>
+      <stop offset=".33" stop-color="#ffd60a"/>
+      <stop offset=".5" stop-color="#30d158"/>
+      <stop offset=".66" stop-color="#64d2ff"/>
+      <stop offset=".8" stop-color="#0a84ff"/>
+      <stop offset="1" stop-color="#bf5af2"/>
+    </linearGradient>
+  </defs>
+  <path d="M16 16 32 6v20z" fill="url(#espectro)"/>
+  <path class="feixe" d="M0 17h8" stroke-width="2.4" stroke-linecap="round"/>
+  <path class="contorno" d="M12 5.5 21 23H3z" stroke-width="2.4" stroke-linejoin="round"/>
+</svg>

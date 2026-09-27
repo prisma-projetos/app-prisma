@@ -52,7 +52,7 @@ export function SentimentoResumo({ resumo, janela = "" }: { resumo: SentimentoRe
         <figcaption className="mt-4 text-[15px] font-semibold leading-[22px] text-tinta-2"><span className="mr-1 text-tinta [font-variant-caps:all-small-caps] tracking-[0.06em]">Fig. 1</span> Parágrafos sobre {nome} por sentimento, {periodo}. Base: {total} parágrafos de matérias que citam {nome}.</figcaption>
       </figure>
       <details className="max-w-[760px] border-l border-tinta bg-papel-2 px-8 py-6">
-        <summary className="min-h-12 cursor-pointer text-[21px] font-bold">Saiba mais: como esta análise funciona</summary>
+        <summary className="min-h-12 text-[21px] font-bold">Saiba mais: como esta análise funciona</summary>
         <div className="mt-4 flex max-w-[70ch] flex-col gap-4">
           <p>O sistema compara a quantidade de palavras positivas e negativas em cada parágrafo que cita o partido ou o candidato. Quando as contagens empatam, ou quando nenhuma palavra da lista aparece, o parágrafo conta como neutro.</p>
           <p>A classificação vale para o parágrafo inteiro. Se um parágrafo cita mais de um partido ou candidato, todos recebem a mesma classificação.</p>

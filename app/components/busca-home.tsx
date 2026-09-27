@@ -254,7 +254,7 @@ function Grupo({
             // mousedown evita que o campo perca o foco (e feche o painel) antes do clique.
             onMouseDown={(evento) => evento.preventDefault()}
             onClick={() => aoEscolher(item.href)}
-            className={`flex min-h-12 cursor-pointer flex-col justify-center px-4 py-2 hover:bg-papel-2 ${
+            className={`flex min-h-12 flex-col justify-center px-4 py-2 hover:bg-papel-2 ${
               item.id === ativo ? "bg-papel-2" : ""
             }`}
           >
