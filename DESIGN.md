@@ -99,6 +99,9 @@ Monocromático em dois modos, com um único gradiente espectral fora da paleta d
 - **Sent-negativo** (16,2:1 / 16,6:1), **sent-neutro** (1,6:1 / 1,8:1), **sent-positivo** (5,0:1 / 5,3:1). Vizinhos entre si: neutro/positivo 3,1:1 / 3,05:1; negativo/positivo 3,3:1 / 3,0:1.
 - **Gráfico**: barras do gráfico de temas, em tinta.
 
+### Retícula (spec 025)
+Cada sentimento tem textura própria sobre o cinza, na barra e na amostra da legenda (16px): **negativo** sólido; **neutro** em pontos de 1,5px em tinta-2 a cada 6px; **positivo** em listras diagonais de 2px em papel a 45°, a cada 7px. A textura diferencia sem depender do tom e sem sugerir juízo; o nome ao lado continua obrigatório.
+
 ### Named Rules
 **A Regra do Papel e da Tinta.** Nenhuma cor da interface é preto puro (#000000) ou branco puro (#FFFFFF). O papel claro é #F7F7F7, o papel escuro é #141414, a tinta é #1A1A1A / #EDEDED. Decisão de Bea em 25/09/2026. Vale também para texto sobre botão, placas e fundos de imagem.
 
@@ -219,7 +222,6 @@ Cantos retos em tudo. Duas exceções: fotos de candidato em círculo e a pílul
 
 ## Decisões em aberto
 
-- **Retícula para sentimentos**: padrões de pontos ou hachura além do cinza. Não decidido.
 - **Posição do feixe**: decidida na spec 015. Fica abaixo da busca, como Fig. 1 com legenda na medida de leitura (760px), e não como fio de abertura junto ao wordmark.
 - **Texto do aviso**: se continua dizendo "gerados por modelos de IA", já que o classificador atual é uma lista de palavras (baseline v1). O texto só muda no CLAUDE.md.
 - **Foco que desliza** (contrato de direção): descartado em 27/09/2026 (spec 024). A regra de um só momento autoral de movimento (o feixe da home) vale mais; o indicador ativo e o foco aparecem parados.

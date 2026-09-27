@@ -16,8 +16,8 @@ Decisão de Bea (27/09/2026): os três sentimentos passam a se diferenciar tamb�
 - Retícula em outros gráficos (as barras de temas são uma série só, em `grafico`).
 
 ## Critérios de aceite
-- [ ] `SENTIMENTO_COR` combina o token de cor com a classe de retícula de cada sentimento.
-- [ ] `globals.css` define as três retículas, e neutro e positivo usam `background-image` diferentes; negativo não tem textura.
-- [ ] A barra e a legenda usam as mesmas classes.
-- [ ] A amostra da legenda tem 16px.
-- [ ] Verificação visual em 1440px e 390px, claro e escuro: as três faixas se distinguem sem depender do tom.
+- [x] `SENTIMENTO_COR` combina o token de cor com a classe de retícula de cada sentimento.
+- [x] `globals.css` define as três retículas, e neutro e positivo usam `background-image` diferentes; negativo não tem textura.
+- [x] A barra e a legenda usam as mesmas classes.
+- [x] A amostra da legenda tem 16px.
+- [x] Verificação visual em 1440px e 390px, claro e escuro: as três faixas se distinguem sem depender do tom.

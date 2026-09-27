@@ -110,3 +110,16 @@ describe("SentimentoResumo: nome da entidade (spec 014)", () => {
     expect(screen.getByText("Ainda não há parágrafos analisados sobre AGIR.")).toBeTruthy();
   });
 });
+
+describe("SentimentoResumo: retícula (spec 025)", () => {
+  it("barra e legenda usam as mesmas classes, com amostra de 16px", () => {
+    const { container } = render(<SentimentoResumo resumo={sentimentoPT} />);
+    for (const s of ["negativo", "neutro", "positivo"] as const) {
+      const segmento = container.querySelector(`span[data-sentimento="${s}"]`)!;
+      const amostra = container.querySelector(`tr[data-sentimento="${s}"] [aria-hidden="true"]`)!;
+      expect(segmento.className).toContain(`reticula-${s}`);
+      expect(amostra.className).toContain(`reticula-${s}`);
+      expect(amostra.className).toContain("h-4 w-4");
+    }
+  });
+});

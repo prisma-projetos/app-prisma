@@ -250,3 +250,18 @@ label:has(input, select) {
   stroke-linejoin: round;
   pointer-events: none;
 }
+
+/* Retícula dos sentimentos (spec 025): textura sobre o cinza, como nos gráficos
+   de livro impresso. Negativo sólido, neutro em pontos, positivo em listras. */
+.reticula-negativo {
+  background-color: var(--sent-negativo);
+}
+.reticula-neutro {
+  background-color: var(--sent-neutro);
+  background-image: radial-gradient(var(--tinta-2) 1.5px, transparent 1.6px);
+  background-size: 6px 6px;
+}
+.reticula-positivo {
+  background-color: var(--sent-positivo);
+  background-image: repeating-linear-gradient(45deg, var(--papel) 0 2px, transparent 2px 7px);
+}

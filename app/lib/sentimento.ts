@@ -10,8 +10,10 @@ export const SENTIMENTO_LABEL: Record<Sentimento, string> = {
 };
 
 // Cinzas neutros; o nome do sentimento acompanha a cor.
+// Cinza + retícula (spec 025): cada sentimento se distingue pela textura, não só
+// pelo tom. Nenhuma cor nem textura carrega juízo.
 export const SENTIMENTO_COR: Record<Sentimento, string> = {
-  negativo: "bg-sent-negativo",
-  neutro: "bg-sent-neutro",
-  positivo: "bg-sent-positivo",
+  negativo: "bg-sent-negativo reticula-negativo",
+  neutro: "bg-sent-neutro reticula-neutro",
+  positivo: "bg-sent-positivo reticula-positivo",
 };

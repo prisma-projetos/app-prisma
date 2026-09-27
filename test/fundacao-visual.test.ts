@@ -67,11 +67,22 @@ describe("fundação visual (spec 009)", () => {
     expect(css).toContain("--espectro:");
   });
 
-  it("sentimentos usam só os tokens sent-*", () => {
+  it("sentimentos usam os tokens sent-* com a retícula de cada um (spec 025)", () => {
     expect(SENTIMENTO_COR).toEqual({
-      negativo: "bg-sent-negativo",
-      neutro: "bg-sent-neutro",
-      positivo: "bg-sent-positivo",
+      negativo: "bg-sent-negativo reticula-negativo",
+      neutro: "bg-sent-neutro reticula-neutro",
+      positivo: "bg-sent-positivo reticula-positivo",
     });
+  });
+
+  it("neutro e positivo têm texturas diferentes; negativo é sólido (spec 025)", () => {
+    const regra = (nome: string) => {
+      const i = css.indexOf(`.${nome} {`);
+      expect(i, nome).toBeGreaterThanOrEqual(0);
+      return css.slice(i, css.indexOf("}", i));
+    };
+    expect(regra("reticula-negativo")).not.toContain("background-image");
+    expect(regra("reticula-neutro")).toMatch(/background-image: radial-gradient/);
+    expect(regra("reticula-positivo")).toMatch(/background-image: repeating-linear-gradient\(45deg/);
   });
 });

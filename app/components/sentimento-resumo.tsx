@@ -41,7 +41,7 @@ export function SentimentoResumo({ resumo, janela = "" }: { resumo: SentimentoRe
           <tbody>
             {SENTIMENTOS.map(s => <tr key={s} data-sentimento={s} className="grid grid-cols-[1fr_auto] gap-x-3 border-b border-fio py-3 sm:table-row sm:py-0">
               <th scope="row" className="text-left font-normal sm:py-4 sm:pr-2">
-                <span aria-hidden="true" className={`mr-2 inline-block h-3 w-3 border border-tinta ${SENTIMENTO_COR[s]}`} />
+                <span aria-hidden="true" className={`mr-2 inline-block h-4 w-4 border border-tinta align-[-2px] ${SENTIMENTO_COR[s]}`} />
                 <span className="font-semibold">{SENTIMENTO_LABEL[s]}</span>{" "}<span className="text-tinta-2">({EXPLICACAO[s]})</span>
               </th>
               <td className="col-start-1 row-start-2 whitespace-nowrap pl-5 text-left text-tinta-2 sm:py-4 sm:pl-0 sm:pr-3 sm:text-right">{formatarNumero(contagens.get(s)?.total)} parágrafos</td>
