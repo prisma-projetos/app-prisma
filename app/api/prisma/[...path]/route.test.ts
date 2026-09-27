@@ -207,3 +207,19 @@ describe("proxy /api/prisma: limite de requisições (spec 019)", () => {
     expect(String(aviso.mock.calls[0][0])).toContain("PROXIES_CONFIAVEIS");
   });
 });
+
+describe("proxy /api/prisma: filtro por UF (spec 023)", () => {
+  it("repassa uf válido em politicos", async () => {
+    const resposta = await chamar(["politicos"], "?uf=RO&anoEleicao=2026");
+    expect(resposta.status).toBe(200);
+    expect(chamadaAoBackend().url.searchParams.get("uf")).toBe("RO");
+  });
+
+  it.each(["abc", "R", "12"])("recusa uf=%s", async (uf) => {
+    expect((await chamar(["politicos"], `?uf=${uf}`)).status).toBe(400);
+  });
+
+  it("recusa uf fora de politicos", async () => {
+    expect((await chamar(["partidos"], "?uf=RO")).status).toBe(400);
+  });
+});

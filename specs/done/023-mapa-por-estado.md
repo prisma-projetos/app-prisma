@@ -27,11 +27,11 @@ Pedido de Bea (27/09/2026): uma aba "Estados" com o mapa do Brasil. Ao clicar nu
 - **Só funciona depois de a mudança da `api-prisma` ir para o ar.** Antes disso, a API ignora `uf` e devolveria o país inteiro. Por isso a página `/estados` e o filtro "Estado" ficam desligados até `NEXT_PUBLIC_FILTRO_UF=1` ser definido no build.
 
 ## Critérios de aceite
-- [ ] Backend: `uf=RO` restringe às candidaturas de RO; `uf=ro` também; sem `uf`, nada muda.
-- [ ] O proxy repassa `uf` válido e responde 400 para `uf=abc`.
-- [ ] `/estados` mostra o mapa com 27 estados clicáveis e a lista alfabética; cada link aponta para `/candidatos?uf={UF}`.
-- [ ] `/candidatos?uf=RO` mostra seções por cargo com contagem, até 6 candidatos e o link "Ver os …"; cargo sem resultado não aparece.
-- [ ] `/candidatos?uf=RO&cargo=SENADOR` mostra a lista paginada normal com o filtro de estado.
-- [ ] O select "Estado" grava `?uf=` e se combina com nome, cargo e partido.
-- [ ] Com o recurso desligado, não há link "Estados" nem filtro "Estado", e `/estados` responde 404.
-- [ ] Verificação visual em 390px e 1440px, claro e escuro, com teclado.
+- [x] Backend: `uf=RO` restringe às candidaturas de RO; `uf=ro` também; sem `uf`, nada muda. (Branch `feat/filtro-uf-politicos` da `api-prisma`, commit 210f556, 32 testes passando; ainda não publicada.)
+- [x] O proxy repassa `uf` válido e responde 400 para `uf=abc`.
+- [x] `/estados` mostra o mapa com 27 estados clicáveis e a lista alfabética; cada link aponta para `/candidatos?uf={UF}`.
+- [x] `/candidatos?uf=RO` mostra seções por cargo com contagem, até 6 candidatos e o link "Ver os …"; cargo sem resultado não aparece.
+- [x] `/candidatos?uf=RO&cargo=SENADOR` mostra a lista paginada normal com o filtro de estado.
+- [x] O select "Estado" grava `?uf=` e se combina com nome, cargo e partido.
+- [x] Com o recurso desligado, não há link "Estados" nem filtro "Estado", e `/estados` responde 404.
+- [x] Verificação visual em 390px e 1440px, claro e escuro, com teclado.

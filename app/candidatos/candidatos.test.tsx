@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor, within } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { Cabecalho } from "@/app/components/cabecalho";
 import type { PartidoResponse } from "@/app/lib/api/types";
 import Home from "@/app/page";
@@ -176,5 +176,71 @@ describe("Filtro de nome acompanha a URL (code-review)", () => {
     expect((screen.getByRole("searchbox", { name: "Nome" }) as HTMLInputElement).value).toBe("");
     await new Promise((r) => setTimeout(r, 400));
     expect(navegacao.replace).not.toHaveBeenCalled();
+  });
+});
+
+describe("Candidatos de um estado (spec 023)", () => {
+  function rotasPorCargo() {
+    return mockApi({
+      partidos: LISTA_PARTIDOS,
+      politicos: (params: URLSearchParams) => {
+        if (params.get("tamanho") === "1") return Response.json({ ...paginaDeCandidatos(0, 1, 1), totalElements: 20608 });
+        const cargo = params.get("cargo");
+        const totais: Record<string, number> = { GOVERNADOR: 3, SENADOR: 8 };
+        const total = cargo ? (totais[cargo] ?? 0) : 11;
+        const quantidade = Math.min(total, Number(params.get("tamanho")));
+        const base = paginaDeCandidatos(0, 1, quantidade);
+        return Response.json({ ...base, totalElements: total, content: base.content.map((c) => ({ ...c, cargo: cargo ?? "SENADOR" })) });
+      },
+    });
+  }
+
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("com uf e sem cargo, divide por cargo com contagem, até 6 nomes e o link de ver todos", async () => {
+    vi.stubEnv("NEXT_PUBLIC_FILTRO_UF", "1");
+    navegacao.reset("/candidatos", "uf=RO");
+    const fetchMock = rotasPorCargo();
+    renderComQuery(<CandidatosView />);
+    const governador = await screen.findByRole("region", { name: "Governador (3)" });
+    expect(within(governador).getAllByRole("listitem")).toHaveLength(3);
+    const senador = await screen.findByRole("region", { name: "Senador (8)" });
+    expect(within(senador).getAllByRole("listitem")).toHaveLength(6);
+    expect(within(senador).getByRole("link", { name: "Ver os 8 candidatos a senador em RO" }).getAttribute("href")).toBe(
+      "/candidatos?uf=RO&cargo=SENADOR"
+    );
+    expect(screen.queryByRole("region", { name: /Vice-governador/ })).toBeNull();
+    const pedido = chamadasPara(fetchMock, "politicos").find((p) => p.get("cargo") === "GOVERNADOR")!;
+    expect(Object.fromEntries(pedido)).toEqual({ anoEleicao: "2026", uf: "RO", cargo: "GOVERNADOR", pagina: "0", tamanho: "6" });
+    expect(await screen.findByText("11 candidaturas com Estado: Rondônia")).toBeTruthy();
+    expect(screen.queryByRole("navigation", { name: "Paginação" })).toBeNull();
+  });
+
+  it("com uf e cargo, volta a lista paginada com o filtro de estado", async () => {
+    vi.stubEnv("NEXT_PUBLIC_FILTRO_UF", "1");
+    navegacao.reset("/candidatos", "uf=RO&cargo=SENADOR");
+    const fetchMock = rotasPorCargo();
+    renderComQuery(<CandidatosView />);
+    await waitFor(() => expect(pedidosDaLista(fetchMock).length).toBeGreaterThan(0));
+    expect(pedidosDaLista(fetchMock).at(-1)!.get("uf")).toBe("RO");
+    expect(screen.queryByRole("region", { name: /Senador \(/ })).toBeNull();
+  });
+
+  it("o select Estado grava ?uf= e se combina com os outros filtros", async () => {
+    vi.stubEnv("NEXT_PUBLIC_FILTRO_UF", "1");
+    navegacao.reset("/candidatos", "cargo=SENADOR");
+    rotasPorCargo();
+    renderComQuery(<CandidatosView />);
+    fireEvent.change(screen.getByRole("combobox", { name: "Estado" }), { target: { value: "RO" } });
+    expect(navegacao.replace).toHaveBeenLastCalledWith("/candidatos?cargo=SENADOR&uf=RO", { scroll: false });
+  });
+
+  it("com o recurso desligado, não há filtro Estado e uf é ignorado", async () => {
+    navegacao.reset("/candidatos", "uf=RO");
+    const fetchMock = rotas();
+    renderComQuery(<CandidatosView />);
+    expect(screen.queryByRole("combobox", { name: "Estado" })).toBeNull();
+    await waitFor(() => expect(pedidosDaLista(fetchMock).length).toBeGreaterThan(0));
+    expect(pedidosDaLista(fetchMock).at(-1)!.has("uf")).toBe(false);
   });
 });

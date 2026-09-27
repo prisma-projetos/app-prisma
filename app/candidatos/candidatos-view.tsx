@@ -7,7 +7,9 @@ import { EntidadeAvatar } from "@/app/components/entidade-avatar";
 import { CampoSelect } from "@/app/components/campo-select";
 import { ErroCarregamento, Skeleton } from "@/app/components/estados";
 import { usePartidos, usePoliticos } from "@/app/lib/api/hooks";
+import type { CandidatoResumoResponse } from "@/app/lib/api/types";
 import { CARGOS, lerCargo } from "@/app/lib/cargos";
+import { CARGOS_ESTADUAIS, ESTADOS, filtroUfAtivo, lerUf, nomeDoEstado } from "@/app/lib/estados";
 import { ANO_ELEICAO, POLITICOS_POR_PAGINA } from "@/app/lib/config";
 import { formatarNumero, nomeProprio } from "@/app/lib/formatacao";
 
@@ -18,6 +20,7 @@ interface Filtros {
   q: string;
   cargo: string;
   partido: string;
+  uf: string;
   /** Página exibida, a partir de 1 (na API, a partir de 0). */
   pagina: number;
 }
@@ -50,6 +53,9 @@ export function CandidatosView() {
   const cargo = lerCargo(searchParams.get("cargo"));
   const partidoBruto = searchParams.get("partido") ?? "";
   const partido = /^\d+$/.test(partidoBruto) ? partidoBruto : "";
+  const uf = filtroUfAtivo() ? lerUf(searchParams.get("uf")) : "";
+  // Com estado e sem cargo, a lista vira dividida por cargo (spec 023).
+  const porCargo = Boolean(uf && !cargo);
   const partidoSelecionado = listaPartidos.find((p) => String(p.numero) === partido);
   const pagina = lerPaginaDaUrl(searchParams.get("pagina"));
   const [busca, setBusca] = useState(q);
@@ -67,17 +73,19 @@ export function CandidatosView() {
     anoEleicao: ANO_ELEICAO,
     q: q.length >= MINIMO ? q : undefined,
     cargo: cargo || undefined,
+    uf: uf || undefined,
     nrPartido: partido ? Number(partido) : undefined,
     pagina: pagina - 1,
     tamanho: POLITICOS_POR_PAGINA,
   });
 
   function navegar(mudancas: Partial<Filtros>) {
-    const filtros: Filtros = { q, cargo, partido, pagina: 1, ...mudancas };
+    const filtros: Filtros = { q, cargo, partido, uf, pagina: 1, ...mudancas };
     const params = new URLSearchParams();
     if (filtros.q) params.set("q", filtros.q);
     if (filtros.cargo) params.set("cargo", filtros.cargo);
     if (filtros.partido) params.set("partido", filtros.partido);
+    if (filtros.uf) params.set("uf", filtros.uf);
     if (filtros.pagina > 1) params.set("pagina", String(filtros.pagina));
     const query = params.toString();
     router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
@@ -86,7 +94,7 @@ export function CandidatosView() {
   function limpar() {
     setBusca("");
     setQEnviado("");
-    navegar({ q: "", cargo: "", partido: "" });
+    navegar({ q: "", cargo: "", partido: "", uf: "" });
   }
 
   useEffect(() => {
@@ -116,11 +124,12 @@ export function CandidatosView() {
   const dados = lista.data;
   const candidatos = (dados?.content ?? []).filter((c) => c.nome);
   const totalPaginas = dados?.totalPages ?? 0;
-  const temFiltro = Boolean(q || cargo || partido);
+  const temFiltro = Boolean(q || cargo || partido || uf);
   const descricaoFiltros = [
     q.length >= MINIMO && `Nome: "${q}"`,
     cargo && `Cargo: ${rotuloCargo(cargo)}`,
     partidoSelecionado && `Partido: ${partidoSelecionado.sigla}`,
+    uf && `Estado: ${nomeDoEstado(uf)}`,
   ].filter(Boolean);
 
   return (
@@ -135,7 +144,11 @@ export function CandidatosView() {
         )}
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_auto] lg:items-end">
+      <div
+        className={`grid gap-4 sm:grid-cols-2 lg:items-end ${
+          filtroUfAtivo() ? "lg:grid-cols-[2fr_1fr_1fr_1fr_auto]" : "lg:grid-cols-[2fr_1fr_1fr_auto]"
+        }`}
+      >
         <label className="flex flex-col gap-2 text-corpo font-semibold sm:col-span-2 lg:col-span-1">
           Nome
           <input
@@ -173,6 +186,19 @@ export function CandidatosView() {
             ))}
           </CampoSelect>
         </label>
+        {filtroUfAtivo() && (
+          <label className="flex flex-col gap-2 text-corpo font-semibold">
+            Estado
+            <CampoSelect value={uf} onChange={(evento) => navegar({ uf: evento.target.value })} className={`${CAMPO} font-normal`}>
+              <option value="">Todos os estados</option>
+              {ESTADOS.map((e) => (
+                <option key={e.uf} value={e.uf}>
+                  {e.nome}
+                </option>
+              ))}
+            </CampoSelect>
+          </label>
+        )}
         {temFiltro && (
           <button type="button" onClick={limpar} className="min-h-14 text-left text-corpo font-semibold text-tinta underline underline-offset-4">
             Limpar filtros
@@ -216,7 +242,9 @@ export function CandidatosView() {
           </div>
         )}
 
-        {candidatos.length > 0 && (
+        {porCargo && dados && <CandidatosPorCargo uf={uf} />}
+
+        {!porCargo && candidatos.length > 0 && (
           <>
             <div aria-hidden="true" className="hidden grid-cols-[88px_1fr_minmax(0,320px)] gap-6 border-b border-tinta pb-3 text-apoio text-tinta-2 sm:grid">
               <span />
@@ -225,28 +253,13 @@ export function CandidatosView() {
             </div>
             <ul className={carregandoPagina ? "opacity-60" : ""}>
               {candidatos.map((c) => (
-                <li
-                  key={c.tituloEleitoral}
-                  className="relative grid min-h-[88px] grid-cols-[64px_1fr] items-center gap-x-4 border-b border-fio py-3 hover:bg-papel-2 sm:grid-cols-[88px_1fr_minmax(0,320px)] sm:gap-x-6"
-                >
-                  <span className="row-span-2 sm:row-span-1">
-                    <EntidadeAvatar nome={nomeProprio(c.nome)} imagemUrl={c.urlFoto} variante="politico" tamanho={64} />
-                  </span>
-                  <Link
-                    href={`/politicos/${c.tituloEleitoral}`}
-                    // O link cobre a linha inteira (foto, nome e cargo): alvo de toque grande.
-                    className="text-corpo font-semibold text-tinta underline underline-offset-4 after:absolute after:inset-0 after:content-[''] hover:decoration-2"
-                  >
-                    {nomeProprio(c.nome)}
-                  </Link>
-                  <span className="text-apoio text-tinta-2 sm:text-corpo sm:text-tinta">{rotuloCargo(c.cargo)}</span>
-                </li>
+                <LinhaCandidato key={c.tituloEleitoral} candidato={c} />
               ))}
             </ul>
           </>
         )}
 
-        {dados && totalPaginas > 1 && candidatos.length > 0 && (
+        {!porCargo && dados && totalPaginas > 1 && candidatos.length > 0 && (
           <nav aria-label="Paginação" className="mt-8 flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
@@ -271,5 +284,65 @@ export function CandidatosView() {
         )}
       </section>
     </div>
+  );
+}
+
+function LinhaCandidato({ candidato: c }: { candidato: CandidatoResumoResponse }) {
+  return (
+    <li className="relative grid min-h-[88px] grid-cols-[64px_1fr] items-center gap-x-4 border-b border-fio py-3 hover:bg-papel-2 sm:grid-cols-[88px_1fr_minmax(0,320px)] sm:gap-x-6">
+      <span className="row-span-2 sm:row-span-1">
+        <EntidadeAvatar nome={nomeProprio(c.nome)} imagemUrl={c.urlFoto} variante="politico" tamanho={64} />
+      </span>
+      <Link
+        href={`/politicos/${c.tituloEleitoral}`}
+        // O link cobre a linha inteira (foto, nome e cargo): alvo de toque grande.
+        className="text-corpo font-semibold text-tinta underline underline-offset-4 after:absolute after:inset-0 after:content-[''] hover:decoration-2"
+      >
+        {nomeProprio(c.nome)}
+      </Link>
+      <span className="text-apoio text-tinta-2 sm:text-corpo sm:text-tinta">{rotuloCargo(c.cargo)}</span>
+    </li>
+  );
+}
+
+const POR_CARGO = 6;
+
+/** Candidatos de um estado divididos por cargo estadual (spec 023). */
+function CandidatosPorCargo({ uf }: { uf: string }) {
+  return (
+    <div className="flex flex-col gap-12">
+      {CARGOS_ESTADUAIS.map((cargo) => (
+        <SecaoCargo key={cargo} uf={uf} cargo={cargo} />
+      ))}
+    </div>
+  );
+}
+
+function SecaoCargo({ uf, cargo }: { uf: string; cargo: string }) {
+  const consulta = usePoliticos({ anoEleicao: ANO_ELEICAO, uf, cargo, pagina: 0, tamanho: POR_CARGO });
+  const total = consulta.data?.totalElements ?? 0;
+  const candidatos = (consulta.data?.content ?? []).filter((c) => c.nome);
+  // Cargo sem candidatos no estado não aparece.
+  if (!consulta.data || total === 0) return null;
+  const rotulo = rotuloCargo(cargo) ?? cargo;
+  const titulo = `${rotulo} (${formatarNumero(total)})`;
+
+  return (
+    <section aria-label={titulo} className="flex flex-col gap-2">
+      <h3 className="text-titulo-3 text-tinta">{titulo}</h3>
+      <ul>
+        {candidatos.map((c) => (
+          <LinhaCandidato key={c.tituloEleitoral} candidato={c} />
+        ))}
+      </ul>
+      {total > POR_CARGO && (
+        <Link
+          href={`/candidatos?uf=${uf}&cargo=${encodeURIComponent(cargo)}`}
+          className="inline-flex min-h-12 items-center self-start text-corpo font-semibold text-tinta underline underline-offset-4"
+        >
+          Ver os {formatarNumero(total)} candidatos a {rotulo.toLocaleLowerCase("pt-BR")} em {uf}
+        </Link>
+      )}
+    </section>
   );
 }

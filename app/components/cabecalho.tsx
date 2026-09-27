@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { filtroUfAtivo } from "@/app/lib/estados";
 import { Marca } from "./marca";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -9,6 +10,7 @@ export function Cabecalho() {
   const caminho = usePathname();
   const partidosAtivo = caminho === "/" || caminho.startsWith("/partidos/");
   const candidatosAtivo = caminho === "/candidatos";
+  const estadosAtivo = caminho === "/estados";
   return (
     <header className="border-b border-fio bg-papel px-5 lg:px-24">
       <div className="mx-auto flex max-w-[1248px] flex-wrap items-center justify-between gap-x-4 gap-y-2 py-4 sm:py-5">
@@ -23,6 +25,12 @@ export function Cabecalho() {
               className={`relative inline-flex min-h-12 items-center text-apoio hover:underline ${candidatosAtivo ? "nav-ativo font-bold" : ""}`}>
               Candidatos
             </Link>
+            {filtroUfAtivo() && (
+              <Link href="/estados" aria-current={estadosAtivo ? "page" : undefined}
+                className={`relative inline-flex min-h-12 items-center text-apoio hover:underline ${estadosAtivo ? "nav-ativo font-bold" : ""}`}>
+                Estados
+              </Link>
+            )}
           </nav>
           <ThemeToggle />
         </div>

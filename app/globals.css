@@ -224,3 +224,23 @@ label:has(input, select) {
 [aria-disabled="true"] {
   cursor: not-allowed;
 }
+
+/* Mapa por estado (spec 023): fio de tinta, sem cor por estado. */
+.mapa-estados path {
+  fill: var(--papel);
+  stroke: var(--tinta);
+  stroke-width: 1px;
+  stroke-linejoin: round;
+}
+.mapa-estados a:hover path,
+.mapa-estados a:focus-visible path {
+  fill: var(--papel-2);
+  stroke-width: 2.5px;
+}
+.mapa-estados a:focus-visible {
+  outline: none;
+}
+.mapa-estados a:focus-visible path {
+  stroke: var(--tinta);
+  stroke-width: 3px;
+}
