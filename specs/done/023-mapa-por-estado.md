@@ -37,3 +37,6 @@ Pedido de Bea (27/09/2026): uma aba "Estados" com o mapa do Brasil. Ao clicar nu
 - [x] Com o recurso desligado, não há link "Estados" nem filtro "Estado", e `/estados` responde 404.
 - [x] Passar o mouse ou focar um estado desenha o contorno dele em espectro, por cima dos vizinhos.
 - [x] Verificação visual em 390px e 1440px, claro e escuro, com teclado.
+
+## Ativação (27/09/2026)
+A `api-prisma` publicada passou a filtrar por `uf` (conferido: `uf=RO` devolve 432 candidaturas). O `docker/Dockerfile` passou a buildar com `NEXT_PUBLIC_FILTRO_UF=1` por padrão. Para desligar, use `--build-arg NEXT_PUBLIC_FILTRO_UF=0`.
