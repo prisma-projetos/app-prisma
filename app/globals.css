@@ -240,6 +240,11 @@ label:has(input, select) {
   outline: none;
 }
 /* Contorno do estado em destaque (hover ou foco): o espectro, por cima dos vizinhos. */
+.mapa-estados .mapa-destaque-anel {
+  stroke-width: 7px;
+  stroke-linejoin: round;
+  pointer-events: none;
+}
 .mapa-estados .mapa-destaque {
   stroke-width: 3px;
   stroke-linejoin: round;

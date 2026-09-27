@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { LinhaCandidato } from "@/app/components/linha-candidato";
+import { CabecalhoLista, LinhaCandidato } from "@/app/components/linha-candidato";
 import { CampoSelect } from "@/app/components/campo-select";
 import { ErroCarregamento, Skeleton } from "@/app/components/estados";
 import { usePartidos, usePoliticos } from "@/app/lib/api/hooks";
@@ -140,10 +140,11 @@ export function CandidatosView() {
 
       <div
         className={`grid gap-4 sm:grid-cols-2 lg:items-end ${
-          filtroUfAtivo() ? "lg:grid-cols-[2fr_1fr_1fr_1fr_auto]" : "lg:grid-cols-[2fr_1fr_1fr_auto]"
+          // O nome ocupa uma linha própria; os selects dividem a de baixo sem espremer o texto.
+          filtroUfAtivo() ? "lg:grid-cols-[repeat(3,minmax(0,1fr))_auto]" : "lg:grid-cols-[repeat(2,minmax(0,1fr))_auto]"
         }`}
       >
-        <label className="flex flex-col gap-2 text-corpo font-semibold sm:col-span-2 lg:col-span-1">
+        <label className="flex flex-col gap-2 text-corpo font-semibold sm:col-span-2 lg:col-span-full">
           Nome
           <input
             type="search"
@@ -240,11 +241,7 @@ export function CandidatosView() {
 
         {!porCargo && candidatos.length > 0 && (
           <>
-            <div aria-hidden="true" className="hidden grid-cols-[88px_1fr_minmax(0,320px)] gap-6 border-b border-tinta pb-3 text-apoio text-tinta-2 sm:grid">
-              <span />
-              <span>Nome</span>
-              <span>Cargo</span>
-            </div>
+            <CabecalhoLista />
             <ul className={carregandoPagina ? "opacity-60" : ""}>
               {candidatos.map((c) => (
                 <LinhaCandidato key={c.tituloEleitoral} candidato={c} />
@@ -308,7 +305,7 @@ function SecaoCargo({ uf, cargo }: { uf: string; cargo: string }) {
       <h3 className="text-titulo-3 text-tinta">{titulo}</h3>
       <ul>
         {candidatos.map((c) => (
-          <LinhaCandidato key={c.tituloEleitoral} candidato={c} />
+          <LinhaCandidato key={c.tituloEleitoral} candidato={c} mostrarCargo={false} />
         ))}
       </ul>
       {total > POR_CARGO && (

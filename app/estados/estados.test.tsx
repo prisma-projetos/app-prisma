@@ -36,10 +36,20 @@ describe("página /estados (spec 023)", () => {
     expect(destaque.getAttribute("data-destaque")).toBe("RO");
     expect(destaque.getAttribute("stroke")).toMatch(/^url\(#.+\)$/);
     expect(destaque.parentElement?.lastElementChild).toBe(destaque);
+    // Anel em tinta por baixo do espectro: o foco não depende só do espectro (DESIGN, "Foco").
+    const anel = container.querySelector<SVGPathElement>("[data-destaque-anel]")!;
+    expect(anel.getAttribute("data-destaque-anel")).toBe("RO");
+    expect(anel.nextElementSibling).toBe(destaque);
     fireEvent.mouseLeave(within(mapa).getByRole("link", { name: "Rondônia (RO)" }));
     expect(container.querySelector("[data-destaque]")).toBeNull();
     fireEvent.focus(within(mapa).getByRole("link", { name: "Bahia (BA)" }));
     expect(container.querySelector("[data-destaque]")?.getAttribute("data-destaque")).toBe("BA");
+  });
+
+  it("o mapa é uma figura com legenda Fig. 1 creditando a malha do IBGE", () => {
+    vi.stubEnv("NEXT_PUBLIC_FILTRO_UF", "1");
+    render(<EstadosPage />);
+    expect(screen.getByText(/As 27 unidades da federação/).textContent).toMatch(/^Fig\. 1.*Malha: IBGE/);
   });
 
   it("com o recurso desligado, responde 404", () => {

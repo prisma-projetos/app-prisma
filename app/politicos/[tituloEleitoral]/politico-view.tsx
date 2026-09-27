@@ -9,6 +9,7 @@ import { Pagina } from "@/app/components/pagina";
 import { usePolitico } from "@/app/lib/api/hooks";
 import type { CandidaturaResponse } from "@/app/lib/api/types";
 import { candidaturaMaisRecente, nomeProprio, ordenarCandidaturas } from "@/app/lib/formatacao";
+import { rotuloDoCargo } from "@/app/lib/cargos";
 import { naoEncontrado } from "@/app/lib/identificadores";
 
 const VAZIO = "—";
@@ -74,7 +75,7 @@ export function PoliticoView({ tituloEleitoral }: { tituloEleitoral: string }) {
 }
 
 function ResumoCandidatura({ candidatura }: { candidatura: CandidaturaResponse }) {
-  const partes = [candidatura.cargo, candidatura.uf].filter(Boolean).join(" · ");
+  const partes = [rotuloDoCargo(candidatura.cargo), candidatura.uf].filter(Boolean).join(" · ");
   return (
     <p className="text-base text-tinta-2">
       {partes}
@@ -117,7 +118,7 @@ function TabelaCandidaturas({ candidaturas }: { candidaturas: CandidaturaRespons
                   className="border-b border-fio max-sm:block max-sm:py-3"
                 >
                   <td data-rotulo="Ano" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">{c.anoEleicao ?? VAZIO}</td>
-                  <td data-rotulo="Cargo" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">{c.cargo ?? VAZIO}</td>
+                  <td data-rotulo="Cargo" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">{rotuloDoCargo(c.cargo) ?? VAZIO}</td>
                   <td data-rotulo="Estado" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">{c.uf ?? VAZIO}</td>
                   <td data-rotulo="Partido" className="max-sm:grid max-sm:grid-cols-[8.5rem_1fr] max-sm:gap-3 max-sm:py-1 max-sm:before:text-tinta-2 max-sm:before:content-[attr(data-rotulo)] py-4 pr-4">
                     {c.siglaPartido && c.nrPartido ? (

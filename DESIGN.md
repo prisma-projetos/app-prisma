@@ -61,7 +61,6 @@ components:
   legenda-figura: { textColor: "{colors.tinta-2}", typography: "{typography.legenda}" }
 ---
 
-<!-- Fonte: protótipo Figma PRISMA-v2 (variáveis "PRISMA · Claro"/"PRISMA · Escuro" e estilos de texto), capturas em .impeccable/review/ e as correções aprovadas na revisão final, que prevalecem sobre as capturas. Ainda não há código desta direção; revalidar contra o build quando existir. -->
 
 # Design System: PRISMA
 
@@ -153,7 +152,7 @@ Cantos retos em tudo. Duas exceções: fotos de candidato em círculo e a pílul
 ## Components
 
 ### Cabeçalho
-- Wordmark PRISMA com o prisma e o leque espectral à esquerda; à direita, "Partidos", "Candidatos" e a pílula "Modo escuro"/"Modo claro". No celular, os mesmos três itens quebram para a linha de baixo (não há menu recolhível). Item ativo em bold com o fio espectral de 4px.
+- Wordmark PRISMA com o prisma e o leque espectral à esquerda; à direita, "Partidos", "Candidatos", "Estados" (só com NEXT_PUBLIC_FILTRO_UF=1, spec 023) e a pílula "Modo escuro"/"Modo claro". Abaixo de `sm`, a pílula vira um círculo de 48px só com o ícone (lua ou sol), com o nome no `aria-label` (spec 020). No celular, os mesmos itens quebram para a linha de baixo (não há menu recolhível). Item ativo em bold com o fio espectral de 4px.
 - Item ativo: indicador espectral de 4px sob o item, sempre junto de peso SemiBold/Bold ou sublinhado. Nunca só cor.
 - Fio de 1px separa o cabeçalho do conteúdo.
 

@@ -75,7 +75,7 @@ export function ListaPartidos() {
 function IndicePorLetra({ letras }: { letras: string[] }) {
   return (
     <nav aria-label="Ir para a letra" className="flex flex-wrap items-center gap-2">
-      <span className="mr-2 text-apoio text-tinta-2" aria-hidden="true">
+      <span className="w-full text-apoio text-tinta-2 sm:mr-2 sm:w-auto" aria-hidden="true">
         Ir para a letra
       </span>
       {letras.map((letra) => (

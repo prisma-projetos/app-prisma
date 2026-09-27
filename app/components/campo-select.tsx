@@ -4,7 +4,7 @@ import type { ComponentProps } from "react";
 export function CampoSelect({ className = "", ...props }: ComponentProps<"select">) {
   return (
     <span className="relative block">
-      <select {...props} className={`${className} w-full appearance-none pr-12`} />
+      <select {...props} className={`${className} w-full appearance-none truncate pr-12!`} />
       <svg
         aria-hidden="true"
         viewBox="0 0 12 12"

@@ -349,10 +349,10 @@ describe("Lista do partido: filtro de nome acompanha a URL (code-review)", () =>
     navegacao.reset("/partidos/13", "q=maria");
     rotasPT();
     const { rerender } = renderComQuery(<PartidoView nrPartido={13} />);
-    expect((screen.getByRole("searchbox", { name: "Buscar candidato por nome" }) as HTMLInputElement).value).toBe("maria");
+    expect((screen.getByRole("searchbox", { name: "Nome" }) as HTMLInputElement).value).toBe("maria");
     navegacao.reset("/partidos/13");
     rerender(<PartidoView nrPartido={13} />);
-    expect((screen.getByRole("searchbox", { name: "Buscar candidato por nome" }) as HTMLInputElement).value).toBe("");
+    expect((screen.getByRole("searchbox", { name: "Nome" }) as HTMLInputElement).value).toBe("");
     await new Promise((r) => setTimeout(r, 400));
     expect(navegacao.replace).not.toHaveBeenCalled();
   });

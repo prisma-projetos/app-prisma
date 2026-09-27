@@ -56,6 +56,17 @@ export function MapaEstados() {
           </Link>
         ))}
         {destaque && (
+          // Anel em tinta por baixo do espectro: o destaque não depende só do espectro (DESIGN, "Foco").
+          <path
+            data-destaque-anel={destaque}
+            className="mapa-destaque-anel"
+            d={CONTORNOS_UF[destaque]}
+            style={{ fill: "none", stroke: "var(--tinta)" }}
+            vectorEffect="non-scaling-stroke"
+            aria-hidden="true"
+          />
+        )}
+        {destaque && (
           <path
             data-destaque={destaque}
             className="mapa-destaque"

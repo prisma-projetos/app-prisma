@@ -93,7 +93,7 @@ describe("Página de político: conteúdo", () => {
     const { container } = renderComQuery(<PoliticoView tituloEleitoral={TITULO} />);
     const h1 = await screen.findByRole("heading", { level: 1 });
     const resumo = h1.nextElementSibling as HTMLElement;
-    expect(resumo.textContent).toBe("GOVERNADOR · MS · PT");
+    expect(resumo.textContent).toBe("Governador · MS · PT");
     expect(within(resumo).getByRole("link", { name: "PT" }).getAttribute("href")).toBe(
       "/partidos/13"
     );
@@ -106,7 +106,7 @@ describe("Página de político: conteúdo", () => {
     await screen.findByRole("heading", { name: "Candidaturas" });
     const linhas = within(screen.getByRole("region", { name: "Tabela de candidaturas" })).getAllByRole("row").slice(1);
     expect(linhas.map((l) => l.firstElementChild?.textContent)).toEqual(["2026", "2026", "2022"]);
-    expect(linhas[0].textContent).toContain("GOVERNADOR");
+    expect(linhas[0].textContent).toContain("Governador");
     expect(linhas[0].lastElementChild?.textContent).toBe("Não informado¹");
     expect(within(linhas[2]).getByRole("link", { name: "PSB" }).getAttribute("href")).toBe(
       "/partidos/40"

@@ -4,7 +4,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Secao } from "@/app/components/secao";
 import { CampoSelect } from "@/app/components/campo-select";
-import { LinhaCandidato } from "@/app/components/linha-candidato";
+import { CabecalhoLista, LinhaCandidato } from "@/app/components/linha-candidato";
 import { ErroCarregamento, GradeSkeleton, MensagemVazia } from "@/app/components/estados";
 import { usePoliticos } from "@/app/lib/api/hooks";
 import { CARGOS, lerCargo } from "@/app/lib/cargos";
@@ -93,20 +93,23 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
       )}
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end">
-        <input
-          type="search"
-          value={busca}
-          onChange={(e) => setBusca(e.target.value)}
-          placeholder="Buscar por nome"
-          aria-label="Buscar candidato por nome"
-          className="min-h-14 min-w-0 flex-1 border-2 border-tinta bg-papel px-4 py-3 text-corpo text-tinta placeholder:text-tinta-3"
-        />
-        <label className="flex min-w-0 flex-col gap-2 text-apoio text-tinta-2">
+        {/* Mesmos rótulos visíveis de /candidatos (spec 024). */}
+        <label className="flex min-w-0 flex-1 flex-col gap-2 text-corpo font-semibold text-tinta">
+          Nome
+          <input
+            type="search"
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+            placeholder="Digite um nome"
+            className="min-h-14 min-w-0 border-2 border-tinta bg-papel px-4 py-3 text-corpo font-normal text-tinta placeholder:text-tinta-3"
+          />
+        </label>
+        <label className="flex min-w-0 flex-col gap-2 text-corpo font-semibold text-tinta">
           Cargo
           <CampoSelect
             value={cargo}
             onChange={(e) => navegar({ cargo: e.target.value })}
-            className="min-h-14 min-w-0 border-2 border-tinta bg-papel px-4 py-3 text-corpo text-tinta"
+            className="min-h-14 min-w-0 border-2 border-tinta bg-papel px-4 py-3 text-corpo font-normal text-tinta"
           >
             <option value="">Todos os cargos</option>
             {CARGOS.map((c) => (
@@ -126,11 +129,14 @@ export function PoliticosDoPartido({ nrPartido }: { nrPartido: number }) {
         <MensagemVazia>Nenhum político encontrado.</MensagemVazia>
       )}
       {candidatos.length > 0 && (
+        <>
+        <CabecalhoLista className="mt-8" />
         <ul className={carregandoPagina ? "opacity-60" : ""}>
           {candidatos.map((candidato) => (
             <LinhaCandidato key={candidato.tituloEleitoral} candidato={candidato} />
           ))}
         </ul>
+        </>
       )}
 
       {dados && totalPaginas > 1 && (

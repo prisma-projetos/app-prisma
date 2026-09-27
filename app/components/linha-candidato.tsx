@@ -5,9 +5,30 @@ import { nomeProprio } from "@/app/lib/formatacao";
 import { EntidadeAvatar } from "./entidade-avatar";
 
 /** Linha de candidato: foto, nome (link que cobre a linha inteira) e cargo. */
-export function LinhaCandidato({ candidato: c }: { candidato: CandidatoResumoResponse }) {
+// Coluna do nome limitada: o cargo fica perto do nome em vez de ir para a borda.
+const GRADE = "sm:grid-cols-[88px_minmax(0,520px)_1fr]";
+
+/** Cabeçalho "Nome / Cargo" das listas de candidatos, com fio em tinta. */
+export function CabecalhoLista({ className = "" }: { className?: string }) {
   return (
-    <li className="relative grid min-h-[88px] grid-cols-[64px_1fr] items-center gap-x-4 border-b border-fio py-3 hover:bg-papel-2 sm:grid-cols-[88px_1fr_minmax(0,320px)] sm:gap-x-6">
+    <div aria-hidden="true" className={`hidden gap-6 border-b border-tinta pb-3 text-apoio text-tinta-2 sm:grid ${GRADE} ${className}`}>
+      <span />
+      <span>Nome</span>
+      <span>Cargo</span>
+    </div>
+  );
+}
+
+export function LinhaCandidato({
+  candidato: c,
+  mostrarCargo = true,
+}: {
+  candidato: CandidatoResumoResponse;
+  /** Nas seções por cargo o título já diz o cargo; repetir em cada linha é ruído. */
+  mostrarCargo?: boolean;
+}) {
+  return (
+    <li className={`relative grid min-h-[88px] grid-cols-[64px_1fr] items-center gap-x-4 border-b border-fio py-3 hover:bg-papel-2 sm:gap-x-6 ${GRADE}`}>
       <span className="row-span-2 sm:row-span-1">
         <EntidadeAvatar nome={nomeProprio(c.nome)} imagemUrl={c.urlFoto} variante="politico" tamanho={64} />
       </span>
@@ -18,7 +39,7 @@ export function LinhaCandidato({ candidato: c }: { candidato: CandidatoResumoRes
       >
         {nomeProprio(c.nome)}
       </Link>
-      <span className="text-apoio text-tinta-2 sm:text-corpo sm:text-tinta">{rotuloDoCargo(c.cargo)}</span>
+      {mostrarCargo && <span className="text-apoio text-tinta-2 sm:text-corpo sm:text-tinta">{rotuloDoCargo(c.cargo)}</span>}
     </li>
   );
 }
