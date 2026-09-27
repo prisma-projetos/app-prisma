@@ -23,6 +23,11 @@ ENV NEXT_TELEMETRY_DISABLED=1
 # entra aqui, e não no container em execução (spec 019).
 ARG IMAGENS_ORIGEM=https://api-minio.ajvale.com.br
 ENV IMAGENS_ORIGEM=${IMAGENS_ORIGEM}
+# Aba "Estados" e filtro por UF (spec 023). NEXT_PUBLIC_* é gravado no build,
+# então precisa estar aqui. Ligado porque a api-prisma publicada já filtra por
+# `uf`; use --build-arg NEXT_PUBLIC_FILTRO_UF=0 para desligar.
+ARG NEXT_PUBLIC_FILTRO_UF=1
+ENV NEXT_PUBLIC_FILTRO_UF=${NEXT_PUBLIC_FILTRO_UF}
 RUN pnpm run build
 
 # ---------- runner ----------
