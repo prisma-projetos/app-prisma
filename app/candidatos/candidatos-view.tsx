@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
-import { CabecalhoLista, LinhaCandidato } from "@/app/components/linha-candidato";
+import { CabecalhoLista, LinhaCandidato, temPartido } from "@/app/components/linha-candidato";
 import { CampoSelect } from "@/app/components/campo-select";
 import { ErroCarregamento, Skeleton } from "@/app/components/estados";
 import { usePartidos, usePoliticos } from "@/app/lib/api/hooks";
@@ -117,6 +117,7 @@ export function CandidatosView() {
 
   const dados = lista.data;
   const candidatos = (dados?.content ?? []).filter((c) => c.nome);
+  const comPartido = temPartido(candidatos);
   const totalPaginas = dados?.totalPages ?? 0;
   const temFiltro = Boolean(q || cargo || partido || uf);
   const descricaoFiltros = [
@@ -241,10 +242,10 @@ export function CandidatosView() {
 
         {!porCargo && candidatos.length > 0 && (
           <>
-            <CabecalhoLista />
+            <CabecalhoLista mostrarPartido={comPartido} />
             <ul className={carregandoPagina ? "opacity-60" : ""}>
               {candidatos.map((c) => (
-                <LinhaCandidato key={c.tituloEleitoral} candidato={c} />
+                <LinhaCandidato key={c.tituloEleitoral} candidato={c} mostrarPartido={comPartido} />
               ))}
             </ul>
           </>
@@ -299,13 +300,15 @@ function SecaoCargo({ uf, cargo }: { uf: string; cargo: string }) {
   if (!consulta.data || total === 0) return null;
   const rotulo = rotuloDoCargo(cargo) ?? cargo;
   const titulo = `${rotulo} (${formatarNumero(total)})`;
+  const comPartido = temPartido(candidatos);
 
   return (
     <section aria-label={titulo} className="flex flex-col gap-2">
       <h3 className="text-titulo-3 text-tinta">{titulo}</h3>
+      {comPartido && <CabecalhoLista mostrarCargo={false} mostrarPartido />}
       <ul>
         {candidatos.map((c) => (
-          <LinhaCandidato key={c.tituloEleitoral} candidato={c} mostrarCargo={false} />
+          <LinhaCandidato key={c.tituloEleitoral} candidato={c} mostrarCargo={false} mostrarPartido={comPartido} />
         ))}
       </ul>
       {total > POR_CARGO && (

@@ -62,6 +62,8 @@ export interface CandidatoResumoResponse {
   nome?: string;
   cargo?: string;
   urlFoto?: string;
+  nrPartido?: number;
+  siglaPartido?: string;
 }
 
 export interface CandidaturaResponse {
