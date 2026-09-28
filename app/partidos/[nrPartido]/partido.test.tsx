@@ -225,6 +225,25 @@ describe("Página de partido: políticos", () => {
   });
 });
 
+describe("Lista do partido sem coluna Partido (spec 026)", () => {
+  it("mesmo com o partido na resposta, a linha não mostra a sigla", async () => {
+    rotasPT({
+      politicos: () => {
+        const pagina = paginaDeCandidatos(0, 1);
+        return Response.json({
+          ...pagina,
+          content: pagina.content.map((c) => ({ ...c, cargo: "SENADOR", nrPartido: 13, siglaPartido: "PT" })),
+        });
+      },
+    });
+    renderComQuery(<PartidoView nrPartido={13} />);
+    const link = await screen.findByRole("link", { name: "Candidato 0-0" });
+    const linha = link.closest("li")!;
+    expect(within(linha).queryByText("PT")).toBeNull();
+    expect(within(linha).queryByRole("link", { name: "PT" })).toBeNull();
+  });
+});
+
 describe("Página de partido: filtro por cargo", () => {
   function selectCargo() {
     return screen.getByRole<HTMLSelectElement>("combobox", { name: "Cargo" });

@@ -14,7 +14,7 @@ const PSD: PartidoResponse = { numero: 55, sigla: "PSD", nome: "PARTIDO SOCIAL D
 const LISTA_PARTIDOS = [...partidos, PSD];
 
 /** Resposta de /politicos: sem filtros, 20.608 no total; com filtros, a página pedida. */
-function rotas({ vazio = false, erro = false } = {}) {
+function rotas({ vazio = false, erro = false, comPartido = false } = {}) {
   return mockApi({
     partidos: LISTA_PARTIDOS,
     politicos: erro
@@ -25,7 +25,11 @@ function rotas({ vazio = false, erro = false } = {}) {
           const resposta = vazio ? paginaDeCandidatos(0, 0, 0) : paginaDeCandidatos(pagina, 3, 2);
           return Response.json({
             ...resposta,
-            content: resposta.content.map((c) => ({ ...c, cargo: "SENADOR" })),
+            content: resposta.content.map((c) => ({
+              ...c,
+              cargo: "SENADOR",
+              ...(comPartido && { nrPartido: 55, siglaPartido: "PSD" }),
+            })),
           });
         },
   });
@@ -176,6 +180,63 @@ describe("Filtro de nome acompanha a URL (code-review)", () => {
     expect((screen.getByRole("searchbox", { name: "Nome" }) as HTMLInputElement).value).toBe("");
     await new Promise((r) => setTimeout(r, 400));
     expect(navegacao.replace).not.toHaveBeenCalled();
+  });
+});
+
+describe("Partido na lista de candidatos (spec 026)", () => {
+  beforeEach(() => navegacao.reset("/candidatos"));
+  afterEach(() => vi.unstubAllEnvs());
+
+  it("a lista paginada mostra a sigla com link para o partido e o cabeçalho Nome / Partido / Cargo", async () => {
+    rotas({ comPartido: true });
+    const { container } = renderComQuery(<CandidatosView />);
+    const nome = await screen.findByRole("link", { name: "Candidato 0-0" });
+    const linha = nome.closest("li")!;
+    expect(within(linha).getByRole("link", { name: "PSD" }).getAttribute("href")).toBe("/partidos/55");
+    expect(within(linha).getByText("Senador")).toBeTruthy();
+    expect(nome.getAttribute("href")).toBe("/politicos/0000");
+    const cabecalho = container.querySelector("ul")!.previousElementSibling!;
+    expect(cabecalho.textContent).toBe("NomePartidoCargo");
+  });
+
+  it("sem o partido na resposta da API, a coluna não aparece", async () => {
+    rotas();
+    const { container } = renderComQuery(<CandidatosView />);
+    await screen.findByRole("link", { name: "Candidato 0-0" });
+    expect(screen.queryByText("Partido não informado")).toBeNull();
+    expect(container.querySelector("ul")!.previousElementSibling!.textContent).toBe("NomeCargo");
+  });
+
+  it("com uf e cargo, a lista paginada mostra o partido", async () => {
+    vi.stubEnv("NEXT_PUBLIC_FILTRO_UF", "1");
+    navegacao.reset("/candidatos", "uf=RO&cargo=SENADOR");
+    rotas({ comPartido: true });
+    renderComQuery(<CandidatosView />);
+    const nome = await screen.findByRole("link", { name: "Candidato 0-0" });
+    expect(within(nome.closest("li")!).getByRole("link", { name: "PSD" })).toBeTruthy();
+  });
+
+  it("com uf e sem cargo, as seções por cargo mostram o partido, sem a coluna Cargo", async () => {
+    vi.stubEnv("NEXT_PUBLIC_FILTRO_UF", "1");
+    navegacao.reset("/candidatos", "uf=RO");
+    mockApi({
+      partidos: LISTA_PARTIDOS,
+      politicos: (params: URLSearchParams) => {
+        const cargo = params.get("cargo");
+        const total = !cargo || cargo === "SENADOR" ? 2 : 0;
+        const base = paginaDeCandidatos(0, 1, total);
+        return Response.json({
+          ...base,
+          content: base.content.map((c) => ({ ...c, cargo: "SENADOR", nrPartido: 55, siglaPartido: "PSD" })),
+        });
+      },
+    });
+    renderComQuery(<CandidatosView />);
+    const senador = await screen.findByRole("region", { name: "Senador (2)" });
+    const [primeira] = within(senador).getAllByRole("listitem");
+    expect(within(primeira).getByRole("link", { name: "PSD" }).getAttribute("href")).toBe("/partidos/55");
+    expect(within(primeira).queryByText("Senador")).toBeNull();
+    expect(senador.querySelector("ul")!.previousElementSibling!.textContent).toBe("NomePartido");
   });
 });
 
