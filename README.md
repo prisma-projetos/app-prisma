@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🖥 app-prisma
+# app-prisma
 
 **Interface web do PRISMA**: mostra ao eleitor o teor da cobertura da imprensa sobre partidos e candidatos (negativo, neutro e positivo), por tema e por veículo, sempre com link para a matéria de origem.
 
@@ -18,7 +18,7 @@
 
 ---
 
-## 📍 Onde este módulo fica no PRISMA
+## Onde este módulo fica no PRISMA
 
 ```
 scrapping-prisma ──▶ classifier-prisma ──▶ analyser-prisma ──▶ System DB ──▶ api-prisma ──▶ [ app-prisma ] ──▶ eleitor
@@ -29,20 +29,20 @@ Este repositório é **apenas a camada de apresentação**. Classificação, agr
 
 > O PRISMA mede o **teor do que foi publicado** sobre cada entidade, **não o viés da fonte**. Ele não classifica veículos nem pessoas no espectro ideológico.
 
-## 📑 Sumário
+## Sumário
 
-- [Funcionalidades](#-funcionalidades)
-- [Arquitetura](#-arquitetura)
-- [Como rodar](#-como-rodar)
-- [Variáveis de ambiente](#-variáveis-de-ambiente)
-- [Scripts](#-scripts)
-- [Estrutura](#-estrutura)
-- [Regras de produto (obrigatórias)](#-regras-de-produto-obrigatórias)
-- [Workflow: Spec-Driven Development](#-workflow-spec-driven-development)
-- [Docker e CI/CD](#-docker-e-cicd)
-- [Repositórios do PRISMA](#-repositórios-do-prisma)
+- [Funcionalidades](#funcionalidades)
+- [Arquitetura](#arquitetura)
+- [Como rodar](#como-rodar)
+- [Variáveis de ambiente](#variáveis-de-ambiente)
+- [Scripts](#scripts)
+- [Estrutura](#estrutura)
+- [Regras de produto (obrigatórias)](#regras-de-produto-obrigatórias)
+- [Workflow: Spec-Driven Development](#workflow-spec-driven-development)
+- [Docker e CI/CD](#docker-e-cicd)
+- [Repositórios do PRISMA](#repositórios-do-prisma)
 
-## ✨ Funcionalidades
+## Funcionalidades
 
 | Rota | O que mostra |
 |---|---|
@@ -54,7 +54,7 @@ Este repositório é **apenas a camada de apresentação**. Classificação, agr
 
 Também inclui um seletor de **janela** (mês), modo claro/escuro que segue o sistema, gráfico de temas, retícula nos sentimentos (sem depender de cor) e layout *mobile-first*.
 
-## 🏗 Arquitetura
+## Arquitetura
 
 ```mermaid
 flowchart LR
@@ -72,7 +72,7 @@ flowchart LR
 - **Rate limit por IP** no proxy, ativo apenas quando existe um proxy reverso confiável (`PROXIES_CONFIAVEIS`).
 - **Cabeçalhos de segurança (CSP etc.)** calculados no build em `app/lib/seguranca.ts`, com a origem das imagens vinda de `IMAGENS_ORIGEM`.
 
-## 🚀 Como rodar
+## Como rodar
 
 **Pré-requisitos:** Node.js 20+ e pnpm 10 (`corepack enable`).
 
@@ -87,7 +87,7 @@ pnpm dev                        # http://localhost:3000
 
 > Esta versão do Next.js tem mudanças incompatíveis com versões anteriores. Antes de alterar código, consulte `node_modules/next/dist/docs/` (veja [`AGENTS.md`](AGENTS.md)).
 
-## ⚙ Variáveis de ambiente
+## Variáveis de ambiente
 
 | Variável | Quando é lida | Descrição |
 |---|---|---|
@@ -98,7 +98,7 @@ pnpm dev                        # http://localhost:3000
 | `NEXT_PUBLIC_FILTRO_UF` | **Build** | `1` ativa a aba "Estados" e o filtro por UF |
 | `DEV_ORIGINS` | Dev | Origens extras permitidas no `next dev` (por exemplo, o celular na rede local) |
 
-## 📜 Scripts
+## Scripts
 
 ```bash
 pnpm dev      # desenvolvimento
@@ -108,7 +108,7 @@ pnpm lint     # ESLint
 pnpm test     # Vitest + Testing Library (jsdom)
 ```
 
-## 📂 Estrutura
+## Estrutura
 
 ```
 ├── app/
@@ -128,7 +128,7 @@ pnpm test     # Vitest + Testing Library (jsdom)
 └── AGENTS.md / CLAUDE.md             # guia para agentes de código
 ```
 
-## 🛡 Regras de produto (obrigatórias)
+## Regras de produto (obrigatórias)
 
 Estas regras são **requisitos de produto**, e há testes que as verificam (`test/regras-produto.test.ts`):
 
@@ -141,7 +141,7 @@ Estas regras são **requisitos de produto**, e há testes que as verificam (`tes
 
 **Glossário (sem sinônimos):** entidade · sentimento · panorama · fonte · janela.
 
-## 📝 Workflow: Spec-Driven Development
+## Workflow: Spec-Driven Development
 
 Nenhuma funcionalidade é implementada sem uma **spec aprovada** em `specs/` (veja `specs/template.md`).
 
@@ -163,7 +163,7 @@ Nenhuma funcionalidade é implementada sem uma **spec aprovada** em `specs/` (ve
 
 </details>
 
-## 🐳 Docker e CI/CD
+## Docker e CI/CD
 
 ```bash
 docker build -f docker/Dockerfile \
@@ -181,14 +181,14 @@ Build multi-stage (`deps` → `builder` → `runner`) com saída **standalone**,
 
 **Pipeline:** `.gitea/workflows/ci-cd.yaml`. Em push para `main`/`develop`, faz build da imagem → atualiza os manifestos → sincroniza no **ArgoCD**.
 
-## 🧭 Repositórios do PRISMA
+## Repositórios do PRISMA
 
 | Repositório | Papel |
 |---|---|
 | [`.github`](https://github.com/prisma-projetos) | Página da organização |
-| [`scrapping-prisma`](https://github.com/prisma-projetos/scrapping-prisma) | 📰 Coleta de notícias |
-| [`classifier-prisma`](https://github.com/prisma-projetos/classifier-prisma) | 🏷 Identificação de entidades e classificação do teor |
-| [`analyser-prisma`](https://github.com/prisma-projetos/analyser-prisma) | 🧠 Resumos e panoramas com LLM |
-| [`api-prisma`](https://github.com/prisma-projetos/api-prisma) | 🔌 API REST somente leitura |
-| **`app-prisma`** | 🖥 Interface web *(este)* |
-| [`experiments-prisma`](https://github.com/prisma-projetos/experiments-prisma) | 🔬 Documentação, ADRs e experimentos do artigo |
+| [`scrapping-prisma`](https://github.com/prisma-projetos/scrapping-prisma) | Coleta de notícias |
+| [`classifier-prisma`](https://github.com/prisma-projetos/classifier-prisma) | Identificação de entidades e classificação do teor |
+| [`analyser-prisma`](https://github.com/prisma-projetos/analyser-prisma) | Resumos e panoramas com LLM |
+| [`api-prisma`](https://github.com/prisma-projetos/api-prisma) | API REST somente leitura |
+| **`app-prisma`** | Interface web *(este)* |
+| [`experiments-prisma`](https://github.com/prisma-projetos/experiments-prisma) | Documentação, ADRs e experimentos do artigo |
